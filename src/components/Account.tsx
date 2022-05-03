@@ -71,7 +71,7 @@ const Account = ({ session }: { session: AuthSession }) => {
   return (
     <div aria-live="polite">
       {loading ? (
-        "Saving ..."
+        "Loading ..."
       ) : (
         <form onSubmit={updateProfile} className="form-widget">
           <div>Email: {session.user!.email}</div>

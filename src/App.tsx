@@ -14,12 +14,12 @@ export default function App() {
     supabase.auth.onAuthStateChange(
       (_event: string, session: AuthSession | null) => {
         setSession(session);
-      },
+      }
     );
   }, []);
 
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
+    <div className="">
       {!session ? (
         <Auth />
       ) : (

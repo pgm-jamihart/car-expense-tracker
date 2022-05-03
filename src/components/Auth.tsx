@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { supabase } from "../config/supabaseClient";
+import { GrFacebookOption, GrGooglePlus, GrTwitter } from "react-icons/gr";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
+  const signInWithGoogle = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signIn({ email });
-      if (error) throw error;
-      alert("Check your email for the login link!");
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: "google",
+      });
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
@@ -21,30 +19,76 @@ export default function Auth() {
   };
 
   return (
-    <div className="row flex flex-center">
-      <div className="col-6 form-widget" aria-live="polite">
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-        <p className="description">
-          Sign in via magic link with your email below
-        </p>
-        {loading ? (
-          "Sending magic link..."
-        ) : (
-          <form onSubmit={handleLogin}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button className="button block" aria-live="polite">
-              Send magic link
-            </button>
-          </form>
-        )}
+    <div className="bg-blue-700">
+      <div className="px-8 py-20">
+        <h1 className="text-3xl font-medium text-center text-white">
+          Welcome to the expense car tracker app.
+        </h1>
+      </div>
+
+      <div className="bg-white rounded-t-3xl p-4">
+        <div className="flex flex-col items-center">
+          <h2 className="my-10">Create an account</h2>
+
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-normal text-sm w-full py-4 rounded-md"
+            disabled={loading}
+          >
+            Sign up with email
+          </button>
+        </div>
+
+        <div className="relative flex h-10 items-center justify-center flex-col my-10">
+          <span className="bg-white px-10 py-2 absolute">or</span>
+          <div className="h-px bg-slate-200 w-full"></div>
+        </div>
+
+        <div className="flex items-center justify-between w-3/5 my-0 mx-auto">
+          <button
+            className="border-blue-300 hover:border-blue-700 h-16 w-16 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
+            onClick={signInWithGoogle}
+            disabled={loading}
+          >
+            <GrFacebookOption />
+          </button>
+          <button
+            className="border-blue-300 hover:border-blue-700 h-16 w-16 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
+            onClick={signInWithGoogle}
+            disabled={loading}
+          >
+            <GrTwitter />
+          </button>
+          <button
+            className="border-blue-300 hover:border-blue-700 h-16 w-16 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
+            onClick={signInWithGoogle}
+            disabled={loading}
+          >
+            <GrGooglePlus />
+          </button>
+        </div>
+
+        <div className="my-16">
+          <p className="text-center text-gray-500">
+            Already have an account?{" "}
+            <a href="/login" className="text-blue-500 underline">
+              Sign in
+            </a>
+          </p>
+        </div>
+
+        <div className="mb-6">
+          <p className="text-center text-gray-400 text-xs">
+            By signing up, you agree to our{" "}
+            <a className="text-blue-700" href="#">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a className="text-blue-700" href="#">
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </div>
   );
