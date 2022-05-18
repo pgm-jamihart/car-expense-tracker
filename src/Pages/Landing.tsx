@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../config/supabaseClient";
-import { GrFacebookOption, GrGooglePlus, GrTwitter } from "react-icons/gr";
+import { GrFacebookOption, GrGooglePlus, GrGithub } from "react-icons/gr";
 
 export default function Landing() {
   const [loading, setLoading] = useState(false);
@@ -23,6 +23,19 @@ export default function Landing() {
       setLoading(true);
       const { user, session, error } = await supabase.auth.signIn({
         provider: "facebook",
+      });
+    } catch (error: any) {
+      alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      setLoading(true);
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: "github",
       });
     } catch (error: any) {
       alert(error.error_description || error.message);
@@ -67,10 +80,10 @@ export default function Landing() {
             </button>
             <button
               className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
-              // onClick={signInWithGoogle}
+              onClick={signInWithGithub}
               disabled={loading}
             >
-              <GrTwitter />
+              <GrGithub />
             </button>
             <button
               className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
