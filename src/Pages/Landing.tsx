@@ -18,6 +18,19 @@ export default function Landing() {
     }
   };
 
+  const signInWithFacebook = async () => {
+    try {
+      setLoading(true);
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: "facebook",
+      });
+    } catch (error: any) {
+      alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="md:flex h-screen bg-blue-700">
       <div className="bg-blue-700 px-8 py-20 lg:w-1/2">
@@ -47,7 +60,7 @@ export default function Landing() {
           <div className="flex items-center justify-between w-48 my-0 mx-auto">
             <button
               className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
-              // onClick={signInWithGoogle}
+              onClick={signInWithFacebook}
               disabled={loading}
             >
               <GrFacebookOption />
