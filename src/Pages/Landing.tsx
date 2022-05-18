@@ -1,47 +1,15 @@
 import React, { useState } from "react";
-import { supabase } from "../config/supabaseClient";
-import { GrFacebookOption, GrGooglePlus, GrGithub } from "react-icons/gr";
+import { useNavigate, Link } from "react-router-dom";
+import * as paths from "../routes";
+import { PrimaryButton } from "../components/Buttons";
+import { SignUpWithSocials } from "../components";
 
 export default function Landing() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const signInWithGoogle = async () => {
-    try {
-      setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "google",
-      });
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signInWithFacebook = async () => {
-    try {
-      setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "facebook",
-      });
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signInWithGithub = async () => {
-    try {
-      setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "github",
-      });
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
+  const goToSignUpPage = () => {
+    navigate(paths.SIGN_UP);
   };
 
   return (
@@ -57,12 +25,14 @@ export default function Landing() {
           <div className="flex flex-col items-center">
             <h2 className="my-10">Create an account</h2>
 
-            <button
+            <PrimaryButton
+              type="button"
               className="bg-blue-500 hover:bg-blue-700 text-white font-normal text-sm w-full py-4 rounded-md"
               disabled={loading}
+              onClick={goToSignUpPage}
             >
               Sign up with email
-            </button>
+            </PrimaryButton>
           </div>
 
           <div className="relative flex h-10 items-center justify-center flex-col my-10">
@@ -70,36 +40,14 @@ export default function Landing() {
             <div className="h-px bg-slate-200 w-full"></div>
           </div>
 
-          <div className="flex items-center justify-between w-48 my-0 mx-auto">
-            <button
-              className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
-              onClick={signInWithFacebook}
-              disabled={loading}
-            >
-              <GrFacebookOption />
-            </button>
-            <button
-              className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
-              onClick={signInWithGithub}
-              disabled={loading}
-            >
-              <GrGithub />
-            </button>
-            <button
-              className="border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 "
-              onClick={signInWithGoogle}
-              disabled={loading}
-            >
-              <GrGooglePlus />
-            </button>
-          </div>
+          <SignUpWithSocials setLoading={setLoading} loading={loading} />
 
           <div className="my-16">
             <p className="text-center text-gray-500">
               Already have an account?{" "}
-              <a href="/login" className="text-blue-500 underline">
+              <Link to={paths.SIGN_IN} className="text-blue-500 underline">
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
 

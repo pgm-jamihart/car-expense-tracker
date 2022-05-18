@@ -4,8 +4,8 @@ import { AuthSession } from "@supabase/supabase-js";
 import { supabase } from "./config/supabaseClient";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
-import * as test from "./routes";
-import { Account, Landing } from "./Pages";
+import * as paths from "./routes";
+import { Account, Landing, SignIn, SignUp } from "./Pages";
 
 export default function App() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function App() {
           navigate("/");
         } else {
           setSession(session);
-          navigate(test.ACCOUNT);
+          navigate(paths.ACCOUNT);
         }
       }
     );
@@ -28,10 +28,12 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path={test.LANDING} element={<Landing />} />
+      <Route path={paths.LANDING} element={<Landing />} />
+      <Route path={paths.SIGN_UP} element={<SignUp />} />
+      <Route path={paths.SIGN_IN} element={<SignIn />} />
 
       {session && (
-        <Route path={test.ACCOUNT} element={<Account session={session} />} />
+        <Route path={paths.ACCOUNT} element={<Account session={session} />} />
       )}
     </Routes>
   );
