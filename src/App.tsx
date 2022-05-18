@@ -2,10 +2,13 @@ import "./index.css";
 import React, { useState, useEffect } from "react";
 import { AuthSession } from "@supabase/supabase-js";
 import { supabase } from "./config/supabaseClient";
-import Auth from "./components/Auth";
-import Account from "./components/Account";
+
+import { Routes, Route, useNavigate } from "react-router-dom";
+import * as test from "./routes";
+import { Account, Landing } from "./Pages";
 
 export default function App() {
+  const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
 
   useEffect(() => {
@@ -13,18 +16,23 @@ export default function App() {
 
     supabase.auth.onAuthStateChange(
       (_event: string, session: AuthSession | null) => {
-        setSession(session);
+        if (session === null) {
+          navigate("/");
+        } else {
+          setSession(session);
+          navigate(test.ACCOUNT);
+        }
       }
     );
-  }, []);
+  }, [navigate]);
 
   return (
-    <div className="">
-      {!session ? (
-        <Auth />
-      ) : (
-        <Account key={session.user!.id} session={session} />
+    <Routes>
+      <Route path={test.LANDING} element={<Landing />} />
+
+      {session && (
+        <Route path={test.ACCOUNT} element={<Account session={session} />} />
       )}
-    </div>
+    </Routes>
   );
 }
