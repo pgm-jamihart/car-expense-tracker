@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import * as paths from "../routes";
 import { PrimaryButton } from "../components/Buttons";
-import { SignUpWithSocials } from "../components";
+import { Devider, SignUpWithSocials } from "../components";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -35,10 +35,7 @@ export default function Landing() {
             </PrimaryButton>
           </div>
 
-          <div className="relative flex h-10 items-center justify-center flex-col my-10">
-            <span className="bg-white px-10 py-2 absolute">or</span>
-            <div className="h-px bg-slate-200 w-full"></div>
-          </div>
+          <Devider />
 
           <SignUpWithSocials setLoading={setLoading} loading={loading} />
 
