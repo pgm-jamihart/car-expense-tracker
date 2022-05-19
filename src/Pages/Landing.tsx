@@ -21,7 +21,7 @@ export default function Landing() {
       </div>
 
       <div className="bg-white rounded-t-3xl p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
-        <div>
+        <div className="max-w-lg my-0 mx-auto">
           <div className="flex flex-col items-center">
             <h2 className="my-10">Create an account</h2>
 
