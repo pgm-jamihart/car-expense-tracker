@@ -10,6 +10,11 @@ import { supabase } from "../config/supabaseClient";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
+  password: Yup.string().required().min(6).label("Password"),
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
 });
 
 const SignUp = () => {
@@ -38,13 +43,16 @@ const SignUp = () => {
             <Formik
               initialValues={{
                 email: "",
+                password: "",
+                passwordConfirmation: "",
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   setSubmitting(true);
-                  const { user, session, error } = await supabase.auth.signIn({
+                  const { user, session, error } = await supabase.auth.signUp({
                     email: values.email,
+                    password: values.password,
                   });
 
                   if (error) {
@@ -76,7 +84,21 @@ const SignUp = () => {
                         as={TextInput}
                         name="email"
                         placeholder="E-mail"
-                        label="E-mailadres"
+                        label="E-mail"
+                      />
+                      <Field
+                        type="password"
+                        as={TextInput}
+                        name="password"
+                        placeholder="Password"
+                        label="Password"
+                      />
+                      <Field
+                        type="password"
+                        as={TextInput}
+                        name="passwordConfirmation"
+                        placeholder="Repeat Password"
+                        label="Repeat passwoord"
                       />
                     </div>
                   )}
