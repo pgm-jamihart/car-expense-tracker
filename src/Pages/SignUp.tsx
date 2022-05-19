@@ -18,14 +18,14 @@ const SignUp = () => {
 
   return (
     <div className="md:flex h-screen bg-blue-700">
-      <div className="bg-blue-700 px-8 py-20 lg:w-1/2">
+      <div className="bg-blue-700 px-8 py-20 lg:w-1/2 hidden md:block">
         <h1 className="text-3xl font-medium text-center text-white">
           Welcome to the expense car tracker app.
         </h1>
       </div>
 
-      <div className="bg-white rounded-t-3xl p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
-        <div>
+      <div className="bg-white h-full p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
+        <div className="h-full flex flex-col items-center justify-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center justify-start w-full">
               <button onClick={() => navigate(paths.LANDING)}>
@@ -86,7 +86,7 @@ const SignUp = () => {
                     className="bg-blue-500 hover:bg-blue-700 text-white font-normal text-sm w-full py-4 rounded-md"
                     disabled={isSubmitting}
                   >
-                    Create an account
+                    Sign up
                   </PrimaryButton>
                 </form>
               )}

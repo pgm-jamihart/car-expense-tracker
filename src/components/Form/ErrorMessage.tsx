@@ -8,10 +8,10 @@ interface ErrorMessageProps {
 const ErrorMessage = ({ errorText }: ErrorMessageProps) => {
   return (
     <div className="flex items-center mt-2">
-      <span className="mr-2 text-skin-error flex items-center justify-center">
+      <span className="mr-2 text-red-600 flex items-center justify-center">
         <BiErrorAlt />
       </span>
-      <span className="text-skin-error text-xs font-semibold">{errorText}</span>
+      <span className="text-red-600 text-xs font-semibold">{errorText}</span>
     </div>
   );
 };
