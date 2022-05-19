@@ -5,16 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import * as paths from "../routes";
 import { PrimaryButton } from "../components/Buttons";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import { TextInput } from "../components/Form";
+import { ErrorBanner, TextInput } from "../components/Form";
 import { supabase } from "../config/supabaseClient";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(6).label("Password"),
-  passwordConfirmation: Yup.string().oneOf(
-    [Yup.ref("password"), null],
-    "Passwords must match"
-  ),
 });
 
 const SignUp = () => {
@@ -43,22 +38,27 @@ const SignUp = () => {
             <Formik
               initialValues={{
                 email: "",
-                password: "",
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
-                setSubmitting(true);
-                const { user, session, error } = await supabase.auth.signUp({
-                  email: values.email,
-                  password: values.password,
-                });
+                try {
+                  setSubmitting(true);
+                  const { user, session, error } = await supabase.auth.signIn({
+                    email: values.email,
+                  });
 
-                if (error) {
+                  if (error) {
+                    setError(error.message);
+                    setSubmitting(false);
+                  }
+
+                  alert("Check your email for the login link!");
+                } catch (error: any) {
                   setError(error.message);
                   setSubmitting(false);
+                } finally {
+                  setSubmitting(false);
                 }
-
-                setSubmitting(false);
               }}
             >
               {({ handleSubmit, isSubmitting }) => (
@@ -66,30 +66,20 @@ const SignUp = () => {
                   onSubmit={handleSubmit}
                   className="flex flex-col my-0 mx-auto "
                 >
-                  {/* {error && <ErrorBanner error={error} />} */}
-                  <div className="mb-4">
-                    <Field
-                      type="input"
-                      as={TextInput}
-                      name="email"
-                      placeholder="E-mail"
-                      label="E-mailadres"
-                    />
-                    <Field
-                      type="password"
-                      as={TextInput}
-                      name="password"
-                      placeholder="Password"
-                      label="Wachtwoord"
-                    />
-                    <Field
-                      type="password"
-                      as={TextInput}
-                      name="passwordConfirmation"
-                      placeholder="Repeat Password"
-                      label="Repeat passwoord"
-                    />
-                  </div>
+                  {error && <ErrorBanner error={error} />}
+                  {isSubmitting ? (
+                    "Sending magic link"
+                  ) : (
+                    <div className="mb-4">
+                      <Field
+                        type="input"
+                        as={TextInput}
+                        name="email"
+                        placeholder="E-mail"
+                        label="E-mailadres"
+                      />
+                    </div>
+                  )}
 
                   <PrimaryButton
                     type="submit"
