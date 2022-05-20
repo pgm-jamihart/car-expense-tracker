@@ -1,7 +1,12 @@
 import React from "react";
+import BaseLayout from "../Layouts/BaseLayout";
 
 const Places = () => {
-  return <div>Places</div>;
+  return (
+    <BaseLayout>
+      <div>Places</div>
+    </BaseLayout>
+  );
 };
 
 export default Places;

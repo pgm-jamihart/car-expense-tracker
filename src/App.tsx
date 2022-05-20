@@ -52,7 +52,7 @@ export default function App() {
           <Route path={paths.TIMELINE} element={<Timeline />} />
           <Route path={paths.PLACES} element={<Places />} />
           <Route path={paths.SETTINGS} element={<Settings />} />
-          <Route path={paths.PROFILE} element={<Profile />} />
+          <Route path={paths.PROFILE} element={<Profile session={session} />} />
         </>
       )}
     </Routes>

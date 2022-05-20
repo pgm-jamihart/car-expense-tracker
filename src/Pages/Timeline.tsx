@@ -1,7 +1,12 @@
 import React from "react";
+import BaseLayout from "../Layouts/BaseLayout";
 
 const Timeline = () => {
-  return <div>Timeline</div>;
+  return (
+    <BaseLayout>
+      <div>Timeline</div>
+    </BaseLayout>
+  );
 };
 
 export default Timeline;
