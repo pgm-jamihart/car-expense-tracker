@@ -41,8 +41,8 @@ const TextInput = ({
         <input
           {...field}
           className={`${
-            errorText ? "border-2 border-skin-error" : "border"
-          } w-full h-10 py-2.5 text-base px-4 mt-2 bg-skin-light rounded-md placeholder:text-sm placeholder:font-semibold placeholder:text-skin-dark hover:border-skin-light hover:border hover:bg-skin-white hover:shadow-[0px_0px_0px_4px_#4c7bea4c] hover:transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skin-accent`}
+            errorText ? "border-2 border-skin-red" : "border"
+          } w-full h-10 py-2.5 text-base px-4 mt-2  rounded-md placeholder:text-sm placeholder:font-semibold placeholder:text-skin-light_gray hover:border-skin-light_blue hover:border hover:shadow-[0px_0px_0px_4px_#4c7bea4c] hover:transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skin-blue`}
           type={type}
           name={name}
           placeholder={placeholder}

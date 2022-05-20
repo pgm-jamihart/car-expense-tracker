@@ -5,7 +5,19 @@ import { supabase } from "./config/supabaseClient";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
 import * as paths from "./routes";
-import { Account, Landing, SignIn, SignUp } from "./Pages";
+import {
+  Account,
+  Dashboard,
+  HomePage,
+  Landing,
+  Places,
+  Profile,
+  Settings,
+  SignIn,
+  SignUp,
+  Timeline,
+} from "./Pages";
+import BaseLayout from "./Layouts/BaseLayout";
 
 export default function App() {
   const navigate = useNavigate();
@@ -20,7 +32,7 @@ export default function App() {
           navigate("/");
         } else {
           setSession(session);
-          navigate(paths.ACCOUNT);
+          navigate(paths.HOME);
         }
       }
     );
@@ -33,7 +45,15 @@ export default function App() {
       <Route path={paths.SIGN_IN} element={<SignIn />} />
 
       {session && (
-        <Route path={paths.ACCOUNT} element={<Account session={session} />} />
+        <>
+          <Route path={paths.ACCOUNT} element={<Account session={session} />} />
+          <Route path={paths.HOME} element={<HomePage />} />
+          <Route path={paths.DASHBOARD} element={<Dashboard />} />
+          <Route path={paths.TIMELINE} element={<Timeline />} />
+          <Route path={paths.PLACES} element={<Places />} />
+          <Route path={paths.SETTINGS} element={<Settings />} />
+          <Route path={paths.PROFILE} element={<Profile />} />
+        </>
       )}
     </Routes>
   );

@@ -14,7 +14,7 @@ const SignUpWithButton = ({ children, onClick, disabled }: ButtonProps) => {
 
   return (
     <button
-      className={`${btnClass} border-blue-300 hover:border-blue-700 h-14 w-14 flex items-center justify-center border-2 hover:bg-blue-400 text-blue-500 font-bold py-2 px-4 rounded-full text-2xl hover:text-white ease-in-out duration-200 `}
+      className={`${btnClass} border-skin-light_blue hover:border-skin-blue h-14 w-14 flex items-center justify-center border-2 hover:bg-skin-light_blue text-skin-blue font-bold py-2 px-4 rounded-full text-2xl hover:text-skin-blue ease-in-out duration-200 `}
       onClick={onClick}
     >
       {children}

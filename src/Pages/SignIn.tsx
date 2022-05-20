@@ -20,19 +20,19 @@ const SignIn = () => {
   const [error, setError] = useState("");
 
   return (
-    <div className="md:flex h-screen bg-blue-700">
-      <div className="bg-blue-700 px-8 py-20 lg:w-1/2 hidden md:block">
-        <h1 className="text-3xl font-medium text-center text-white">
+    <div className="md:flex h-screen bg-skin-light-gray">
+      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 hidden md:block">
+        <h1 className="text-3xl font-medium text-center text-skin-white">
           Welcome back.
         </h1>
       </div>
 
-      <div className="bg-white h-full p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
+      <div className="bg-skin-white h-full p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
         <div className="h-full flex flex-col items-center justify-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center justify-start w-full">
               <button onClick={() => navigate(paths.LANDING)}>
-                <MdOutlineKeyboardBackspace className="text-yellow-500 w-10 h-10 mr-4" />
+                <MdOutlineKeyboardBackspace className="text-skin-yellow w-10 h-10 mr-4" />
               </button>
 
               <h2 className="my-10 text-3xl">Sign in to your account</h2>
@@ -90,7 +90,7 @@ const SignIn = () => {
 
                   <PrimaryButton
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-normal text-sm w-full py-4 rounded-md"
+                    className="bg-skin-dark_blue mt-6"
                     disabled={isSubmitting}
                   >
                     Sign up
