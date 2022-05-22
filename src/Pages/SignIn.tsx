@@ -23,7 +23,7 @@ const SignIn = () => {
     <div className="md:flex h-screen bg-skin-light-gray">
       <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 hidden md:block">
         <h1 className="text-3xl font-medium text-center text-skin-white">
-          Welcome back.
+          Welcome to the expense car tracker app.
         </h1>
       </div>
 

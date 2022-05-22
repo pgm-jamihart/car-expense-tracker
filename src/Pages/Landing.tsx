@@ -14,7 +14,7 @@ export default function Landing() {
 
   return (
     <div className="md:flex h-screen bg-skin-light_gray">
-      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2">
+      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 md:block">
         <h1 className="text-3xl font-medium text-center text-skin-white">
           Welcome to the expense car tracker app.
         </h1>
