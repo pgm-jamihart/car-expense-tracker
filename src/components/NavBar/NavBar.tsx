@@ -6,10 +6,11 @@ import {
   MdTimeline,
   MdLocationOn,
   MdSettings,
-  MdAccountCircle,
   MdOutlineKeyboardBackspace,
+  MdAccountCircle,
 } from "react-icons/md";
 import { CgMenuLeft } from "react-icons/cg";
+import { FaCarSide } from "react-icons/fa";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const NavBar = () => {
       icon: <MdSettings />,
       path: paths.SETTINGS,
     },
+    {
+      name: "Profile",
+      icon: <MdAccountCircle />,
+      path: paths.PROFILE,
+    },
   ];
 
   return (
@@ -57,45 +63,35 @@ const NavBar = () => {
       </button>
       <div
         className={`${
-          isOpen ? "block" : "hidden"
-        } h-screen bg-skin-black w-72 md:block text-skin-white p-6 flex flex-col justify-between`}
+          isOpen ? "flex" : "hidden"
+        } h-screen bg-skin-black w-72 md:flex text-skin-white p-6 flex-col justify-between`}
       >
-        <div>
-          <div className="mt-8">
-            <img
-              src="https://images.unsplash.com/photo-1441148345475-03a2e82f9719?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170"
-              alt=""
-              className="rounded-sm"
-            />
-          </div>
-
-          <ul className="mt-8">
-            {navData.map((item) => (
-              <li
-                key={item.name}
-                className="mb-2 rounded-sm p-2 hover:bg-slate-500/50"
+        <ul className="mt-8">
+          {navData.map((item) => (
+            <li
+              key={item.name}
+              className="rounded-sm p-2 hover:bg-slate-500/50"
+            >
+              <Link
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center text-lg"
               >
-                <Link
-                  to={item.path}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center text-xl"
-                >
-                  {item.icon}
-                  <span className="ml-4 ">{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                {item.icon}
+                <span className="ml-4 ">{item.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
 
         <button
           onClick={() => {
-            navigate(paths.PROFILE);
+            navigate(paths.GARAGE);
           }}
-          className="flex items-center text-xl hover:bg-slate-500/50 rounded-sm p-2"
+          className="flex items-center text-lg hover:bg-slate-500/50 rounded-sm p-2"
         >
-          <MdAccountCircle className="text-4xl mr-4" />
-          Username
+          <FaCarSide className="w-12 h-12 mr-4 bg-skin-blue rounded-full p-2" />
+          Car name
         </button>
       </div>
     </>

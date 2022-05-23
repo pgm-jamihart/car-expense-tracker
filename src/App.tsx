@@ -8,6 +8,7 @@ import * as paths from "./routes";
 import {
   Account,
   Dashboard,
+  Garage,
   HomePage,
   Landing,
   Places,
@@ -53,6 +54,7 @@ export default function App() {
           <Route path={paths.PLACES} element={<Places />} />
           <Route path={paths.SETTINGS} element={<Settings />} />
           <Route path={paths.PROFILE} element={<Profile session={session} />} />
+          <Route path={paths.GARAGE} element={<Garage />} />
         </>
       )}
     </Routes>

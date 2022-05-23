@@ -8,6 +8,7 @@ import Timeline from "./Timeline";
 import Places from "./Places";
 import Settings from "./Settings";
 import Profile from "./Profile";
+import Garage from "./Garage";
 
 export {
   Landing,
@@ -20,4 +21,5 @@ export {
   Places,
   Settings,
   Profile,
+  Garage,
 };

@@ -10,3 +10,4 @@ export const TIMELINE = "/timeline";
 export const PLACES = "/places";
 export const SETTINGS = "/settings";
 export const PROFILE = "/profile";
+export const GARAGE = "/garage";
