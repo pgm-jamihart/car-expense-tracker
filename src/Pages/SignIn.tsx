@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { Formik, Field } from "formik";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as paths from "../routes";
 import { PrimaryButton } from "../components/Buttons";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
-import { supabase } from "../config/supabaseClient";
+
 import { Devider, SignUpWithSocials } from "../components";
+import { useAuth } from "../AuthProvider";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -15,6 +16,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -47,14 +49,11 @@ const SignIn = () => {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   setSubmitting(true);
-                  const { user, session, error } = await supabase.auth.signIn({
-                    email: values.email,
-                    password: values.password,
-                  });
 
-                  if (error) {
-                    setError(error.message);
-                    setSubmitting(false);
+                  auth.signIn(values.email, values.password);
+
+                  if (auth.error) {
+                    setError(auth.error);
                   }
                 } catch (error: any) {
                   setError(error.message);

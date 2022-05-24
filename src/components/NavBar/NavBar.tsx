@@ -64,7 +64,7 @@ const NavBar = () => {
       <div
         className={`${
           isOpen ? "flex" : "hidden"
-        } h-screen bg-skin-black w-72 md:flex text-skin-white p-6 flex-col justify-between`}
+        } h-screen bg-skin-black w-72 min-w-18 md:flex text-skin-white p-6 flex-col justify-between`}
       >
         <ul className="mt-8">
           {navData.map((item) => (

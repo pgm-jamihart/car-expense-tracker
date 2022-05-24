@@ -7,6 +7,7 @@ import { PrimaryButton } from "../components/Buttons";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { supabase } from "../config/supabaseClient";
+import { useAuth } from "../AuthProvider";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -18,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -50,15 +52,8 @@ const SignUp = () => {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   setSubmitting(true);
-                  const { user, session, error } = await supabase.auth.signUp({
-                    email: values.email,
-                    password: values.password,
-                  });
 
-                  if (error) {
-                    setError(error.message);
-                    setSubmitting(false);
-                  }
+                  auth.signUp(values.email, values.password);
 
                   alert("Check your email for the login link!");
                 } catch (error: any) {

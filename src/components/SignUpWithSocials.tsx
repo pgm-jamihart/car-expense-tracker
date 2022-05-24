@@ -1,7 +1,8 @@
+import { Provider } from "@supabase/supabase-js";
 import React from "react";
 import { GrFacebookOption, GrGooglePlus, GrGithub } from "react-icons/gr";
+import { useAuth } from "../AuthProvider";
 
-import { supabase } from "../config/supabaseClient";
 import SignUpWithButton from "./Buttons/SignUpWithButton";
 
 interface Props {
@@ -10,38 +11,13 @@ interface Props {
 }
 
 const SignUpWithSocials = ({ loading, setLoading }: Props) => {
-  const signInWithGoogle = async () => {
-    try {
-      setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "google",
-      });
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const auth = useAuth();
 
-  const signInWithFacebook = async () => {
+  const signInWithSocial = async (provider: Provider | undefined) => {
     try {
       setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "facebook",
-      });
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const signInWithGithub = async () => {
-    try {
-      setLoading(true);
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "github",
-      });
+      auth.signInWithSocial(provider);
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
@@ -52,15 +28,15 @@ const SignUpWithSocials = ({ loading, setLoading }: Props) => {
   const data = [
     {
       icon: <GrFacebookOption />,
-      onClick: signInWithFacebook,
+      onClick: () => signInWithSocial("facebook"),
     },
     {
       icon: <GrGooglePlus />,
-      onClick: signInWithGoogle,
+      onClick: () => signInWithSocial("google"),
     },
     {
       icon: <GrGithub />,
-      onClick: signInWithGithub,
+      onClick: () => signInWithSocial("github"),
     },
   ];
 

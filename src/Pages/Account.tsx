@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../AuthProvider";
 import { supabase } from "../config/supabaseClient";
-import { AuthSession } from "@supabase/supabase-js";
 
-const Account = ({ session }: { session: AuthSession }) => {
+const Account = () => {
+  const auth = useAuth();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
@@ -10,7 +11,7 @@ const Account = ({ session }: { session: AuthSession }) => {
 
   useEffect(() => {
     getProfile();
-  }, [session]);
+  }, [auth]);
 
   const getProfile = async () => {
     try {
@@ -74,7 +75,7 @@ const Account = ({ session }: { session: AuthSession }) => {
         "Loading ..."
       ) : (
         <form onSubmit={updateProfile} className="form-widget">
-          <div>Email: {session.user!.email}</div>
+          <div>Email: {auth.user!.email}</div>
           <div>
             <label htmlFor="username">Name</label>
             <input

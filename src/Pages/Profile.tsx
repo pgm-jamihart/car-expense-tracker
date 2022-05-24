@@ -1,9 +1,10 @@
-import { AuthSession } from "@supabase/supabase-js";
 import React from "react";
-import { supabase } from "../config/supabaseClient";
+import { useAuth } from "../AuthProvider";
 import BaseLayout from "../Layouts/BaseLayout";
 
-const Profile = ({ session }: { session: AuthSession }) => {
+const Profile = () => {
+  const auth = useAuth();
+
   return (
     <BaseLayout>
       <div>Profile</div>
@@ -11,7 +12,7 @@ const Profile = ({ session }: { session: AuthSession }) => {
       <button
         type="button"
         className="button block"
-        onClick={() => supabase.auth.signOut()}
+        onClick={() => auth.signOut()}
       >
         Sign Out
       </button>

@@ -18,7 +18,6 @@ import {
   SignUp,
   Timeline,
 } from "./Pages";
-import BaseLayout from "./Layouts/BaseLayout";
 
 export default function App() {
   const navigate = useNavigate();
@@ -47,13 +46,13 @@ export default function App() {
 
       {session && (
         <>
-          <Route path={paths.ACCOUNT} element={<Account session={session} />} />
+          <Route path={paths.ACCOUNT} element={<Account />} />
           <Route path={paths.HOME} element={<HomePage />} />
           <Route path={paths.DASHBOARD} element={<Dashboard />} />
           <Route path={paths.TIMELINE} element={<Timeline />} />
           <Route path={paths.PLACES} element={<Places />} />
           <Route path={paths.SETTINGS} element={<Settings />} />
-          <Route path={paths.PROFILE} element={<Profile session={session} />} />
+          <Route path={paths.PROFILE} element={<Profile />} />
           <Route path={paths.GARAGE} element={<Garage />} />
         </>
       )}
