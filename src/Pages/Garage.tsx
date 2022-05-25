@@ -1,24 +1,98 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PrimaryButton } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
+import { supabase } from "../config/supabaseClient";
+import { useAuth } from "../AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Garage = () => {
-  const handleAddCar = () => {
-    console.log("Add car");
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const [data, setData] = useState<any[]>([]);
+
+  const handleAddCar = async () => {
+    const { data, error } = await supabase.from("cars").insert({
+      user_id: auth.user?.id,
+      brand: "Ford",
+      model: "Fiesta",
+      year: "2020",
+      millage: 1000,
+    });
+    console.log(data, error);
+
+    navigate(0);
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { data, error, status } = await supabase
+        .from("cars")
+        .select(`id, brand, model, year, millage`)
+        .eq("user_id", auth.user!.id);
+      if (error && status !== 406) {
+        throw error;
+      }
+      if (data) {
+        setData(data);
+      }
+    })();
+  }, [auth.user]);
+
+  const handleDeleteCar = async (id: number) => {
+    const { data, error } = await supabase.from("cars").delete().eq("id", id);
+    if (error) {
+      throw error;
+    }
+
+    navigate(0);
   };
 
   return (
     <BaseLayout>
-      <div className="flex flex-col justify-between h-full pb-8">
-        <h1 className="text-center mt-6 md:text-left">My Garage</h1>
+      <div className="">
+        <h1 className="text-center my-6 md:text-left">My Garage</h1>
 
-        <PrimaryButton
-          onClick={handleAddCar}
-          className="bg-skin-dark_blue md:max-w-xs"
-          type="button"
-        >
-          Add car
-        </PrimaryButton>
+        {data?.length === 0 && (
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            Add a car to your garage
+          </div>
+        )}
+
+        {data &&
+          data.map((car: any) => (
+            <div
+              className="flex items-center p-4 bg-skin-light_gray rounded-lg shadow-lg my-3"
+              key={car.id}
+              onClick={() => {
+                handleDeleteCar(car.id);
+              }}
+            >
+              <div>
+                <img
+                  className="rounded-lg h-20 mr-4"
+                  src="https://via.placeholder.com/150"
+                  alt="car"
+                />
+              </div>
+              <div>
+                <h2 className="text-xl">{car.brand}</h2>
+                <h3 className="text-lg">{car.model}</h3>
+              </div>
+              <div className="ml-auto">
+                <div className="w-10 h-10 bg-skin-white rounded-full"></div>
+              </div>
+            </div>
+          ))}
+
+        <div className="fixed md:absolute bottom-0 pb-6 pt-2 w-full left-0 px-6 bg-skin-white">
+          <PrimaryButton
+            onClick={handleAddCar}
+            className="bg-skin-dark_blue md:max-w-xs"
+            type="button"
+          >
+            Add car
+          </PrimaryButton>
+        </div>
       </div>
     </BaseLayout>
   );

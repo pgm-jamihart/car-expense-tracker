@@ -50,9 +50,9 @@ const NavBar = () => {
   ];
 
   return (
-    <>
+    <div className="absolute z-50 md:relative">
       <button
-        className={`text-skin-yellow md:hidden absolute text-base top-4 left-6`}
+        className={`text-skin-yellow md:hidden absolute text-base top-4 left-6 z-50`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
@@ -63,19 +63,16 @@ const NavBar = () => {
       </button>
       <div
         className={`${
-          isOpen ? "flex" : "hidden"
-        } h-screen bg-skin-black w-72 min-w-18 md:flex text-skin-white p-6 flex-col justify-between`}
+          isOpen ? "translate-x-0 " : "-translate-x-full "
+        } h-screen bg-skin-black w-72 flex min-w-18 text-skin-white p-6 md:translate-x-0 flex-col justify-between transition-all duration-200 ease-in-out`}
       >
         <ul className="mt-8">
           {navData.map((item) => (
-            <li
-              key={item.name}
-              className="rounded-sm p-2 hover:bg-slate-500/50"
-            >
+            <li key={item.name}>
               <Link
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className="flex items-center text-lg"
+                className="flex items-center text-lg rounded-sm p-2 hover:bg-slate-500/50"
               >
                 {item.icon}
                 <span className="ml-4 ">{item.name}</span>
@@ -94,7 +91,7 @@ const NavBar = () => {
           Car name
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

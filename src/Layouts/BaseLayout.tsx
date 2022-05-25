@@ -9,7 +9,7 @@ const BaseLayout = ({ children }: Props) => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="px-6 w-full h-screen">{children}</div>
+      <div className="px-6 w-full h-screen relative">{children}</div>
     </div>
   );
 };
