@@ -22,6 +22,11 @@
   }
 }
 
+.MuiSpeedDialAction-staticTooltipLabel {
+  background-color: var(--color-dark-gray) !important;
+  color: var(--color-white) !important;
+}
+
 body {
   margin: 0;
   font-family: Raleway, sans-serif;
