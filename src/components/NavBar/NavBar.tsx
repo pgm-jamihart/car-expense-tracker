@@ -50,7 +50,7 @@ const NavBar = () => {
   ];
 
   return (
-    <div className="absolute z-50 md:relative">
+    <>
       <button
         className={`text-skin-yellow md:hidden absolute text-base top-4 left-6 z-50`}
         onClick={() => setIsOpen(!isOpen)}
@@ -63,35 +63,39 @@ const NavBar = () => {
       </button>
       <div
         className={`${
-          isOpen ? "translate-x-0 " : "-translate-x-full "
-        } h-screen bg-skin-black w-72 flex min-w-18 text-skin-white p-6 md:translate-x-0 flex-col justify-between transition-all duration-200 ease-in-out`}
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } absolute z-30 md:relative md:block transition-all duration-200 ease-in-out md:translate-x-0`}
       >
-        <ul className="mt-8">
-          {navData.map((item) => (
-            <li key={item.name}>
-              <Link
-                to={item.path}
-                onClick={() => setIsOpen(false)}
-                className="flex items-center text-lg rounded-sm p-2 hover:bg-slate-500/50"
-              >
-                {item.icon}
-                <span className="ml-4 ">{item.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <button
-          onClick={() => {
-            navigate(paths.GARAGE);
-          }}
-          className="flex items-center text-lg hover:bg-slate-500/50 rounded-sm p-2"
+        <div
+          className={`h-screen bg-skin-black w-72 flex min-w-18 text-skin-white p-6 flex-col justify-between `}
         >
-          <FaCarSide className="w-12 h-12 mr-4 bg-skin-blue rounded-full p-2" />
-          Car name
-        </button>
+          <ul className="mt-8">
+            {navData.map((item) => (
+              <li key={item.name}>
+                <Link
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center text-lg rounded-sm p-2 hover:bg-slate-500/50"
+                >
+                  {item.icon}
+                  <span className="ml-4 ">{item.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            onClick={() => {
+              navigate(paths.GARAGE);
+            }}
+            className="flex items-center text-lg hover:bg-slate-500/50 rounded-sm p-2"
+          >
+            <FaCarSide className="w-12 h-12 mr-4 bg-skin-blue rounded-full p-2" />
+            Car name
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
