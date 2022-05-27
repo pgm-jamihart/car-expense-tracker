@@ -3,7 +3,8 @@ import { PrimaryButton } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import * as paths from "../routes";
 
 const Garage = () => {
   const auth = useAuth();
@@ -11,16 +12,7 @@ const Garage = () => {
   const [data, setData] = useState<any[]>([]);
 
   const handleAddCar = async () => {
-    const { data, error } = await supabase.from("cars").insert({
-      user_id: auth.user?.id,
-      brand: "Ford",
-      model: "Fiesta",
-      year: "2020",
-      millage: 1000,
-    });
-    console.log(data, error);
-
-    navigate(0);
+    navigate(paths.ADD_CAR);
   };
 
   useEffect(() => {
@@ -38,15 +30,6 @@ const Garage = () => {
     })();
   }, [auth.user]);
 
-  const handleDeleteCar = async (id: number) => {
-    const { data, error } = await supabase.from("cars").delete().eq("id", id);
-    if (error) {
-      throw error;
-    }
-
-    navigate(0);
-  };
-
   return (
     <BaseLayout>
       <div className="">
@@ -60,12 +43,10 @@ const Garage = () => {
 
         {data &&
           data.map((car: any) => (
-            <div
+            <Link
               className="flex items-center p-4 bg-skin-light_gray rounded-lg shadow-lg my-3"
               key={car.id}
-              onClick={() => {
-                handleDeleteCar(car.id);
-              }}
+              to={paths.CAR_DETAIL_PAGE.replace(":id", car.id.toString())}
             >
               <div>
                 <img
@@ -81,7 +62,7 @@ const Garage = () => {
               <div className="ml-auto">
                 <div className="w-10 h-10 bg-skin-white rounded-full"></div>
               </div>
-            </div>
+            </Link>
           ))}
 
         <div className="fixed md:absolute bottom-0 pb-6 pt-2 w-full left-0 px-6 bg-skin-white">

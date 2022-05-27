@@ -7,6 +7,8 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import * as paths from "./routes";
 import {
   Account,
+  AddCar,
+  CarDetailPage,
   Dashboard,
   Garage,
   HomePage,
@@ -54,6 +56,8 @@ export default function App() {
           <Route path={paths.SETTINGS} element={<Settings />} />
           <Route path={paths.PROFILE} element={<Profile />} />
           <Route path={paths.GARAGE} element={<Garage />} />
+          <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
+          <Route path={paths.ADD_CAR} element={<AddCar />} />
         </>
       )}
     </Routes>

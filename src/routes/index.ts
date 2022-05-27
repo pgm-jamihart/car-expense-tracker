@@ -11,3 +11,6 @@ export const PLACES = "/places";
 export const SETTINGS = "/settings";
 export const PROFILE = "/profile";
 export const GARAGE = "/garage";
+
+export const CAR_DETAIL_PAGE = "/car/:id";
+export const ADD_CAR = "/addcar";

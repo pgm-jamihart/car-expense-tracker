@@ -9,6 +9,8 @@ import Places from "./Places";
 import Settings from "./Settings";
 import Profile from "./Profile";
 import Garage from "./Garage";
+import CarDetailPage from "./CarDetailPage";
+import AddCar from "./AddCar";
 
 export {
   Landing,
@@ -22,4 +24,6 @@ export {
   Settings,
   Profile,
   Garage,
+  CarDetailPage,
+  AddCar,
 };
