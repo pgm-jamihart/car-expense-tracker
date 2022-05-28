@@ -1,5 +1,5 @@
 import SignUpWithSocials from "./SignUpWithSocials";
 import Devider from "./Devider";
-import Title from "./Title";
+import PageTitle from "./PageTitle";
 
-export { SignUpWithSocials, Devider, Title };
+export { SignUpWithSocials, Devider, PageTitle };

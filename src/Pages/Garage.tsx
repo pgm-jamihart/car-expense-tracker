@@ -5,7 +5,7 @@ import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../routes";
-import { Title } from "../components";
+import { PageTitle } from "../components";
 
 const Garage = () => {
   const auth = useAuth();
@@ -34,7 +34,7 @@ const Garage = () => {
   return (
     <BaseLayout>
       <div className="">
-        <Title>My Garage</Title>
+        <PageTitle>My Garage</PageTitle>
 
         {data?.length === 0 && (
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">

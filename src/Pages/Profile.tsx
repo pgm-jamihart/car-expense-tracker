@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../AuthProvider";
-import { Title } from "../components";
+import { PageTitle } from "../components";
 import BaseLayout from "../Layouts/BaseLayout";
 
 const Profile = () => {
@@ -8,7 +8,7 @@ const Profile = () => {
 
   return (
     <BaseLayout>
-      <Title>Profile</Title>
+      <PageTitle>Profile</PageTitle>
 
       <button
         type="button"

@@ -6,6 +6,8 @@ import { MdLocalGasStation } from "react-icons/md";
 import { FaParking } from "react-icons/fa";
 import { FiTool, FiMoreVertical } from "react-icons/fi";
 import { BsShieldFillPlus } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import * as paths from "../../routes";
 
 const actions = [
   { icon: <FiMoreVertical />, name: "Other" },
@@ -16,9 +18,15 @@ const actions = [
 ];
 
 export default function SpeedDialTooltipOpen() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSpeedDialAction = (action: string) => {
+    handleClose();
+    navigate(paths.ADD_EXPENSE, { state: { action } });
+  };
 
   return (
     <div>
@@ -50,7 +58,7 @@ export default function SpeedDialTooltipOpen() {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={handleClose}
+            onClick={() => handleSpeedDialAction(action.name)}
             FabProps={{
               sx: {
                 fontSize: "1.3rem",

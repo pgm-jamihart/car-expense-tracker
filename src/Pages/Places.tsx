@@ -1,11 +1,11 @@
 import React from "react";
-import { Title } from "../components";
+import { PageTitle } from "../components";
 import BaseLayout from "../Layouts/BaseLayout";
 
 const Places = () => {
   return (
     <BaseLayout>
-      <Title>Places</Title>
+      <PageTitle>Places</PageTitle>
     </BaseLayout>
   );
 };

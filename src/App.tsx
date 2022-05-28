@@ -8,6 +8,7 @@ import * as paths from "./routes";
 import {
   Account,
   AddCar,
+  AddExpense,
   CarDetailPage,
   Dashboard,
   Garage,
@@ -58,6 +59,7 @@ export default function App() {
           <Route path={paths.GARAGE} element={<Garage />} />
           <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
           <Route path={paths.ADD_CAR} element={<AddCar />} />
+          <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
         </>
       )}
     </Routes>
