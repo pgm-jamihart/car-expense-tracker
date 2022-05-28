@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Title } from "../components";
 import { PrimaryButton } from "../components/Buttons";
 import { supabase } from "../config/supabaseClient";
 import BaseLayout from "../Layouts/BaseLayout";
@@ -41,7 +42,7 @@ const CarDetailPage = () => {
     <BaseLayout>
       {data[0] && (
         <div>
-          <h1 className="text-center my-6 md:text-left">{data[0].brand}</h1>
+          <Title>{data[0].brand}</Title>
           <h2>{data[0].model}</h2>
           <h3>{data[0].year}</h3>
           <h4>{data[0].millage}</h4>

@@ -1,11 +1,12 @@
 import React from "react";
+import { Title } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 
 const Timeline = () => {
   return (
     <BaseLayout>
-      <div>Timeline</div>
+      <Title>Timeline</Title>
 
       <SpeedDialTooltipOpen />
     </BaseLayout>

@@ -1,11 +1,12 @@
 import React from "react";
+import { Title } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 
 const Dashboard = () => {
   return (
     <BaseLayout>
-      <div>Dashboard</div>
+      <Title>Dashboard</Title>
 
       <SpeedDialTooltipOpen />
     </BaseLayout>

@@ -9,6 +9,7 @@ import { PrimaryButton } from "../components/Buttons";
 import { supabase } from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../routes";
+import { Title } from "../components";
 
 const validationSchema = Yup.object().shape({
   brand: Yup.string().required().label("Brand"),
@@ -24,7 +25,7 @@ const AddCar = () => {
 
   return (
     <BaseLayout>
-      <h1 className="text-center my-6 md:text-left">Add car</h1>
+      <Title>Add car</Title>
 
       <Formik
         initialValues={{
