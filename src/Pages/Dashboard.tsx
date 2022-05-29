@@ -36,6 +36,64 @@ const Dashboard = () => {
     ],
   };
 
+  const chartDataBar = [
+    {
+      name: "Net Profit",
+      data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+    },
+    {
+      name: "Revenue",
+      data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+    },
+    {
+      name: "Free Cash Flow",
+      data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+    },
+  ];
+
+  const optionsBar = {
+    chart: {
+      width: "100%",
+      height: "100%",
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+        endingShape: "rounded",
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    xaxis: { 
+      categories: [
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+      ],
+    },
+    yaxis: {
+      title: {
+        text: "$ (thousands)",
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+  };
+
   useEffect(() => {
     (async () => {
       const { data, error } = await supabase
@@ -48,7 +106,7 @@ const Dashboard = () => {
       if (error) {
         console.log(error);
       } else {
-        setChartData(data.map((item: any) => item.total));
+        setChartData(data.map((item) => item.total));
         setLabels(data.map((item) => item.type));
       }
     })();
@@ -67,9 +125,9 @@ const Dashboard = () => {
         />
         <Chart
           className="md:flex md:items-center md:justify-center bg-skin-light_blue  md:max-w-screen-sm md:ml-4 mt-4 md:mt-0"
-          options={options}
-          series={chartData}
-          type="donut"
+          options={optionsBar}
+          series={chartDataBar}
+          type="bar"
         />
       </div>
 
