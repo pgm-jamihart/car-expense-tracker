@@ -33,9 +33,9 @@ export default function SpeedDialTooltipOpen() {
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
         sx={{
-          position: "absolute",
-          bottom: 16,
-          right: 16,
+          position: "fixed",
+          bottom: 25,
+          right: 25,
         }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
