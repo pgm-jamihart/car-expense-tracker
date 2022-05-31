@@ -67,7 +67,7 @@ const NavBar = () => {
         } absolute z-30 md:relative md:block transition-all duration-200 ease-in-out md:translate-x-0`}
       >
         <div
-          className={`h-screen bg-skin-black w-72 flex min-w-18 text-skin-white p-6 flex-col justify-between `}
+          className={`h-screen bg-skin-black  w-72 flex min-w-18 text-skin-white p-6 flex-col justify-between `}
         >
           <ul className="mt-8">
             {navData.map((item) => (

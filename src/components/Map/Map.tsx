@@ -1,33 +1,19 @@
 import React from "react";
-import {
-  Circle,
-  GoogleMap,
-  InfoWindow,
-  LoadScript,
-  Marker,
-} from "@react-google-maps/api";
-
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+import { Circle, GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 interface Props {
-  center: { lat: number; lng: number };
+  center: any;
   places: any;
+  setClicked: (value: string | number) => void;
 }
 
-const Map = ({ center, places }: Props) => {
-  const handleMarkerClick = (place: any) => {
-    console.log(place);
+const Map = ({ center, places, setClicked }: Props) => {
+  const handleMarkerClick = (index: string | number) => {
+    setClicked(index);
   };
 
   const options = {
-    strokeColor: "yellow",
-    strokeOpacity: 0.85,
-    strokeWeight: 2,
     fillColor: "blue",
-    fillOpacity: 0.35,
     clickable: false,
     draggable: false,
     editable: false,
@@ -37,31 +23,33 @@ const Map = ({ center, places }: Props) => {
   };
 
   return (
-    <>
+    <div className="w-full h-full">
       <LoadScript
         googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
       >
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={14}>
-          {places?.slice(0, 5).map((place: any) => (
-            <>
-              <Circle center={center} options={options} />
-              <Marker
-                key={place.place_id}
-                position={place.geometry.location}
-                onClick={() => handleMarkerClick(place)}
-              />
-            </>
-          ))}
-
-          {/* Child components, such as markers, info windows, etc. */}
-          <></>
+        <GoogleMap
+          mapContainerClassName="mapContainerClassName"
+          //   mapContainerStyle={containerStyle}
+          center={center}
+          zoom={14}
+        >
+          <>
+            {center &&
+              places?.map((place: any, i: number | string) => (
+                <div key={place.place_id}>
+                  <Circle center={center} options={options} />
+                  <Marker
+                    key={place.place_id}
+                    position={place.geometry.location}
+                    onClick={() => handleMarkerClick(i)}
+                  />
+                </div>
+              ))}
+          </>
         </GoogleMap>
       </LoadScript>
-    </>
+    </div>
   );
 };
 
 export default Map;
-function setCenter(center: { lat: number; lng: number }): React.ReactNode {
-  throw new Error("Function not implemented.");
-}

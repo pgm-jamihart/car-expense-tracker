@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PageTitle } from "../components";
 import { Map, PlacesList } from "../components/Map";
+import PlaceSelect from "../components/Map/PlaceSelect";
 import BaseLayout from "../Layouts/BaseLayout";
 
 const Places = () => {
   const [location, setLocation] = useState("");
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  //   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [type, setType] = useState("gas_station");
   const [places, setPlaces] = useState([]);
+  const center = useRef<any>();
+
+  const [clicked, setClicked] = useState<string | number | null>(null);
 
   // get current location
   useEffect(() => {
@@ -15,7 +19,11 @@ const Places = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
+          //   setCenter({ lat: latitude, lng: longitude });
+
+          if (latitude && longitude) {
+            center.current = { lat: latitude, lng: longitude };
+          }
           setLocation(`${latitude}%2C${longitude}`);
         },
         (error) => {
@@ -45,9 +53,12 @@ const Places = () => {
   return (
     <BaseLayout>
       <PageTitle>Places</PageTitle>
+      <PlaceSelect type={type} setType={setType} />
 
-      <PlacesList type={type} setType={setType} places={places} />
-      <Map center={center} places={places} />
+      <div className="flex flex-col-reverse lg:flex-row-reverse">
+        <PlacesList places={places} clicked={clicked} />
+        <Map center={center.current} places={places} setClicked={setClicked} />
+      </div>
     </BaseLayout>
   );
 };

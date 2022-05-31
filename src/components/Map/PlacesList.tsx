@@ -1,32 +1,44 @@
-import React, { useState } from "react";
-import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import React, { createRef, useEffect, useState } from "react";
+
 import PlaceCard from "./PlaceCard";
 
 interface Props {
-  type: string;
-  setType: (type: string) => void;
   places: any;
+  clicked: string | number | null;
 }
 
-const PlacesList = ({ type, setType, places }: Props) => {
+const PlacesList = ({ places, clicked }: Props) => {
+  const [elRefs, setElRefs] = useState<any>([]);
+
+  useEffect(() => {
+    const refs = Array(places.length)
+      .fill(null)
+      .map((_, i) => elRefs[i] || createRef());
+
+    setElRefs(refs);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [places]);
   return (
-    <div className="mb-8">
-      <FormControl>
-        <InputLabel>Type</InputLabel>
-        <Select value={type} onChange={(e) => setType(e.target.value)}>
-          <MenuItem value={"gas_station"}>Gas Station</MenuItem>
-          <MenuItem value={"parking"}>Parking</MenuItem>
-          <MenuItem value={"car_repair"}>Garage</MenuItem>
-          <MenuItem value={"car_wash"}>Car Wash</MenuItem>
-        </Select>
-      </FormControl>
-      <Grid container spacing={3}>
-        {places?.slice(0, 5).map((place: any) => (
-          <Grid item xs={12} container spacing={3} key={place.place_id}>
-            <PlaceCard id={place.id} name={place.name} />
-          </Grid>
+    <div className="mb-8 lg:mb-0 lg:ml-4 lg:h-[31rem]">
+      <div className="flex overflow-x-auto lg:flex-col lg:overflow-y-auto h-full lg:overflow-x-hidden">
+        {places?.map((place: any, i: string | number) => (
+          <div
+            className="bg-skin-blue mr-4 min-w-18 h-32 lg:mr-0 lg:mb-4"
+            key={place.place_id}
+            ref={elRefs[i]}
+          >
+            <PlaceCard
+              name={place.name}
+              address={place.vicinity}
+              rating={place.rating}
+              openNow={place.opening_hours?.open_now}
+              image={place.photos?.[0]?.photo_reference}
+              selected={clicked === i}
+              refProp={elRefs[i]}
+            />
+          </div>
         ))}
-      </Grid>
+      </div>
     </div>
   );
 };

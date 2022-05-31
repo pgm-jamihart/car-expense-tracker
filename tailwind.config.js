@@ -74,6 +74,9 @@ module.exports = {
     minWidth: {
       18: "18rem",
     },
+    maxHeight: {
+      31: "31rem",
+    },
   },
   plugins: [],
 };

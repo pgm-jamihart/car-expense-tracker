@@ -22,6 +22,17 @@
   }
 }
 
+.mapContainerClassName {
+  width: 100%;
+  height: 23rem;
+}
+
+@media (min-width: 1024px) {
+  .mapContainerClassName {
+    height: 31rem;
+  }
+}
+
 .MuiSpeedDialAction-staticTooltipLabel {
   background-color: var(--color-dark-gray) !important;
   color: var(--color-white) !important;
