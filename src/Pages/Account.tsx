@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import { supabase } from "../config/supabaseClient";
 
 const Account = () => {

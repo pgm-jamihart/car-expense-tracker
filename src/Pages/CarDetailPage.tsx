@@ -38,6 +38,11 @@ const CarDetailPage = () => {
     navigate(paths.GARAGE);
   };
 
+  const handleSelectCar = (id: number) => {
+    localStorage.setItem("car", id.toString());
+    navigate(paths.DASHBOARD);
+  };
+
   return (
     <BaseLayout>
       {data[0] && (
@@ -46,6 +51,15 @@ const CarDetailPage = () => {
           <h2>{data[0].model}</h2>
           <h3>{data[0].year}</h3>
           <h4>{data[0].millage}</h4>
+
+          <button
+            className="my-8"
+            onClick={() => {
+              handleSelectCar(carId);
+            }}
+          >
+            Select car
+          </button>
 
           <PrimaryButton
             className="bg-skin-red"

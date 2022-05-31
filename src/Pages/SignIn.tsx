@@ -8,7 +8,7 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
 
 import { Devider, SignUpWithSocials } from "../components";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),

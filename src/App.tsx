@@ -22,9 +22,13 @@ import {
   Timeline,
 } from "./Pages";
 
+import { useAuth } from "./context/AuthProvider";
+
 export default function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
+  const [car, setCar] = useState<{ id: number | null }>({ id: null });
+  const auth = useAuth();
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -36,10 +40,29 @@ export default function App() {
         } else {
           setSession(session);
           navigate(paths.HOME);
+
+          (async () => {
+            if (auth.user) {
+              const { data, error } = await supabase
+                .from("cars")
+                .select("id")
+                .eq("user_id", auth.user.id)
+                .limit(1)
+                .single();
+
+              if (error) {
+                console.error(error);
+              }
+
+              if (data) {
+                localStorage.setItem("car", data.id);
+              }
+            }
+          })();
         }
       }
     );
-  }, [navigate]);
+  }, [auth.user, navigate]);
 
   return (
     <Routes>

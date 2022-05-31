@@ -1,7 +1,7 @@
 import { Provider } from "@supabase/supabase-js";
 import React from "react";
 import { GrFacebookOption, GrGooglePlus, GrGithub } from "react-icons/gr";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 
 import SignUpWithButton from "./Buttons/SignUpWithButton";
 

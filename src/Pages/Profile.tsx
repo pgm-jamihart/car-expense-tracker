@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import { PageTitle } from "../components";
 import BaseLayout from "../Layouts/BaseLayout";
 

@@ -1,4 +1,4 @@
-import { supabase } from "./config/supabaseClient";
+import { supabase } from "../config/supabaseClient";
 import { useState, useEffect, useContext, createContext } from "react";
 import { AuthSession, Provider, User } from "@supabase/supabase-js";
 

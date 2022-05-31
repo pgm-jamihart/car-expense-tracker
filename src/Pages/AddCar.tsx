@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { Formik, Field } from "formik";
 
 import BaseLayout from "../Layouts/BaseLayout";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { PrimaryButton } from "../components/Buttons";
 import { supabase } from "../config/supabaseClient";

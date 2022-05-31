@@ -71,7 +71,7 @@ const Dashboard = () => {
       width: 2,
       colors: ["transparent"],
     },
-    xaxis: { 
+    xaxis: {
       categories: [
         "Feb",
         "Mar",
@@ -94,12 +94,15 @@ const Dashboard = () => {
     },
   };
 
+  const carId = localStorage.getItem("car");
+  const carIdNumber = Number(carId);
+
   useEffect(() => {
     (async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("type, total, id")
-        .eq("car_id", 19)
+        .eq("car_id", carIdNumber)
         .order("id", {
           ascending: true,
         });
@@ -110,25 +113,43 @@ const Dashboard = () => {
         setLabels(data.map((item) => item.type));
       }
     })();
-  }, []);
+  }, [carIdNumber]);
+
+  console.log(carIdNumber);
 
   return (
     <BaseLayout>
       <PageTitle>Dashboard</PageTitle>
 
       <div className="flex item-start md:justify-start justify-center w-full flex-wrap">
-        <Chart
-          className="md:flex md:items-center md:justify-center bg-skin-light_blue h-96 md:max-w-screen-sm md:mr-4 mb-4 md:mb-0"
-          options={options}
-          series={chartData}
-          type="donut"
-        />
-        <Chart
-          className="md:flex md:items-center md:justify-center bg-skin-light_blue  md:max-w-screen-sm md:ml-4 mt-4 md:mt-0"
-          options={optionsBar}
-          series={chartDataBar}
-          type="bar"
-        />
+        {!carIdNumber && (
+          <p className="text-center text-gray-500">
+            You have no car selected. Please select one from the list.
+          </p>
+        )}
+
+        {carIdNumber && chartData.length > 0 && (
+          <>
+            <Chart
+              className="md:flex md:items-center md:justify-center bg-skin-light_blue h-96 md:max-w-screen-sm md:mr-4 mb-4 md:mb-0"
+              options={options}
+              series={chartData}
+              type="donut"
+            />
+            <Chart
+              className="md:flex md:items-center md:justify-center bg-skin-light_blue  md:max-w-screen-sm md:ml-4 mt-4 md:mt-0"
+              options={optionsBar}
+              series={chartDataBar}
+              type="bar"
+            />
+          </>
+        )}
+
+        {carIdNumber && chartData.length === 0 && (
+          <p className="text-center text-gray-500">
+            You have no expenses for this car.
+          </p>
+        )}
       </div>
 
       <SpeedDialTooltipOpen />

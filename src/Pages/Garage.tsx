@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PrimaryButton } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../routes";
 import { PageTitle } from "../components";
