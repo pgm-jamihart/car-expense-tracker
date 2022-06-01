@@ -23,6 +23,7 @@ import {
 } from "./Pages";
 
 import { useAuth } from "./context/AuthProvider";
+import { LoadScript } from "@react-google-maps/api";
 
 export default function App() {
   const navigate = useNavigate();
@@ -74,26 +75,30 @@ export default function App() {
   }, [auth.user, navigate]);
 
   return (
-    <Routes>
-      <Route path={paths.LANDING} element={<Landing />} />
-      <Route path={paths.SIGN_UP} element={<SignUp />} />
-      <Route path={paths.SIGN_IN} element={<SignIn />} />
+    <LoadScript
+      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+    >
+      <Routes>
+        <Route path={paths.LANDING} element={<Landing />} />
+        <Route path={paths.SIGN_UP} element={<SignUp />} />
+        <Route path={paths.SIGN_IN} element={<SignIn />} />
 
-      {session && (
-        <>
-          <Route path={paths.ACCOUNT} element={<Account />} />
-          <Route path={paths.HOME} element={<HomePage />} />
-          <Route path={paths.DASHBOARD} element={<Dashboard />} />
-          <Route path={paths.TIMELINE} element={<TimelinePage />} />
-          <Route path={paths.PLACES} element={<Places />} />
-          <Route path={paths.SETTINGS} element={<Settings />} />
-          <Route path={paths.PROFILE} element={<Profile />} />
-          <Route path={paths.GARAGE} element={<Garage />} />
-          <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
-          <Route path={paths.ADD_CAR} element={<AddCar />} />
-          <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
-        </>
-      )}
-    </Routes>
+        {session && (
+          <>
+            <Route path={paths.ACCOUNT} element={<Account />} />
+            <Route path={paths.HOME} element={<HomePage />} />
+            <Route path={paths.DASHBOARD} element={<Dashboard />} />
+            <Route path={paths.TIMELINE} element={<TimelinePage />} />
+            <Route path={paths.PLACES} element={<Places />} />
+            <Route path={paths.SETTINGS} element={<Settings />} />
+            <Route path={paths.PROFILE} element={<Profile />} />
+            <Route path={paths.GARAGE} element={<Garage />} />
+            <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
+            <Route path={paths.ADD_CAR} element={<AddCar />} />
+            <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
+          </>
+        )}
+      </Routes>
+    </LoadScript>
   );
 }

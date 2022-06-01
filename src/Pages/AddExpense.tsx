@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BaseLayout from "../Layouts/BaseLayout";
 import { useLocation } from "react-router-dom";
 import { PageTitle } from "../components";
-import { FuelExpenseForm } from "../components/Form";
+import { FuelExpenseForm, ParkingExpenseForm } from "../components/Form";
 
 const AddExpense = () => {
   const location: any = useLocation();
@@ -15,8 +15,8 @@ const AddExpense = () => {
       // // return <Insurance />;
       // case "Maintainence":
       // // return <Maintainence />;
-      // case "Parking":
-      // // return <Parking />;
+      case "Parking":
+        return <ParkingExpenseForm />;
       // case "Other":
       // // return <Other />;
     }

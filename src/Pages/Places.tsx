@@ -40,6 +40,9 @@ const Places = () => {
       try {
         const response = await fetch(query, {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
         const data = await response.json();
         console.log(data.results);
