@@ -9,7 +9,7 @@ interface BarProps {
 const BarChart = ({ active }: BarProps) => {
   // get the data from the database and set it to the state
   const [chartData, setChartData] = useState<any[]>([]);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(window.innerWidth > 768 ? 10 : 5);
 
   const carId = localStorage.getItem("car");
   const carIdNumber = Number(carId);
@@ -69,6 +69,14 @@ const BarChart = ({ active }: BarProps) => {
       setLimit(10);
     }
   });
+
+  //   window.addEventListener("DOMContentLoaded", () => {
+  //     if (window.innerWidth < 768) {
+  //       setLimit(5);
+  //     } else {
+  //       setLimit(10);
+  //     }
+  //   });
 
   const chartDataBar = [
     {
@@ -143,12 +151,12 @@ const BarChart = ({ active }: BarProps) => {
     >
       <h3 className="my-4 ml-4">Expenses per day</h3>
       <Chart
-        className="md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full md:h-96"
+        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full md:h-96"
         //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={optionsBar}
         series={chartDataBar}
         type="bar"
-        height={"80%"}
+        height={"90%"}
       />
     </div>
   );

@@ -38,7 +38,7 @@ const Dashboard = () => {
     <BaseLayout>
       <PageTitle>Dashboard</PageTitle>
 
-      <div className="pb-16">
+      <div className="py-10 lg:py-0 lg:pb-10">
         {!carIdNumber && (
           <p className="text-center text-gray-500">
             You have no car selected. Please select one from the list.

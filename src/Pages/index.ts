@@ -4,7 +4,7 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import HomePage from "./HomePage";
 import Dashboard from "./Dashboard";
-import Timeline from "./Timeline";
+import TimelinePage from "./TimelinePage";
 import Places from "./Places";
 import Settings from "./Settings";
 import Profile from "./Profile";
@@ -20,7 +20,7 @@ export {
   SignIn,
   HomePage,
   Dashboard,
-  Timeline,
+  TimelinePage,
   Places,
   Settings,
   Profile,

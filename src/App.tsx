@@ -19,7 +19,7 @@ import {
   Settings,
   SignIn,
   SignUp,
-  Timeline,
+  TimelinePage,
 } from "./Pages";
 
 import { useAuth } from "./context/AuthProvider";
@@ -75,7 +75,7 @@ export default function App() {
           <Route path={paths.ACCOUNT} element={<Account />} />
           <Route path={paths.HOME} element={<HomePage />} />
           <Route path={paths.DASHBOARD} element={<Dashboard />} />
-          <Route path={paths.TIMELINE} element={<Timeline />} />
+          <Route path={paths.TIMELINE} element={<TimelinePage />} />
           <Route path={paths.PLACES} element={<Places />} />
           <Route path={paths.SETTINGS} element={<Settings />} />
           <Route path={paths.PROFILE} element={<Profile />} />
