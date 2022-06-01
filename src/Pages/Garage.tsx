@@ -20,7 +20,7 @@ const Garage = () => {
     (async () => {
       let { data, error, status } = await supabase
         .from("cars")
-        .select(`id, brand, model, year, millage`)
+        .select(`id, brand, model, year, mileage`)
         .eq("user_id", auth.user!.id);
       if (error && status !== 406) {
         throw error;

@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
   brand: Yup.string().required().label("Brand"),
   model: Yup.string().required().label("Model"),
   year: Yup.number().required().label("Year"),
-  millage: Yup.number().required().label("Millage"),
+  mileage: Yup.number().required().label("Mileage"),
 });
 
 const AddCar = () => {
@@ -32,7 +32,7 @@ const AddCar = () => {
           brand: "",
           model: "",
           year: "",
-          millage: "",
+          mileage: "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
@@ -44,12 +44,35 @@ const AddCar = () => {
               brand: values.brand,
               model: values.model,
               year: values.year,
-              millage: values.millage,
+              mileage: values.mileage,
             });
 
             if (error) {
               setError(error.message);
             } else {
+              const categories = [
+                "Fuel",
+                "Parking",
+                "Maintenance",
+                "Insurance",
+                "Other",
+              ];
+
+              categories.map(async (category) => {
+                const { data: categoryData, error: categoryError } =
+                  await supabase.from("categories").insert({
+                    type: category,
+                    total: 0,
+                    car_id: data[0].id,
+                  });
+
+                if (categoryError) {
+                  console.log(categoryError);
+                }
+              });
+
+              localStorage.setItem("car", data[0].id);
+
               navigate(paths.GARAGE);
             }
           } catch (error: any) {
@@ -98,9 +121,9 @@ const AddCar = () => {
                 <Field
                   type="input"
                   as={TextInput}
-                  name="millage"
-                  placeholder="Millage"
-                  label="Millage"
+                  name="mileage"
+                  placeholder="Mileage"
+                  label="Mileage"
                 />
               </div>
             )}

@@ -17,7 +17,7 @@ const CarDetailPage = () => {
     (async () => {
       const { data, error } = await supabase
         .from("cars")
-        .select("id, brand, model, year, millage")
+        .select("id, brand, model, year, mileage")
         .eq("id", carId);
       if (error) {
         throw error;
@@ -50,7 +50,7 @@ const CarDetailPage = () => {
           <PageTitle>{data[0].brand}</PageTitle>
           <h2>{data[0].model}</h2>
           <h3>{data[0].year}</h3>
-          <h4>{data[0].millage}</h4>
+          <h4>{data[0].mileage}</h4>
 
           <button
             className="my-8"
