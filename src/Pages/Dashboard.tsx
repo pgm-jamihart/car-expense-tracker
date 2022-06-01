@@ -13,15 +13,23 @@ const Dashboard = () => {
   // calculate the total expenses
   const totalExpenses = chartData.reduce((acc, curr) => acc + curr, 0);
 
-  const carId = localStorage.getItem("car");
-  const carIdNumber = Number(carId);
+  const [currentCar, setCurrentCar] = useState<any>({});
 
   useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentCar.id) return;
+
     (async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("type, total, id")
-        .eq("car_id", carIdNumber)
+        .eq("car_id", currentCar.id)
         .order("id", {
           ascending: true,
         });
@@ -32,25 +40,25 @@ const Dashboard = () => {
         setLabels(data.map((item) => item.type));
       }
     })();
-  }, [carIdNumber]);
+  }, [currentCar.id]);
 
   return (
     <BaseLayout>
       <PageTitle>Dashboard</PageTitle>
 
       <div className="py-10 lg:py-0 lg:pb-10">
-        {!carIdNumber && (
+        {!currentCar.id && (
           <p className="text-center text-gray-500">
             You have no car selected. Please select one from the list.
           </p>
         )}
 
-        {carIdNumber && chartData.length > 0 && (
+        {currentCar.id && chartData.length > 0 && (
           <div>
             <div className="mb-10 shadow-lg py-2 border border-slate-200">
               <SparkLineChart
                 totalExpenses={totalExpenses}
-                carIdNumber={carIdNumber}
+                carIdNumber={currentCar.id}
               />
             </div>
             <div className="min-h-[24rem] flex item-start md:justify-start justify-center w-full flex-wrap">
@@ -72,7 +80,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {carIdNumber && chartData.length === 0 && (
+        {currentCar.id && chartData.length === 0 && (
           <p className="text-center text-gray-500">
             You have no expenses for this car.
           </p>

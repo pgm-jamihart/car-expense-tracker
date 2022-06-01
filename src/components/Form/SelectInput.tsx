@@ -32,7 +32,7 @@ const SelectInput = ({
   const errorText = meta.error && meta.touched ? meta.error : "";
 
   return (
-    <div>
+    <div className="mb-4">
       <label htmlFor={name} className="block text-base font-bold">
         {label}
       </label>
@@ -50,6 +50,7 @@ const SelectInput = ({
         onBlur={onBlur}
         value={currentValue}
       >
+        <option value="">Select</option>
         {options.map((option) => {
           return (
             <option

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
 import { AiFillHome, AiFillDashboard } from "react-icons/ai";
@@ -15,6 +15,14 @@ import { FaCarSide } from "react-icons/fa";
 const NavBar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [currentCar, setCurrentCar] = useState<any>({});
+
+  useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
 
   const navData = [
     {
@@ -91,7 +99,9 @@ const NavBar = () => {
             className="flex items-center text-lg hover:bg-slate-500/50 rounded-sm p-2"
           >
             <FaCarSide className="w-12 h-12 mr-4 bg-skin-blue rounded-full p-2" />
-            Car name
+            <span className="ml-4">{currentCar.brand}</span>
+
+            <span className="ml-4">{currentCar.model}</span>
           </button>
         </div>
       </div>

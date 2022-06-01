@@ -10,16 +10,23 @@ const BarChart = ({ active }: BarProps) => {
   // get the data from the database and set it to the state
   const [chartData, setChartData] = useState<any[]>([]);
   const [limit, setLimit] = useState(window.innerWidth > 768 ? 10 : 5);
-
-  const carId = localStorage.getItem("car");
-  const carIdNumber = Number(carId);
+  const [currentCar, setCurrentCar] = useState<any>({});
 
   useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentCar.id) return;
+
     (async () => {
       const { data, error } = await supabase
         .from("expenses")
         .select("id, date, total, type")
-        .eq("car_id", carIdNumber)
+        .eq("car_id", currentCar.id)
         .limit(limit);
 
       if (error) {
@@ -60,7 +67,7 @@ const BarChart = ({ active }: BarProps) => {
         setChartData(sortedDataPerDay);
       }
     })();
-  }, [carIdNumber, limit]);
+  }, [currentCar.id, limit]);
 
   window.addEventListener("resize", () => {
     if (window.innerWidth < 768) {

@@ -23,18 +23,23 @@ const FuelExpenseForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
-
-  const carId = Number(localStorage.getItem("car"));
-  const carIdNumber = Number(carId);
+  const [currentCar, setCurrentCar] = useState<any>({});
 
   useEffect(() => {
-    if (!carIdNumber) return navigate(paths.GARAGE);
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentCar.id) return;
 
     (async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("id")
-        .eq("car_id", carIdNumber)
+        .eq("car_id", currentCar.id)
         .eq("type", "Fuel");
 
       if (error) {
@@ -45,7 +50,7 @@ const FuelExpenseForm = () => {
         setCategoryId(data[0].id);
       }
     })();
-  }, [carIdNumber, navigate]);
+  }, [currentCar.id]);
 
   return (
     <Formik
@@ -67,7 +72,7 @@ const FuelExpenseForm = () => {
             date: values.date,
             total: values.total,
             type: "Fuel",
-            car_id: carIdNumber,
+            car_id: currentCar.id,
           });
 
           if (error) {
@@ -121,7 +126,7 @@ const FuelExpenseForm = () => {
       }}
     >
       {({ handleSubmit, isSubmitting, values }) => (
-        <form onSubmit={handleSubmit} className="flex flex-col my-0 mx-auto ">
+        <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
 
           <div>
@@ -143,16 +148,25 @@ const FuelExpenseForm = () => {
 
             <Field name="total" as={TextInput} type="number" label="Total" />
 
-            <div>Gas station</div>
+            <div className="mt-8">
+              <h3 className="mb-4 bg-skin-gray p-2 rounded-sm text-skin-white text-center">
+                Gas Station
+              </h3>
 
-            <Field name="gasStation" as={TextInput} type="text" label="Name" />
+              <Field
+                name="gasStation"
+                as={TextInput}
+                type="text"
+                label="Name (optional)"
+              />
 
-            <Field
-              name="location"
-              as={TextInput}
-              type="text"
-              label="Location"
-            />
+              <Field
+                name="location"
+                as={TextInput}
+                type="text"
+                label="Location (optional)"
+              />
+            </div>
           </div>
 
           <PrimaryButton
@@ -162,8 +176,6 @@ const FuelExpenseForm = () => {
           >
             Add Expense
           </PrimaryButton>
-
-          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     </Formik>

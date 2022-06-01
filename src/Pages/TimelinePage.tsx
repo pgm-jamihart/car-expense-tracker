@@ -7,16 +7,23 @@ import { Timeline } from "../components/Timeline";
 
 const TimelinePage = () => {
   const [expenses, setExpenses] = useState<any[]>([]);
-
-  const carId = localStorage.getItem("car");
-  const carIdNumber = Number(carId);
+  const [currentCar, setCurrentCar] = useState<any>({});
 
   useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentCar.id) return;
+
     (async () => {
       const { data, error } = await supabase
         .from("expenses")
         .select("id, date, type, total")
-        .eq("car_id", carIdNumber);
+        .eq("car_id", currentCar.id);
 
       if (error) {
         console.log(error);
@@ -26,7 +33,7 @@ const TimelinePage = () => {
         setExpenses(data);
       }
     })();
-  }, [carIdNumber]);
+  }, [currentCar.id]);
 
   console.log(expenses);
 
@@ -36,19 +43,19 @@ const TimelinePage = () => {
 
       {/* create timeline with expenses  */}
       <div className="py-10 lg:py-0 lg:pb-10">
-        {!carIdNumber && (
+        {!currentCar.id && (
           <p className="text-center text-gray-500">
             You have no car selected. Please select one from the list.
           </p>
         )}
 
-        {carIdNumber && expenses.length == 0 && (
+        {currentCar.id && expenses.length == 0 && (
           <p className="text-center text-gray-500">
             You have no expenses. Please add some.
           </p>
         )}
 
-        {carIdNumber && expenses.length > 0 && (
+        {currentCar.id && expenses.length > 0 && (
           <div>
             <Timeline expenses={expenses} />
           </div>

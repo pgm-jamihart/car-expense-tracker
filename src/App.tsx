@@ -45,7 +45,7 @@ export default function App() {
             if (auth.user) {
               const { data, error } = await supabase
                 .from("cars")
-                .select("id")
+                .select("*")
                 .eq("user_id", auth.user.id)
                 .limit(1)
                 .single();
@@ -55,7 +55,16 @@ export default function App() {
               }
 
               if (data) {
-                localStorage.setItem("car", data.id);
+                localStorage.setItem(
+                  "car",
+                  JSON.stringify({
+                    id: data.id,
+                    brand: data.brand,
+                    model: data.model,
+                    year: data.year,
+                    mileage: data.mileage,
+                  })
+                );
               }
             }
           })();

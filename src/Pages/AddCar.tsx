@@ -71,7 +71,16 @@ const AddCar = () => {
                 }
               });
 
-              localStorage.setItem("car", data[0].id);
+              localStorage.setItem(
+                "car",
+                JSON.stringify({
+                  id: data[0].id,
+                  brand: values.brand,
+                  model: values.model,
+                  year: values.year,
+                  mileage: values.mileage,
+                })
+              );
 
               navigate(paths.GARAGE);
             }

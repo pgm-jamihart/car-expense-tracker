@@ -38,8 +38,23 @@ const CarDetailPage = () => {
     navigate(paths.GARAGE);
   };
 
-  const handleSelectCar = (id: number) => {
-    localStorage.setItem("car", id.toString());
+  const handleSelectCar = (
+    id: number,
+    brand: string,
+    model: string,
+    year: string,
+    mileage: string
+  ) => {
+    localStorage.setItem(
+      "car",
+      JSON.stringify({
+        id: id,
+        brand: brand,
+        model: model,
+        year: year,
+        mileage: mileage,
+      })
+    );
     navigate(paths.DASHBOARD);
   };
 
@@ -55,7 +70,13 @@ const CarDetailPage = () => {
           <button
             className="my-8"
             onClick={() => {
-              handleSelectCar(carId);
+              handleSelectCar(
+                carId,
+                data[0].brand,
+                data[0].model,
+                data[0].year,
+                data[0].mileage
+              );
             }}
           >
             Select car
