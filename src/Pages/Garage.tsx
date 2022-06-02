@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../routes";
 import { PageTitle } from "../components";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const Garage = () => {
   const auth = useAuth();
@@ -36,6 +37,15 @@ const Garage = () => {
       <div className="">
         <PageTitle>My Garage</PageTitle>
 
+        <button
+          onClick={handleAddCar}
+          className="flex items-center text-skin-white p-2 my-5 mr-6 bg-skin-dark_blue md:max-w-xs absolute right-0 top-0 rounded-md"
+          type="button"
+        >
+          <AiOutlinePlus />
+          <span className="ml-2 hidden md:inline-block">Add car</span>
+        </button>
+
         {data?.length === 0 && (
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             Add a car to your garage
@@ -65,16 +75,6 @@ const Garage = () => {
               </div>
             </Link>
           ))}
-
-        <div className="fixed md:absolute bottom-0 pb-6 pt-2 w-full left-0 px-6 bg-skin-white">
-          <PrimaryButton
-            onClick={handleAddCar}
-            className="bg-skin-dark_blue md:max-w-xs"
-            type="button"
-          >
-            Add car
-          </PrimaryButton>
-        </div>
       </div>
     </BaseLayout>
   );

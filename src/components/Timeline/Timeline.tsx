@@ -60,6 +60,9 @@ const Timeline = ({ expenses, open }: Props) => {
             break;
         }
 
+        // check last index and add a line break
+        const lastIndex = expenses.length - 1;
+
         return (
           <div key={index} className="flex items-start ">
             <div className="flex flex-col items-center mr-8">
@@ -67,7 +70,9 @@ const Timeline = ({ expenses, open }: Props) => {
                 {icon}
               </div>
 
-              <div className="h-5 w-1 bg-skin-dark_blue my-1 rounded-md"></div>
+              {lastIndex > index && (
+                <div className="h-5 w-1 bg-skin-dark_blue my-1 rounded-md"></div>
+              )}
             </div>
 
             <div className="flex items-start justify-between border-b pb-1 w-full border-skin-blue">
