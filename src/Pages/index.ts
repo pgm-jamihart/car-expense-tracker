@@ -12,6 +12,7 @@ import Garage from "./Garage";
 import CarDetailPage from "./CarDetailPage";
 import AddCar from "./AddCar";
 import AddExpense from "./AddExpense";
+import UpdateExpense from "./UpdateExpense";
 
 export {
   Landing,
@@ -28,4 +29,5 @@ export {
   CarDetailPage,
   AddCar,
   AddExpense,
+  UpdateExpense,
 };

@@ -5,21 +5,26 @@ import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { Timeline } from "../components/Timeline";
 
+import { FiMoreVertical } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
+
 const TimelinePage = () => {
   const [expenses, setExpenses] = useState<any[]>([]);
   const [currentCar, setCurrentCar] = useState<any>({});
+  const limit = 6;
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(5);
+  const [to, setTo] = useState(limit);
   const [count, setCount] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const handleNext = () => {
-    setFrom(from + 5);
-    setTo(to + 5);
+    setFrom(from + limit);
+    setTo(to + limit);
   };
 
   const handlePrev = () => {
-    setFrom(from - 5);
-    setTo(to - 5);
+    setFrom(from - limit);
+    setTo(to - limit);
   };
 
   useEffect(() => {
@@ -49,9 +54,12 @@ const TimelinePage = () => {
       // return all expenses for the current car with the category type
       const { data: expenses, error: expensesError } = await supabase
         .from("expenses")
-        .select("id, date, total, category_id")
+        .select("*")
         .eq("car_id", currentCar.id)
-        .range(from, to);
+        .range(from, to)
+        .order("date", {
+          ascending: false,
+        });
 
       if (expensesError) {
         console.log(expensesError);
@@ -87,14 +95,12 @@ const TimelinePage = () => {
     })();
   }, [currentCar.id, from, to]);
 
-  console.log(expenses);
-
   return (
     <BaseLayout>
       <PageTitle>Timeline</PageTitle>
 
       {/* create timeline with expenses  */}
-      <div className="py-10 lg:py-0 lg:pb-10">
+      <div className="pb-10 lg:py-0 lg:pb-10">
         {!currentCar.id && (
           <p className="text-center text-gray-500">
             You have no car selected. Please select one from the list.
@@ -109,11 +115,49 @@ const TimelinePage = () => {
 
         {currentCar.id && expenses.length > 0 && (
           <div>
-            <Timeline expenses={expenses} />
+            <div className="mb-8 flex items-center justify-end">
+              <button
+                className={`${
+                  open ? "bg-skin-dark_blue" : "bg-slate-400"
+                } ml-4 mt-2 p-1  rounded-md`}
+              >
+                {!open && (
+                  <FiMoreVertical
+                    className="text-2xl text-skin-white cursor-pointer"
+                    onClick={() => setOpen(!open)}
+                  />
+                )}
 
-            {from > 0 && <button onClick={handlePrev}>prev</button>}
+                {open && (
+                  <IoMdClose
+                    className="text-2xl text-skin-white cursor-pointer"
+                    onClick={() => setOpen(!open)}
+                  />
+                )}
+              </button>
+            </div>
 
-            {to < count && <button onClick={handleNext}>next</button>}
+            <Timeline expenses={expenses} limit={limit} open={open} />
+
+            <div className="mt-8">
+              {from > 0 && (
+                <button
+                  className="mr-4 hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
+                  onClick={handlePrev}
+                >
+                  prev
+                </button>
+              )}
+
+              {to < count && (
+                <button
+                  className="hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
+                  onClick={handleNext}
+                >
+                  next
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

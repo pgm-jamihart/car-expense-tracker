@@ -20,6 +20,7 @@ import {
   SignIn,
   SignUp,
   TimelinePage,
+  UpdateExpense,
 } from "./Pages";
 
 import { useAuth } from "./context/AuthProvider";
@@ -95,6 +96,7 @@ export default function App() {
             <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
             <Route path={paths.ADD_CAR} element={<AddCar />} />
             <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
+            <Route path={paths.UPDATE_EXPENSE} element={<UpdateExpense />} />
           </>
         )}
       </Routes>

@@ -15,3 +15,4 @@ export const GARAGE = "/garage";
 export const CAR_DETAIL_PAGE = "/car/:id";
 export const ADD_CAR = "/addcar";
 export const ADD_EXPENSE = "/addexpense";
+export const UPDATE_EXPENSE = "/updateexpense/:id";
