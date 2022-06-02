@@ -12,7 +12,7 @@ import * as paths from "../../routes";
 const actions = [
   { icon: <FiMoreVertical />, name: "Other" },
   { icon: <BsShieldFillPlus />, name: "Insurance" },
-  { icon: <FiTool />, name: "Maintainence" },
+  { icon: <FiTool />, name: "Maintenance" },
   { icon: <FaParking />, name: "Parking" },
   { icon: <MdLocalGasStation />, name: "Fuel" },
 ];

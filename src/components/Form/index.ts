@@ -3,6 +3,9 @@ import ErrorBanner from "./ErrorBanner";
 import FuelExpenseForm from "./FuelExpenseForm";
 import SelectInput from "./SelectInput";
 import ParkingExpenseForm from "./ParkingExpenseForm";
+import MaintenanceExpenseForm from "./MaintenanceExpenseForm";
+import InsuranceExpenseForm from "./InsuranceExpenseForm";
+import OtherExpenseForm from "./OtherExpenseForm";
 
 export {
   TextInput,
@@ -10,4 +13,7 @@ export {
   FuelExpenseForm,
   SelectInput,
   ParkingExpenseForm,
+  MaintenanceExpenseForm,
+  InsuranceExpenseForm,
+  OtherExpenseForm,
 };

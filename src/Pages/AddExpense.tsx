@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import BaseLayout from "../Layouts/BaseLayout";
 import { useLocation } from "react-router-dom";
 import { PageTitle } from "../components";
-import { FuelExpenseForm, ParkingExpenseForm } from "../components/Form";
+import {
+  FuelExpenseForm,
+  InsuranceExpenseForm,
+  MaintenanceExpenseForm,
+  OtherExpenseForm,
+  ParkingExpenseForm,
+} from "../components/Form";
 
 const AddExpense = () => {
   const location: any = useLocation();
@@ -11,14 +17,14 @@ const AddExpense = () => {
     switch (location.state.action) {
       case "Fuel":
         return <FuelExpenseForm />;
-      // case "Insurance":
-      // // return <Insurance />;
-      // case "Maintainence":
-      // // return <Maintainence />;
+      case "Insurance":
+        return <InsuranceExpenseForm />;
+      case "Maintenance":
+        return <MaintenanceExpenseForm />;
       case "Parking":
         return <ParkingExpenseForm />;
-      // case "Other":
-      // // return <Other />;
+      case "Other":
+        return <OtherExpenseForm />;
     }
   };
 

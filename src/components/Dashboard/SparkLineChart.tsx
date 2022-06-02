@@ -122,16 +122,14 @@ const SparkLineChart = ({
           category: categories[index],
         }));
 
-        const reversedExpensesPerCategory = expensesPerCategory.reverse();
-
         setLabelsSparkLine(
-          reversedExpensesPerCategory.map(
+          expensesPerCategory.map(
             (expense) => expense.category.type + " " + expense.date
           )
         );
 
         setChartDataSparkLine(
-          reversedExpensesPerCategory.map((expense) => expense.total)
+          expensesPerCategory.map((expense) => expense.total)
         );
       }
     })();
