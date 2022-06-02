@@ -78,7 +78,6 @@ const UpdateFuelExpense = ({ expense }: Props) => {
 
           navigate(paths.TIMELINE);
         } catch (error: any) {
-          console.log("error", error);
           setError(error.message);
           setSubmitting(false);
         } finally {

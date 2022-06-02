@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PageTitle } from "../components";
-import { UpdateFuelExpense } from "../components/Form";
+import {
+  UpdateFuelExpense,
+  UpdateInsuranceExpense,
+  UpdateMaintenanceExpense,
+  UpdateOtherExpense,
+  UpdateParkingExpense,
+} from "../components/Form";
 import { supabase } from "../config/supabaseClient";
 import BaseLayout from "../Layouts/BaseLayout";
 
@@ -44,6 +50,14 @@ const UpdateExpense = () => {
     switch (expenseData?.category?.type) {
       case "Fuel":
         return <UpdateFuelExpense expense={expenseData} />;
+      case "Parking":
+        return <UpdateParkingExpense expense={expenseData} />;
+      case "Maintenance":
+        return <UpdateMaintenanceExpense expense={expenseData} />;
+      case "Insurance":
+        return <UpdateInsuranceExpense expense={expenseData} />;
+      case "Other":
+        return <UpdateOtherExpense expense={expenseData} />;
       default:
         return <div>No form for this category</div>;
     }

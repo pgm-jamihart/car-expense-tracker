@@ -7,6 +7,10 @@ import MaintenanceExpenseForm from "./MaintenanceExpenseForm";
 import InsuranceExpenseForm from "./InsuranceExpenseForm";
 import OtherExpenseForm from "./OtherExpenseForm";
 import UpdateFuelExpense from "./UpdateFuelExpense";
+import UpdateParkingExpense from "./UpdateParkingExpense";
+import UpdateMaintenanceExpense from "./UpdateMaintenanceExpense";
+import UpdateInsuranceExpense from "./UpdateInsuranceExpense";
+import UpdateOtherExpense from "./UpdateOtherExpense";
 
 export {
   TextInput,
@@ -18,4 +22,8 @@ export {
   InsuranceExpenseForm,
   OtherExpenseForm,
   UpdateFuelExpense,
+  UpdateParkingExpense,
+  UpdateMaintenanceExpense,
+  UpdateInsuranceExpense,
+  UpdateOtherExpense,
 };
