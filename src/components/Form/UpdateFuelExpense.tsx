@@ -47,7 +47,7 @@ const UpdateFuelExpense = ({ expense }: Props) => {
     <Formik
       initialValues={{
         date: expense.date,
-        typeOfFuel: expense.fuel_type,
+        typeOfFuel: expense.fuel_type || "",
         total: expense.total,
         gasStation: expense.name || "",
         location: expense.location || "",

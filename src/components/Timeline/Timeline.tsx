@@ -10,11 +10,11 @@ import * as paths from "../../routes";
 
 interface Props {
   expenses: any[];
-  limit: number;
+
   open: boolean;
 }
 
-const Timeline = ({ expenses, limit, open }: Props) => {
+const Timeline = ({ expenses, open }: Props) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id: string) => {
@@ -66,9 +66,8 @@ const Timeline = ({ expenses, limit, open }: Props) => {
               <div className="text-4xl text-skin-dark_blue bg-slate-400/20 md:w-14 md:h-14 w-12 h-12 p-3 flex items-center justify-center rounded-full border-2 border-skin-dark_blue">
                 {icon}
               </div>
-              {limit > index && (
-                <div className="h-5 w-1 bg-skin-dark_blue my-1 rounded-md"></div>
-              )}
+
+              <div className="h-5 w-1 bg-skin-dark_blue my-1 rounded-md"></div>
             </div>
 
             <div className="flex items-start justify-between border-b pb-1 w-full border-skin-blue">
@@ -76,7 +75,12 @@ const Timeline = ({ expenses, limit, open }: Props) => {
                 <p className="text-base md:text-lg font-bold">
                   {expense.category.type}
                 </p>
-                <p className="text-xs">{expense.name}</p>
+                <p className="text-xs">
+                  {expense.name ||
+                    expense.type_maintenance ||
+                    expense.type_insurance ||
+                    expense.type_of_expense}
+                </p>
               </div>
               <div className="flex flex-col items-end">
                 <p className="text-sm md:text-base text-skin-gray">

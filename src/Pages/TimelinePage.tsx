@@ -137,7 +137,7 @@ const TimelinePage = () => {
               </button>
             </div>
 
-            <Timeline expenses={expenses} limit={limit} open={open} />
+            <Timeline expenses={expenses} open={open} />
 
             <div className="mt-8">
               {from > 0 && (

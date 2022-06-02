@@ -20,14 +20,6 @@ const ParkingExpenseForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
-  const [currentCar, setCurrentCar] = useState<any>({});
-
-  useEffect(() => {
-    const carId = localStorage.getItem("car");
-    if (carId) {
-      setCurrentCar(JSON.parse(carId));
-    }
-  }, []);
 
   useEffect(() => {
     (async () => {
@@ -63,7 +55,6 @@ const ParkingExpenseForm = () => {
             category_id: categoryId,
             date: values.date,
             total: values.total,
-            car_id: currentCar.id,
             name: values.parking_name,
             location: values.parking_location,
           });
