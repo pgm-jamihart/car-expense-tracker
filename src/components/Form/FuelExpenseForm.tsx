@@ -33,13 +33,10 @@ const FuelExpenseForm = () => {
   }, []);
 
   useEffect(() => {
-    if (!currentCar.id) return;
-
     (async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("id")
-        .eq("car_id", currentCar.id)
         .eq("type", "Fuel");
 
       if (error) {
@@ -50,7 +47,7 @@ const FuelExpenseForm = () => {
         setCategoryId(data[0].id);
       }
     })();
-  }, [currentCar.id]);
+  }, []);
 
   return (
     <Formik
@@ -71,52 +68,17 @@ const FuelExpenseForm = () => {
             category_id: categoryId,
             date: values.date,
             total: values.total,
-            type: "Fuel",
             car_id: currentCar.id,
+            location: values.location,
+            name: values.gasStation,
+            fuel_type: values.typeOfFuel,
           });
 
           if (error) {
             setError(error.message);
-          } else {
-            const { data: categoryData, error: categoryError } = await supabase
-              .from("categories")
-              .select("id, total")
-              .eq("id", categoryId);
-
-            if (categoryError) {
-              throw categoryError;
-            }
-
-            if (data) {
-              const newTotal = categoryData[0].total + values.total;
-
-              const { error } = await supabase
-                .from("categories")
-                .update({ total: newTotal })
-                .eq("id", categoryId);
-
-              if (error) {
-                console.log(error);
-              }
-
-              console.log("data", data);
-
-              // insert the new expense id into the car_expenses table
-              const { data: carExpenseData, error: carExpenseError } =
-                await supabase.from("fuel_expense").insert({
-                  expense_id: data[0].id,
-                  gas_station_location: values.location,
-                  gas_station_name: values.gasStation,
-                  fuel_type: values.typeOfFuel,
-                });
-
-              if (carExpenseError) {
-                console.log("carExpenseError", carExpenseError);
-              }
-            }
-
-            navigate(paths.DASHBOARD);
           }
+
+          navigate(paths.DASHBOARD);
         } catch (error: any) {
           setError(error.message);
           setSubmitting(false);

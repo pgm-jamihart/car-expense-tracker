@@ -50,27 +50,6 @@ const AddCar = () => {
             if (error) {
               setError(error.message);
             } else {
-              const categories = [
-                "Fuel",
-                "Parking",
-                "Maintenance",
-                "Insurance",
-                "Other",
-              ];
-
-              categories.map(async (category) => {
-                const { data: categoryData, error: categoryError } =
-                  await supabase.from("categories").insert({
-                    type: category,
-                    total: 0,
-                    car_id: data[0].id,
-                  });
-
-                if (categoryError) {
-                  console.log(categoryError);
-                }
-              });
-
               localStorage.setItem(
                 "car",
                 JSON.stringify({

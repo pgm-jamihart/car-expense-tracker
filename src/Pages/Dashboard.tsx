@@ -26,18 +26,43 @@ const Dashboard = () => {
     if (!currentCar.id) return;
 
     (async () => {
-      const { data, error } = await supabase
+      const { data: categories, error: categoriesError } = await supabase
         .from("categories")
-        .select("type, total, id")
-        .eq("car_id", currentCar.id)
-        .order("id", {
-          ascending: true,
+        .select("id, type");
+
+      if (categoriesError) {
+        console.log(categoriesError);
+      }
+
+      if (categories) {
+        const categoryIds = categories.map((category) => category.id);
+        const categoryTypes = categories.map((category) => category.type);
+
+        const promises = categoryIds.map(async (categoryId, index) => {
+          const { data, error } = await supabase
+            .from("expenses")
+            .select("total")
+            .eq("category_id", categoryId)
+            .eq("car_id", currentCar.id);
+
+          if (error) {
+            console.log(error);
+          }
+
+          if (data) {
+            const total = data.reduce((acc, curr) => acc + curr.total, 0);
+            return {
+              id: categoryId,
+              type: categoryTypes[index],
+              total,
+            };
+          }
         });
-      if (error) {
-        console.log(error);
-      } else {
-        setChartData(data.map((item) => item.total));
-        setLabels(data.map((item) => item.type));
+
+        const data = await Promise.all(promises);
+
+        setLabels(data.map((item) => item?.type));
+        setChartData(data.map((item) => item?.total));
       }
     })();
   }, [currentCar.id]);

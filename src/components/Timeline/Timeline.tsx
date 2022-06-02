@@ -13,6 +13,7 @@ const Timeline = ({ expenses }: Props) => {
             <p>{expense.date}</p>
             <p>{expense.type}</p>
             <p>{expense.total}</p>
+            <p>{expense.category.type}</p>
           </div>
         );
       })}

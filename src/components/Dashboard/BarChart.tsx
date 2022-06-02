@@ -25,17 +25,43 @@ const BarChart = ({ active }: BarProps) => {
     (async () => {
       const { data, error } = await supabase
         .from("expenses")
-        .select("id, date, total, type")
+        .select("id, date, total, category_id")
         .eq("car_id", currentCar.id)
-        .limit(limit);
+        .limit(limit)
+        .order("date", {
+          ascending: true,
+        });
 
       if (error) {
         console.log(error);
       }
 
       if (data) {
-        // display data per day
-        const dataPerDay = data.reduce((acc, curr) => {
+        const categoryIds = data.map((expense) => expense.category_id);
+
+        const promises = categoryIds.map(async (categoryId) => {
+          const { data, error } = await supabase
+            .from("categories")
+            .select("id, type")
+            .eq("id", categoryId);
+
+          if (error) {
+            console.log(error);
+          }
+
+          if (data) {
+            return data[0];
+          }
+        });
+
+        const categories = await Promise.all(promises);
+
+        const expensesPerCategory = data.map((expense, index) => ({
+          ...expense,
+          category: categories[index],
+        }));
+
+        const dataPerDay = expensesPerCategory.reduce((acc, curr) => {
           const date = new Date(curr.date);
           const day = date.getDate();
           let month = new Intl.DateTimeFormat("en", {
@@ -50,12 +76,10 @@ const BarChart = ({ active }: BarProps) => {
               y: curr.total,
             };
           } else {
-            acc[dateString].total += curr.total;
+            acc[dateString].y += curr.total;
           }
           return acc;
         }, {});
-
-        console.log(dataPerDay);
 
         // sort the data per day
         const sortedDataPerDay = Object.values(dataPerDay).sort(
@@ -64,6 +88,7 @@ const BarChart = ({ active }: BarProps) => {
           }
         );
 
+        console.log(sortedDataPerDay);
         setChartData(sortedDataPerDay);
       }
     })();
@@ -76,14 +101,6 @@ const BarChart = ({ active }: BarProps) => {
       setLimit(10);
     }
   });
-
-  //   window.addEventListener("DOMContentLoaded", () => {
-  //     if (window.innerWidth < 768) {
-  //       setLimit(5);
-  //     } else {
-  //       setLimit(10);
-  //     }
-  //   });
 
   const chartDataBar = [
     {
@@ -143,7 +160,7 @@ const BarChart = ({ active }: BarProps) => {
       y: {
         title: {
           formatter: function (seriesName: any) {
-            return "€ + ";
+            return "€  ";
           },
         },
       },

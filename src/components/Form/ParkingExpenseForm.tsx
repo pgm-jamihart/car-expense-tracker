@@ -30,13 +30,10 @@ const ParkingExpenseForm = () => {
   }, []);
 
   useEffect(() => {
-    if (!currentCar.id) return;
-
     (async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("id")
-        .eq("car_id", currentCar.id)
         .eq("type", "Parking");
 
       if (error) {
@@ -47,7 +44,7 @@ const ParkingExpenseForm = () => {
         setCategoryId(data[0].id);
       }
     })();
-  }, [currentCar.id]);
+  }, []);
 
   return (
     <Formik
@@ -66,47 +63,15 @@ const ParkingExpenseForm = () => {
             category_id: categoryId,
             date: values.date,
             total: values.total,
-            type: "Parking",
             car_id: currentCar.id,
+            name: values.parking_name,
+            location: values.parking_location,
           });
 
           if (error) {
             setError(error.message);
+            console.log(error);
           } else {
-            const { data: categoryData, error: categoryError } = await supabase
-              .from("categories")
-              .select("id, total")
-              .eq("id", categoryId);
-
-            if (categoryError) {
-              throw categoryError;
-            }
-
-            if (data) {
-              const newTotal = categoryData[0].total + values.total;
-
-              const { error } = await supabase
-                .from("categories")
-                .update({ total: newTotal })
-                .eq("id", categoryId);
-
-              if (error) {
-                console.log(error);
-              }
-
-              // insert the new expense id into the car_expenses table
-              const { data: carExpenseData, error: carExpenseError } =
-                await supabase.from("parking_expense").insert({
-                  expense_id: data[0].id,
-                  parking_name: values.parking_name,
-                  parking_location: values.parking_location,
-                });
-
-              if (carExpenseError) {
-                console.log("carExpenseError", carExpenseError);
-              }
-            }
-
             navigate(paths.DASHBOARD);
           }
         } catch (error: any) {

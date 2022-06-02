@@ -98,10 +98,40 @@ const SparkLineChart = ({
       }
 
       if (data) {
-        const reversedData = data.reverse();
-        setChartDataSparkLine(reversedData.map((item) => item.total));
+        const categoryIds = data.map((expense) => expense.category_id);
+
+        const promises = categoryIds.map(async (categoryId) => {
+          const { data, error } = await supabase
+            .from("categories")
+            .select("id, type")
+            .eq("id", categoryId);
+
+          if (error) {
+            console.log(error);
+          }
+
+          if (data) {
+            return data[0];
+          }
+        });
+
+        const categories = await Promise.all(promises);
+
+        const expensesPerCategory = data.map((expense, index) => ({
+          ...expense,
+          category: categories[index],
+        }));
+
+        const reversedExpensesPerCategory = expensesPerCategory.reverse();
+
         setLabelsSparkLine(
-          reversedData.map((item) => item.type + " " + item.date)
+          reversedExpensesPerCategory.map(
+            (expense) => expense.category.type + " " + expense.date
+          )
+        );
+
+        setChartDataSparkLine(
+          reversedExpensesPerCategory.map((expense) => expense.total)
         );
       }
     })();

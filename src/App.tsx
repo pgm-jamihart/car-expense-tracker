@@ -28,7 +28,6 @@ import { LoadScript } from "@react-google-maps/api";
 export default function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
-  const [car, setCar] = useState<{ id: number | null }>({ id: null });
   const auth = useAuth();
 
   useEffect(() => {

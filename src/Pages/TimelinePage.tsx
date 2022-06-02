@@ -20,17 +20,42 @@ const TimelinePage = () => {
     if (!currentCar.id) return;
 
     (async () => {
-      const { data, error } = await supabase
+      // return all expenses for the current car with the category type
+      const { data: expenses, error: expensesError } = await supabase
         .from("expenses")
-        .select("id, date, type, total")
+        .select("id, date, total, category_id")
         .eq("car_id", currentCar.id);
 
-      if (error) {
-        console.log(error);
+      if (expensesError) {
+        console.log(expensesError);
       }
 
-      if (data) {
-        setExpenses(data);
+      if (expenses) {
+        const categoryIds = expenses.map((expense) => expense.category_id);
+
+        const promises = categoryIds.map(async (categoryId) => {
+          const { data, error } = await supabase
+            .from("categories")
+            .select("id, type")
+            .eq("id", categoryId);
+
+          if (error) {
+            console.log(error);
+          }
+
+          if (data) {
+            return data[0];
+          }
+        });
+
+        const categories = await Promise.all(promises);
+
+        setExpenses(
+          expenses.map((expense, index) => ({
+            ...expense,
+            category: categories[index],
+          }))
+        );
       }
     })();
   }, [currentCar.id]);
