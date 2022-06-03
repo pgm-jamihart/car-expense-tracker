@@ -29,8 +29,6 @@ const FuelExpenseForm = () => {
     date: "",
     typeOfFuel: "",
     total: "",
-    gasStation: "",
-    location: "",
   });
 
   useEffect(() => {
@@ -59,8 +57,7 @@ const FuelExpenseForm = () => {
 
   useEffect(() => {
     if (segment) {
-      //   console.log(segment);
-      if (segment.intent.intent === "add_fuel_expense") {
+      if (segment.intent.intent === "add_expense") {
         segment.entities.map((entity: any) => {
           if (entity.type === "date") {
             setSpeechlyFormdata({
@@ -77,25 +74,8 @@ const FuelExpenseForm = () => {
               ...speechlyFormdata,
               total: entity.value,
             });
-          } else if (entity.type === "gas_station") {
-            setSpeechlyFormdata({
-              ...speechlyFormdata,
-              gasStation: entity.value,
-            });
-          } else if (entity.type === "location") {
-            setSpeechlyFormdata({
-              ...speechlyFormdata,
-              location: entity.value,
-            });
           }
         });
-        // setSpeechlyFormdata({
-        //   //   date: segment.entities.date,
-        //   //   typeOfFuel: typeOfFuel.value,
-        //   //   total: total.value,
-        //   //   gasStation: gasStation.value,
-        //   //   location: location.value,
-        // });
       }
     }
   }, [segment]);
@@ -109,8 +89,8 @@ const FuelExpenseForm = () => {
           speechlyFormdata.typeOfFuel.charAt(0).toUpperCase() +
             speechlyFormdata.typeOfFuel.slice(1).toLowerCase() || "",
         total: speechlyFormdata.total || "",
-        gasStation: speechlyFormdata.gasStation || "",
-        location: speechlyFormdata.location || "",
+        gasStation: "",
+        location: "",
       }}
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting }) => {
@@ -143,6 +123,11 @@ const FuelExpenseForm = () => {
       {({ handleSubmit, isSubmitting, values }) => (
         <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
+
+          <small className="bg-skin-light_blue pl-4 text-skin-dark_blue py-1 rounded-sm mb-4">
+            Example: Add fuel expense for 50 euro's, type of fuel benzine for
+            tomorrow.
+          </small>
 
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
@@ -184,8 +169,6 @@ const FuelExpenseForm = () => {
           >
             Add Expense
           </PrimaryButton>
-
-          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     </Formik>

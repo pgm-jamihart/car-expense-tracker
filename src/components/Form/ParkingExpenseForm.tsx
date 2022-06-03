@@ -8,6 +8,7 @@ import TextInput from "./TextInput";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
+import { useSpeechContext } from "@speechly/react-client";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -20,6 +21,11 @@ const ParkingExpenseForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
+  const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
+    date: "",
+    total: "",
+  });
+  const { segment } = useSpeechContext();
 
   useEffect(() => {
     (async () => {
@@ -38,11 +44,34 @@ const ParkingExpenseForm = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (segment) {
+      if (segment.intent.intent === "add_expense") {
+        segment.entities.map((entity: any) => {
+          if (entity.type === "date") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              date: entity.value,
+            });
+          } else if (entity.type === "amount") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              total: entity.value,
+            });
+          }
+        });
+      }
+    }
+  }, [segment]);
+
+  console.log(speechlyFormdata);
+
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
-        date: "",
-        total: "",
+        date: speechlyFormdata.date || "",
+        total: speechlyFormdata.total || "",
         parking_name: "",
         parking_location: "",
       }}
