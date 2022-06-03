@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ErrorMessage from "./ErrorMessage";
 
 interface TextInputProps {
@@ -31,6 +31,31 @@ const TextInput = ({
     onBlur,
   });
   const errorText = meta.error && meta.touched ? meta.error : "";
+
+  useEffect(() => {
+    if (value !== currentValue) {
+      setCurrentValue(value);
+    }
+  }, [value]);
+
+  //   useEffect(() => {
+  //     if (segment) {
+  //       //   console.log("segment", segment);
+  //       if (segment.intent.intent === "add_fuel_expense") {
+  //         segment.entities.map((entity: any) => {
+  //           console.log("entity", entity);
+  //           if (entity.type === "date") {
+  //             setCurrentValue(entity.value);
+  //           } else if (entity.type === "type_of_fuel") {
+  //             setCurrentValue(entity.value);
+  //           } else if (entity.type === "total") {
+  //             setCurrentValue(entity.value);
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }, [segment]);
+
   return (
     <>
       <div className="mb-4">

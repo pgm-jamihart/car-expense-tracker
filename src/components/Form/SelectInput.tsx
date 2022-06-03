@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   label: string;
@@ -20,7 +20,7 @@ const SelectInput = ({
   onBlur,
   options,
 }: Props) => {
-  const [currentValue, setCurrentValue] = useState(value);
+  const [currentValue, setCurrentValue] = useState("");
   const [field, meta] = useField({
     type,
     name,
@@ -30,6 +30,12 @@ const SelectInput = ({
   });
 
   const errorText = meta.error && meta.touched ? meta.error : "";
+
+  useEffect(() => {
+    if (value !== currentValue) {
+      setCurrentValue(value);
+    }
+  }, [value]);
 
   return (
     <div className="mb-4">

@@ -13,7 +13,6 @@ import SelectInput from "./SelectInput";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
-  mileage: Yup.number().required().label("Mileage"),
   typeOfFuel: Yup.string().required().label("Type of fuel"),
   total: Yup.number().required().label("Total"),
   gasStation: Yup.string().label("Gas station"),
@@ -26,6 +25,13 @@ const FuelExpenseForm = () => {
   const [categoryId, setCategoryId] = useState(null);
   const [currentCar, setCurrentCar] = useState<any>({});
   const { segment } = useSpeechContext();
+  const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
+    date: "",
+    typeOfFuel: "",
+    total: "",
+    gasStation: "",
+    location: "",
+  });
 
   useEffect(() => {
     const carId = localStorage.getItem("car");
@@ -53,18 +59,58 @@ const FuelExpenseForm = () => {
 
   useEffect(() => {
     if (segment) {
+      //   console.log(segment);
+      if (segment.intent.intent === "add_fuel_expense") {
+        segment.entities.map((entity: any) => {
+          if (entity.type === "date") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              date: entity.value,
+            });
+          } else if (entity.type === "fuel") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              typeOfFuel: entity.value,
+            });
+          } else if (entity.type === "amount") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              total: entity.value,
+            });
+          } else if (entity.type === "gas_station") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              gasStation: entity.value,
+            });
+          } else if (entity.type === "location") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              location: entity.value,
+            });
+          }
+        });
+        // setSpeechlyFormdata({
+        //   //   date: segment.entities.date,
+        //   //   typeOfFuel: typeOfFuel.value,
+        //   //   total: total.value,
+        //   //   gasStation: gasStation.value,
+        //   //   location: location.value,
+        // });
+      }
     }
   }, [segment]);
 
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
-        date: "",
-        mileage: "",
-        typeOfFuel: "",
-        total: "",
-        gasStation: "",
-        location: "",
+        date: speechlyFormdata.date || "",
+        typeOfFuel:
+          speechlyFormdata.typeOfFuel.charAt(0).toUpperCase() +
+            speechlyFormdata.typeOfFuel.slice(1).toLowerCase() || "",
+        total: speechlyFormdata.total || "",
+        gasStation: speechlyFormdata.gasStation || "",
+        location: speechlyFormdata.location || "",
       }}
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting }) => {
@@ -100,13 +146,6 @@ const FuelExpenseForm = () => {
 
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
-
-            <Field
-              name="mileage"
-              as={TextInput}
-              type="number"
-              label="Mileage"
-            />
 
             <Field
               name="typeOfFuel"
@@ -145,6 +184,8 @@ const FuelExpenseForm = () => {
           >
             Add Expense
           </PrimaryButton>
+
+          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     </Formik>
