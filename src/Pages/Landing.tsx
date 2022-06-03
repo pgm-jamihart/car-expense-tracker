@@ -1,0 +1,68 @@
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import * as paths from "../routes";
+import { PrimaryButton } from "../components/Buttons";
+import { Devider, SignUpWithSocials } from "../components";
+
+export default function Landing() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const goToSignUpPage = () => {
+    navigate(paths.SIGN_UP);
+  };
+
+  return (
+    <div className="md:flex h-screen bg-skin-light_gray">
+      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 md:block">
+        <h1 className="text-3xl font-medium text-center text-skin-white">
+          Welcome to the expense car tracker app.
+        </h1>
+      </div>
+
+      <div className="bg-skin-white rounded-t-3xl p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
+        <div className="max-w-lg my-0 mx-auto">
+          <div className="flex flex-col items-center">
+            <h2 className="my-10">Create an account</h2>
+
+            <PrimaryButton
+              type="button"
+              className="bg-skin-dark_blue"
+              disabled={loading}
+              onClick={goToSignUpPage}
+            >
+              Sign up with email
+            </PrimaryButton>
+          </div>
+
+          <Devider />
+
+          <SignUpWithSocials setLoading={setLoading} loading={loading} />
+
+          <div className="my-16">
+            <p className="text-center text-skin-gray">
+              Already have an account?{" "}
+              <Link to={paths.SIGN_IN} className="text-skin-blue underline">
+                Sign in
+              </Link>
+            </p>
+          </div>
+
+          <div className="mb-6">
+            <p className="text-center text-skin-gray text-xs">
+              By signing up, you agree to our{" "}
+              <a className="text-skin-blue" href="#">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a className="text-skin-blue" href="#">
+                Privacy Policy
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
