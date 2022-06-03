@@ -105,7 +105,7 @@ const ParkingExpenseForm = () => {
 
           <PrimaryButton
             type="submit"
-            className="bg-skin-dark_blue"
+            className="bg-skin-dark_blue max-w-md"
             disabled={isSubmitting}
           >
             Add Expense

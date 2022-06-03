@@ -5,17 +5,25 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
+import { SpeechProvider } from "@speechly/react-client";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
+    {/* @ts-expect-error */}
+    <SpeechProvider
+      appId={process.env.REACT_APP_SPEECHLY_APP_ID}
+      language="en-US"
+    >
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
+    </SpeechProvider>
   </React.StrictMode>
 );
 

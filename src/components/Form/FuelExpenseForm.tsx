@@ -1,12 +1,13 @@
-import { Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { supabase } from "../../config/supabaseClient";
-import * as paths from "../../routes";
+import { Field, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useSpeechContext } from "@speechly/react-client";
+
+import { supabase } from "../../config/supabaseClient";
+import * as paths from "../../routes";
 import ErrorBanner from "./ErrorBanner";
 import { PrimaryButton } from "../Buttons";
-
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 
@@ -24,6 +25,7 @@ const FuelExpenseForm = () => {
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
   const [currentCar, setCurrentCar] = useState<any>({});
+  const { segment } = useSpeechContext();
 
   useEffect(() => {
     const carId = localStorage.getItem("car");
@@ -48,6 +50,11 @@ const FuelExpenseForm = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (segment) {
+    }
+  }, [segment]);
 
   return (
     <Formik
@@ -133,7 +140,7 @@ const FuelExpenseForm = () => {
 
           <PrimaryButton
             type="submit"
-            className="bg-skin-dark_blue"
+            className="bg-skin-dark_blue max-w-md"
             disabled={isSubmitting}
           >
             Add Expense

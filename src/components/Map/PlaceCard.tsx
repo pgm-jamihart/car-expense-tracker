@@ -1,4 +1,5 @@
 import React from "react";
+import { HiOutlinePhotograph } from "react-icons/hi";
 
 interface Props {
   name: string;
@@ -35,17 +36,13 @@ const PlaceCard = ({
           <div className="w-full h-24 overflow-hidden rounded-md">
             <img
               className="w-full h-full"
-              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=96&maxheight=96&photo_reference=${image}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&maxheight=1200&photo_reference=${image}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
               alt={name}
             />
           </div>
         ) : (
-          <div className="w-full h-24 overflow-hidden rounded-md">
-            <img
-              className="w-full h-full"
-              src="https://via.placeholder.com/96x96"
-              alt={name}
-            />
+          <div className="w-full h-24 overflow-hidden rounded-md bg-skin-gray flex items-center justify-center">
+            <HiOutlinePhotograph className="w-14 h-14 text-skin-light_gray" />
           </div>
         )}
       </div>

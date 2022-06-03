@@ -124,7 +124,7 @@ const UpdateFuelExpense = ({ expense }: Props) => {
 
           <PrimaryButton
             type="submit"
-            className="bg-skin-dark_blue"
+            className="bg-skin-dark_blue max-w-md"
             disabled={isSubmitting}
           >
             Update Expense
