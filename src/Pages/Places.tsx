@@ -38,14 +38,17 @@ const Places = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(query, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "https://still-bastion-49630.herokuapp.com/" + query,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
         const data = await response.json();
-        console.log(data.results);
         setPlaces(data.results);
       } catch (error) {
         console.log(error);
