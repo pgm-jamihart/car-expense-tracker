@@ -19,6 +19,7 @@ const validationSchema = Yup.object().shape({
 
 const ParkingExpenseForm = () => {
   const [error, setError] = useState("");
+  const [currentCar, setCurrentCar] = useState<any>({});
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
   const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
@@ -26,6 +27,13 @@ const ParkingExpenseForm = () => {
     total: "",
   });
   const { segment } = useSpeechContext();
+
+  useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -86,6 +94,7 @@ const ParkingExpenseForm = () => {
             total: values.total,
             name: values.parking_name,
             location: values.parking_location,
+            car_id: currentCar.id,
           });
 
           if (error) {
@@ -139,6 +148,8 @@ const ParkingExpenseForm = () => {
           >
             Add Expense
           </PrimaryButton>
+
+          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     </Formik>
