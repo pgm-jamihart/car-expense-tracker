@@ -8,7 +8,7 @@ interface Props {
 
 interface AuthContext {
   user: User | null;
-  error: string;
+  errorMessage: string | null | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
@@ -17,7 +17,7 @@ interface AuthContext {
 
 const authContext = createContext<AuthContext>({
   user: null,
-  error: "",
+  errorMessage: null,
   signIn: () => Promise.resolve(),
   signOut: () => Promise.resolve(),
   signUp: () => Promise.resolve(),
@@ -35,7 +35,7 @@ export const useAuth = () => {
 
 const useProviderAuth = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null | undefined>();
 
   const signIn = async (email: string, password: string) => {
     const { user, session, error } = await supabase.auth.signIn({
@@ -44,7 +44,7 @@ const useProviderAuth = () => {
     });
 
     if (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
       return;
     }
   };
@@ -61,7 +61,7 @@ const useProviderAuth = () => {
     });
 
     if (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
       return;
     }
   };
@@ -71,7 +71,7 @@ const useProviderAuth = () => {
       provider: provider,
     });
     if (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
       return;
     }
   };
@@ -101,6 +101,6 @@ const useProviderAuth = () => {
     signOut,
     signUp,
     signInWithSocial,
-    error,
+    errorMessage,
   };
 };

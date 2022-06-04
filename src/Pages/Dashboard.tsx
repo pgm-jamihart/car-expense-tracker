@@ -6,7 +6,11 @@ import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { BarChart, DonutChart, SparkLineChart } from "../components/Dashboard";
 
-const Dashboard = () => {
+interface Props {
+  loggedIn: boolean;
+}
+
+const Dashboard = ({ loggedIn }: Props) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [labels, setLabels] = useState<any[]>([]);
   const [active, setActive] = useState(true);
@@ -20,7 +24,7 @@ const Dashboard = () => {
     if (carId) {
       setCurrentCar(JSON.parse(carId));
     }
-  }, []);
+  }, [loggedIn]);
 
   useEffect(() => {
     if (!currentCar.id) return;

@@ -109,7 +109,11 @@ const Account = () => {
         <button
           type="button"
           className="button block"
-          onClick={() => supabase.auth.signOut()}
+          onClick={() => {
+            // clear local storage
+            localStorage.removeItem("car");
+            supabase.auth.signOut();
+          }}
         >
           Sign Out
         </button>

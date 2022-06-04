@@ -57,7 +57,6 @@ const SignUp = () => {
 
                   alert("Check your email for the login link!");
                 } catch (error: any) {
-                  setError(error.message);
                   setSubmitting(false);
                 } finally {
                   setSubmitting(false);
@@ -69,7 +68,9 @@ const SignUp = () => {
                   onSubmit={handleSubmit}
                   className="flex flex-col my-0 mx-auto "
                 >
-                  {error && <ErrorBanner error={error} />}
+                  {auth.errorMessage && (
+                    <ErrorBanner error={auth.errorMessage} />
+                  )}
                   {isSubmitting ? (
                     "Sending magic link"
                   ) : (
