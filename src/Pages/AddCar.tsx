@@ -56,7 +56,7 @@ const AddCar = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [apikey]);
 
   useEffect(() => {
     if (currentCarValue) {
