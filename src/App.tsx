@@ -39,8 +39,8 @@ export default function App() {
         if (session === null) {
           navigate("/");
         } else {
+          navigate(paths.DASHBOARD);
           setSession(session);
-          navigate(paths.HOME);
 
           (async () => {
             if (auth.user) {
@@ -86,11 +86,9 @@ export default function App() {
         {session && (
           <>
             <Route path={paths.ACCOUNT} element={<Account />} />
-            <Route path={paths.HOME} element={<HomePage />} />
             <Route path={paths.DASHBOARD} element={<Dashboard />} />
             <Route path={paths.TIMELINE} element={<TimelinePage />} />
             <Route path={paths.PLACES} element={<Places />} />
-            <Route path={paths.SETTINGS} element={<Settings />} />
             <Route path={paths.PROFILE} element={<Profile />} />
             <Route path={paths.GARAGE} element={<Garage />} />
             <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />

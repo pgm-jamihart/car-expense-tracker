@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
 import { useSpeechContext } from "@speechly/react-client";
+import { MdEuroSymbol } from "react-icons/md";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -118,7 +119,23 @@ const ParkingExpenseForm = () => {
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
 
-            <Field name="total" as={TextInput} type="number" label="Total" />
+            <div>
+              <label className="font-bold text-base" htmlFor="total">
+                Total
+              </label>
+              <div className="flex items-start">
+                <span className="h-10 w-10 mt-2 mr-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                  <MdEuroSymbol className="text-2xl text-skin-blue" />
+                </span>
+
+                <Field
+                  name="total"
+                  as={TextInput}
+                  type="number"
+                  placeholder="Total"
+                />
+              </div>
+            </div>
 
             <div className="mt-8">
               <h3 className="mb-4 bg-skin-gray p-2 rounded-sm text-skin-white text-center">
@@ -130,6 +147,7 @@ const ParkingExpenseForm = () => {
                 as={TextInput}
                 type="text"
                 label="Name (optional)"
+                placeholder="Name parking"
               />
 
               <Field
@@ -137,6 +155,7 @@ const ParkingExpenseForm = () => {
                 as={TextInput}
                 type="text"
                 label="Location (optional)"
+                placeholder="Location parking"
               />
             </div>
           </div>
@@ -148,8 +167,6 @@ const ParkingExpenseForm = () => {
           >
             Add Expense
           </PrimaryButton>
-
-          <pre>{JSON.stringify(values, null, 2)}</pre>
         </form>
       )}
     </Formik>

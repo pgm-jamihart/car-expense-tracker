@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { supabase } from "../config/supabaseClient";
+import BaseLayout from "../Layouts/BaseLayout";
+import { PageTitle } from "../components";
 
 const Account = () => {
   const auth = useAuth();
@@ -70,45 +72,49 @@ const Account = () => {
   };
 
   return (
-    <div aria-live="polite">
-      {loading ? (
-        "Loading ..."
-      ) : (
-        <form onSubmit={updateProfile} className="form-widget">
-          <div>Email: {auth.user!.email}</div>
-          <div>
-            <label htmlFor="username">Name</label>
-            <input
-              id="username"
-              type="text"
-              value={username || ""}
-              onChange={(e: any) => setUsername(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="website">Website</label>
-            <input
-              id="website"
-              type="url"
-              value={website || ""}
-              onChange={(e: any) => setWebsite(e.target.value)}
-            />
-          </div>
-          <div>
-            <button className="button block primary" disabled={loading}>
-              Update profile
-            </button>
-          </div>
-        </form>
-      )}
-      <button
-        type="button"
-        className="button block"
-        onClick={() => supabase.auth.signOut()}
-      >
-        Sign Out
-      </button>
-    </div>
+    <BaseLayout>
+      <PageTitle>Account</PageTitle>
+
+      <div aria-live="polite">
+        {loading ? (
+          "Loading ..."
+        ) : (
+          <form onSubmit={updateProfile} className="form-widget">
+            <div>Email: {auth.user!.email}</div>
+            <div>
+              <label htmlFor="username">Name</label>
+              <input
+                id="username"
+                type="text"
+                value={username || ""}
+                onChange={(e: any) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                type="url"
+                value={website || ""}
+                onChange={(e: any) => setWebsite(e.target.value)}
+              />
+            </div>
+            <div>
+              <button className="button block primary" disabled={loading}>
+                Update profile
+              </button>
+            </div>
+          </form>
+        )}
+        <button
+          type="button"
+          className="button block"
+          onClick={() => supabase.auth.signOut()}
+        >
+          Sign Out
+        </button>
+      </div>
+    </BaseLayout>
   );
 };
 

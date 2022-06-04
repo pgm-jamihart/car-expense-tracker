@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { PrimaryButton } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";

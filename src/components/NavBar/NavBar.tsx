@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
-import { AiFillHome, AiFillDashboard } from "react-icons/ai";
-import {
-  MdTimeline,
-  MdLocationOn,
-  MdSettings,
-  MdOutlineKeyboardBackspace,
-  MdAccountCircle,
-} from "react-icons/md";
+
+import { MdDashboard, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { CgMenuLeft } from "react-icons/cg";
-import { FaCarSide } from "react-icons/fa";
+import { FaCar, FaHistory, FaSearchLocation } from "react-icons/fa";
+import { useAuth } from "../../context/AuthProvider";
+import { BsChevronRight } from "react-icons/bs";
 
 const NavBar = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [currentCar, setCurrentCar] = useState<any>({});
+  const auth = useAuth();
+
+  console.log(auth.user);
 
   useEffect(() => {
     const carId = localStorage.getItem("car");
@@ -26,34 +24,24 @@ const NavBar = () => {
 
   const navData = [
     {
-      name: "Home",
-      icon: <AiFillHome />,
-      path: paths.HOME,
-    },
-    {
       name: "Dashboard",
-      icon: <AiFillDashboard />,
+      icon: <MdDashboard />,
       path: paths.DASHBOARD,
     },
     {
       name: "Timeline",
-      icon: <MdTimeline />,
+      icon: <FaHistory />,
       path: paths.TIMELINE,
     },
     {
       name: "Places",
-      icon: <MdLocationOn />,
+      icon: <FaSearchLocation />,
       path: paths.PLACES,
     },
     {
-      name: "Settings",
-      icon: <MdSettings />,
-      path: paths.SETTINGS,
-    },
-    {
-      name: "Profile",
-      icon: <MdAccountCircle />,
-      path: paths.PROFILE,
+      name: "My Garage",
+      icon: <FaCar />,
+      path: paths.GARAGE,
     },
   ];
 
@@ -92,17 +80,37 @@ const NavBar = () => {
             ))}
           </ul>
 
-          <button
-            onClick={() => {
-              navigate(paths.GARAGE);
-            }}
-            className="flex items-center text-lg hover:bg-slate-500/50 rounded-sm p-2"
+          <Link
+            to={paths.ACCOUNT}
+            className="absolute bottom-4 left-0 w-full p-2 "
           >
-            <FaCarSide className="w-12 h-12 mr-4 bg-skin-blue rounded-full p-2" />
-            <span className="ml-4">{currentCar.brand}</span>
+            <div className="flex items-center  bg-slate-800 p-4 rounded-md border-2 border-slate-500/50 hover:border-skin-blue transition-all ease-in-out duration-200 shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900">
+              <img
+                className="w-12 h-12 mr-4 border-skin-blue border-2 rounded-full p-2"
+                src={auth?.user?.user_metadata.avatar_url}
+                alt="profile"
+              />
 
-            <span className="ml-4">{currentCar.model}</span>
-          </button>
+              <div className="flex justify-between w-full">
+                <div>
+                  <span className="text-skin-white font-semibold block">
+                    {auth?.user?.user_metadata.full_name}
+                  </span>
+
+                  <span className="block text-xs text-skin-light_gray">
+                    {auth?.user?.user_metadata.email}
+                  </span>
+                </div>
+
+                <span
+                  className="flex items-center justify-center w-10
+              2 h-12 "
+                >
+                  <BsChevronRight className="text-skin-white text-2xl font-semibold" />
+                </span>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </>

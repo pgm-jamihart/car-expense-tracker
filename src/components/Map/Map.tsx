@@ -24,9 +24,6 @@ const Map = ({ center, places, setClicked }: Props) => {
 
   return (
     <div className="w-full h-full">
-      {/* <LoadScript
-        googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-      > */}
       <GoogleMap
         mapContainerClassName="mapContainerClassName"
         center={center}
@@ -53,7 +50,6 @@ const Map = ({ center, places, setClicked }: Props) => {
             ))}
         </>
       </GoogleMap>
-      {/* </LoadScript> */}
     </div>
   );
 };
