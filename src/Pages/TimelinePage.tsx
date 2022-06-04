@@ -16,6 +16,7 @@ const TimelinePage = () => {
   const [to, setTo] = useState(limit);
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleNext = () => {
     setFrom(from + limit);
@@ -37,63 +38,126 @@ const TimelinePage = () => {
   useEffect(() => {
     if (!currentCar.id) return;
 
-    (async () => {
-      const { data: expensesCount, error: expensesErrorCount } = await supabase
-        .from("expenses")
-        .select("id")
-        .eq("car_id", currentCar.id);
+    if (!selectedCategory) {
+      (async () => {
+        const { data: expensesCount, error: expensesErrorCount } =
+          await supabase
+            .from("expenses")
+            .select("id")
+            .eq("car_id", currentCar.id);
 
-      if (expensesErrorCount) {
-        console.log(expensesErrorCount);
-      }
+        if (expensesErrorCount) {
+          console.log(expensesErrorCount);
+        }
 
-      if (expensesCount) {
-        setCount(expensesCount.length);
-      }
+        if (expensesCount) {
+          setCount(expensesCount.length);
+        }
 
-      // return all expenses for the current car with the category type
-      const { data: expenses, error: expensesError } = await supabase
-        .from("expenses")
-        .select("*")
-        .eq("car_id", currentCar.id)
-        .range(from, to)
-        .order("date", {
-          ascending: false,
-        });
+        // return all expenses for the current car with the category type
+        const { data: expenses, error: expensesError } = await supabase
+          .from("expenses")
+          .select("*")
+          .eq("car_id", currentCar.id)
+          .range(from, to)
+          .order("date", {
+            ascending: false,
+          });
 
-      if (expensesError) {
-        console.log(expensesError);
-      }
+        if (expensesError) {
+          console.log(expensesError);
+        }
 
-      if (expenses) {
-        const categoryIds = expenses.map((expense) => expense.category_id);
+        if (expenses) {
+          const categoryIds = expenses.map((expense) => expense.category_id);
 
-        const promises = categoryIds.map(async (categoryId) => {
-          const { data, error } = await supabase
-            .from("categories")
-            .select("id, type")
-            .eq("id", categoryId);
+          const promises = categoryIds.map(async (categoryId) => {
+            const { data, error } = await supabase
+              .from("categories")
+              .select("id, type")
+              .eq("id", categoryId);
 
-          if (error) {
-            console.log(error);
-          }
+            if (error) {
+              console.log(error);
+            }
 
-          if (data) {
-            return data[0];
-          }
-        });
+            if (data) {
+              return data[0];
+            }
+          });
 
-        const categories = await Promise.all(promises);
+          const categories = await Promise.all(promises);
 
-        setExpenses(
-          expenses.map((expense, index) => ({
-            ...expense,
-            category: categories[index],
-          }))
-        );
-      }
-    })();
-  }, [currentCar.id, from, to]);
+          setExpenses(
+            expenses.map((expense, index) => ({
+              ...expense,
+              category: categories[index],
+            }))
+          );
+        }
+      })();
+    } else {
+      (async () => {
+        const { data: expensesCount, error: expensesErrorCount } =
+          await supabase
+            .from("expenses")
+            .select("id")
+            .eq("car_id", currentCar.id)
+            .eq("category_id", Number(selectedCategory));
+
+        if (expensesErrorCount) {
+          console.log(expensesErrorCount);
+        }
+
+        if (expensesCount) {
+          setCount(expensesCount.length);
+        }
+
+        // return all expenses for the current car with the category type
+        const { data: expenses, error: expensesError } = await supabase
+          .from("expenses")
+          .select("*")
+          .eq("car_id", currentCar.id)
+          .eq("category_id", Number(selectedCategory))
+          .range(from, to)
+          .order("date", {
+            ascending: false,
+          });
+
+        if (expensesError) {
+          console.log(expensesError);
+        }
+
+        if (expenses) {
+          const categoryIds = expenses.map((expense) => expense.category_id);
+
+          const promises = categoryIds.map(async (categoryId) => {
+            const { data, error } = await supabase
+              .from("categories")
+              .select("id, type")
+              .eq("id", categoryId);
+
+            if (error) {
+              console.log(error);
+            }
+
+            if (data) {
+              return data[0];
+            }
+          });
+
+          const categories = await Promise.all(promises);
+
+          setExpenses(
+            expenses.map((expense, index) => ({
+              ...expense,
+              category: categories[index],
+            }))
+          );
+        }
+      })();
+    }
+  }, [currentCar.id, from, selectedCategory, to]);
 
   return (
     <BaseLayout>
@@ -101,42 +165,44 @@ const TimelinePage = () => {
 
       {/* create timeline with expenses  */}
       <div className="pb-10 lg:py-0 lg:pb-10">
-        {!currentCar.id && (
-          <p className="text-center text-gray-500">
-            You have no car selected. Please select one from the list.
-          </p>
-        )}
+        <div className="mb-8 flex items-center justify-end">
+          <select
+            className="bg-slate-400 rounded-md ml-4 mt-2 py-1 px-2 text-skin-white"
+            name="category"
+            id="category"
+            onChange={(e: any) => {
+              setSelectedCategory(e.target.value);
+            }}
+          >
+            <option value="">All</option>
+            <option value="1">Fuel</option>
+            <option value="2">Parking</option>
+            <option value="3">Maintenance</option>
+            <option value="4">Insurance</option>
+            <option value="5">Other</option>
+          </select>
 
-        {currentCar.id && expenses.length === 0 && (
-          <p className="text-center text-gray-500">
-            You have no expenses. Please add some.
-          </p>
-        )}
+          {currentCar.id && expenses.length > 0 && (
+            <button className="bg-slate-400 ml-4 mt-2 p-1  rounded-md">
+              {!open && (
+                <FiMoreVertical
+                  className="text-2xl text-skin-white cursor-pointer"
+                  onClick={() => setOpen(!open)}
+                />
+              )}
+
+              {open && (
+                <IoMdClose
+                  className="text-2xl text-skin-white cursor-pointer"
+                  onClick={() => setOpen(!open)}
+                />
+              )}
+            </button>
+          )}
+        </div>
 
         {currentCar.id && expenses.length > 0 && (
           <div>
-            <div className="mb-8 flex items-center justify-end">
-              <button
-                className={`${
-                  open ? "bg-skin-dark_blue" : "bg-slate-400"
-                } ml-4 mt-2 p-1  rounded-md`}
-              >
-                {!open && (
-                  <FiMoreVertical
-                    className="text-2xl text-skin-white cursor-pointer"
-                    onClick={() => setOpen(!open)}
-                  />
-                )}
-
-                {open && (
-                  <IoMdClose
-                    className="text-2xl text-skin-white cursor-pointer"
-                    onClick={() => setOpen(!open)}
-                  />
-                )}
-              </button>
-            </div>
-
             <Timeline expenses={expenses} open={open} />
 
             <div className="mt-8">
@@ -161,6 +227,18 @@ const TimelinePage = () => {
           </div>
         )}
       </div>
+
+      {!currentCar.id && (
+        <p className="text-center text-gray-500">
+          You have no car selected. Please select one from the list.
+        </p>
+      )}
+
+      {currentCar.id && expenses.length === 0 && (
+        <p className="text-center text-gray-500 ">
+          You have no expenses. Please add some.
+        </p>
+      )}
 
       <SpeedDialTooltipOpen />
     </BaseLayout>
