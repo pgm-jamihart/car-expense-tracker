@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { PrimaryButton } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";
@@ -7,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as paths from "../routes";
 import { PageTitle } from "../components";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BsChevronRight } from "react-icons/bs";
 
 const Garage = () => {
   const auth = useAuth();
@@ -62,7 +62,7 @@ const Garage = () => {
               <div>
                 <img
                   className="rounded-lg h-20 mr-4"
-                  src="https://via.placeholder.com/150"
+                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
                   alt="car"
                 />
               </div>
@@ -71,7 +71,7 @@ const Garage = () => {
                 <h3 className="text-lg">{car.model}</h3>
               </div>
               <div className="ml-auto">
-                <div className="w-10 h-10 bg-skin-white rounded-full"></div>
+                <BsChevronRight className="shadow-lg p-2 w-10 h-10 rounded-full bg-skin-white text-skin-blue text-xl" />
               </div>
             </Link>
           ))}

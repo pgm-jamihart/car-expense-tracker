@@ -19,7 +19,6 @@ const SignIn = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   return (
     <div className="md:flex h-screen bg-skin-light-gray">
@@ -51,12 +50,7 @@ const SignIn = () => {
                   setSubmitting(true);
 
                   auth.signIn(values.email, values.password);
-
-                  if (auth.error) {
-                    setError(auth.error);
-                  }
                 } catch (error: any) {
-                  setError(error.message);
                   setSubmitting(false);
                 } finally {
                   setSubmitting(false);
@@ -65,7 +59,9 @@ const SignIn = () => {
             >
               {({ handleSubmit, isSubmitting }) => (
                 <form onSubmit={handleSubmit} className="w-full">
-                  {error && <ErrorBanner error={error} />}
+                  {auth.errorMessage && (
+                    <ErrorBanner error={auth.errorMessage} />
+                  )}
                   {isSubmitting ? (
                     "Loading"
                   ) : (

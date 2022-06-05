@@ -12,24 +12,21 @@ import {
   CarDetailPage,
   Dashboard,
   Garage,
-  HomePage,
   Landing,
   Places,
   Profile,
-  Settings,
   SignIn,
   SignUp,
   TimelinePage,
   UpdateExpense,
 } from "./Pages";
 
-import { useAuth } from "./context/AuthProvider";
 import { LoadScript } from "@react-google-maps/api";
 
 export default function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
-  const auth = useAuth();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -39,15 +36,16 @@ export default function App() {
         if (session === null) {
           navigate("/");
         } else {
+          navigate(paths.DASHBOARD);
           setSession(session);
-          navigate(paths.HOME);
 
           (async () => {
-            if (auth.user) {
+            if (session.user) {
+              console.log(session.user);
               const { data, error } = await supabase
                 .from("cars")
                 .select("*")
-                .eq("user_id", auth.user.id)
+                .eq("user_id", session.user.id)
                 .limit(1)
                 .single();
 
@@ -66,13 +64,15 @@ export default function App() {
                     mileage: data.mileage,
                   })
                 );
+
+                setLoggedIn(true);
               }
             }
           })();
         }
       }
     );
-  }, [auth.user, navigate]);
+  }, [navigate]);
 
   return (
     <LoadScript
@@ -86,11 +86,12 @@ export default function App() {
         {session && (
           <>
             <Route path={paths.ACCOUNT} element={<Account />} />
-            <Route path={paths.HOME} element={<HomePage />} />
-            <Route path={paths.DASHBOARD} element={<Dashboard />} />
+            <Route
+              path={paths.DASHBOARD}
+              element={<Dashboard loggedIn={loggedIn} />}
+            />
             <Route path={paths.TIMELINE} element={<TimelinePage />} />
             <Route path={paths.PLACES} element={<Places />} />
-            <Route path={paths.SETTINGS} element={<Settings />} />
             <Route path={paths.PROFILE} element={<Profile />} />
             <Route path={paths.GARAGE} element={<Garage />} />
             <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />

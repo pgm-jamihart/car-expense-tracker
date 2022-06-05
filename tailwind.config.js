@@ -70,6 +70,23 @@ module.exports = {
           dark_green: "var(--color-dark-green)",
         },
       },
+      colors: {
+        skin: {
+          black: "var(--color-black)",
+          light_blue: "var(--color-light-blue)",
+          blue: "var(--color-blue)",
+          dark_blue: "var(--color-dark-blue)",
+          light_gray: "var(--color-light-gray)",
+          gray: "var(--color-gray)",
+          dark_gray: "var(--color-dark-gray)",
+          white: "var(--color-white)",
+          red: "var(--color-red)",
+          yellow: "var(--color-yellow)",
+          darker: "var(--color-darker)",
+          light_green: "var(--color-light-green)",
+          dark_green: "var(--color-dark-green)",
+        },
+      },
     },
     minWidth: {
       18: "18rem",

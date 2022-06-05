@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, Field } from "formik";
 
 import BaseLayout from "../Layouts/BaseLayout";
 import { useAuth } from "../context/AuthProvider";
-import { ErrorBanner, TextInput } from "../components/Form";
+import {
+  ErrorBanner,
+  SelectInput,
+  SelectInputAddCar,
+  TextInput,
+} from "../components/Form";
 import { PrimaryButton } from "../components/Buttons";
 import { supabase } from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +27,70 @@ const AddCar = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const [error, setError] = useState("");
+  const [carBrands, setCarBrands] = useState([]);
+  const [currentCarValue, setCurrentCarValue] = useState("");
+  const [carModels, setCarModels] = useState([]);
+
+  const apikey: string | undefined = process.env.REACT_APP_RAPID_API_KEY;
+
+  useEffect(() => {
+    (async () => {
+      // fetch data with fetch api
+
+      try {
+        const response = await fetch(
+          "https://car-data.p.rapidapi.com/cars/makes",
+          {
+            method: "GET",
+            // @ts-expect-error
+            headers: {
+              "X-RapidAPI-Host": "car-data.p.rapidapi.com",
+              "X-RapidAPI-Key": apikey,
+            },
+          }
+        );
+
+        const data = await response.json();
+        setCarBrands(data.message ? null : data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [apikey]);
+
+  useEffect(() => {
+    if (currentCarValue) {
+      (async () => {
+        // fetch data with fetch api
+
+        try {
+          const response = await fetch(
+            "https://car-data.p.rapidapi.com/cars?limit=50&page=0&make=" +
+              currentCarValue,
+            {
+              method: "GET",
+              // @ts-expect-error
+              headers: {
+                "X-RapidAPI-Host": "car-data.p.rapidapi.com",
+                "X-RapidAPI-Key": apikey,
+              },
+            }
+          );
+
+          const data = await response.json();
+          console.log(data);
+          const models = data.map((car: any) => car.model);
+
+          // filter out duplicates
+          const uniqueModels: any = [...new Set(models)];
+
+          setCarModels(uniqueModels);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [apikey, currentCarValue]);
 
   return (
     <BaseLayout>
@@ -71,7 +140,7 @@ const AddCar = () => {
           }
         }}
       >
-        {({ handleSubmit, isSubmitting }) => (
+        {({ handleSubmit, isSubmitting, values }) => (
           <form onSubmit={handleSubmit} className="flex flex-col my-0 mx-auto ">
             {error && <ErrorBanner error={error} />}
             {isSubmitting ? (
@@ -83,19 +152,22 @@ const AddCar = () => {
             ) : (
               <div className="mb-4">
                 <Field
-                  type="input"
-                  as={TextInput}
+                  as={SelectInputAddCar}
                   name="brand"
                   placeholder="Brand"
                   label="Brand"
+                  options={carBrands ? carBrands : []}
+                  currentCarValue={currentCarValue}
+                  setCurrentCarValue={setCurrentCarValue}
                 />
 
                 <Field
-                  type="input"
-                  as={TextInput}
+                  as={SelectInput}
                   name="model"
                   placeholder="Model"
                   label="Model"
+                  options={carModels ? carModels : []}
+                  disabled={!currentCarValue}
                 />
 
                 <Field

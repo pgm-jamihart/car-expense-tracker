@@ -2,7 +2,7 @@ import React from "react";
 import { BiErrorAlt } from "react-icons/bi";
 
 interface Props {
-  error: string;
+  error: string | null | undefined;
 }
 
 const ErrorBanner = ({ error }: Props) => {

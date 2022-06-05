@@ -40,7 +40,7 @@ const TextInput = ({
 
   return (
     <>
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <label htmlFor={name} className="font-bold text-base">
           {label}
         </label>

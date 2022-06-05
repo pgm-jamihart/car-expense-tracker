@@ -10,6 +10,8 @@ import ErrorBanner from "./ErrorBanner";
 import { PrimaryButton } from "../Buttons";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
+import { MdEuroSymbol } from "react-icons/md";
+import { BiMicrophone } from "react-icons/bi";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -124,10 +126,15 @@ const FuelExpenseForm = () => {
         <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
 
-          <small className="bg-skin-light_blue pl-4 text-skin-dark_blue py-1 rounded-sm mb-4">
-            Example: Add fuel expense for 50 euro's, type of fuel benzine for
-            tomorrow.
-          </small>
+          <div className=" flex items-center bg-skin-light_blue pl-4 text-skin-dark_blue py-1 rounded-sm mb-4">
+            <span className="flex items-center justify-center mr-2">
+              <BiMicrophone />
+            </span>
+            <span>
+              Example: Add expense for 50 euro's, type of fuel benzine for
+              tomorrow.
+            </span>
+          </div>
 
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
@@ -139,7 +146,24 @@ const FuelExpenseForm = () => {
               options={["Diesel", "Benzine", "LPG", "Electric"]}
             />
 
-            <Field name="total" as={TextInput} type="number" label="Total" />
+            <div>
+              <label className="font-bold text-base" htmlFor="total">
+                Total
+              </label>
+
+              <div className="flex items-start">
+                <span className="h-10 w-10 mt-2 mr-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                  <MdEuroSymbol className="text-2xl text-skin-blue" />
+                </span>
+
+                <Field
+                  name="total"
+                  as={TextInput}
+                  type="number"
+                  placeholder="Total"
+                />
+              </div>
+            </div>
 
             <div className="mt-8">
               <h3 className="mb-4 bg-skin-gray p-2 rounded-sm text-skin-white text-center">
@@ -151,6 +175,7 @@ const FuelExpenseForm = () => {
                 as={TextInput}
                 type="text"
                 label="Name (optional)"
+                placeholder="Name Gas Station"
               />
 
               <Field
@@ -158,6 +183,7 @@ const FuelExpenseForm = () => {
                 as={TextInput}
                 type="text"
                 label="Location (optional)"
+                placeholder="Location Gas Station"
               />
             </div>
           </div>

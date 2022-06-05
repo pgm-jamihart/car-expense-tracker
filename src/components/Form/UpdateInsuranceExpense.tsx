@@ -8,6 +8,7 @@ import ErrorBanner from "./ErrorBanner";
 import { PrimaryButton } from "../Buttons";
 
 import TextInput from "./TextInput";
+import { MdEuroSymbol } from "react-icons/md";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -74,21 +75,46 @@ const UpdateInsuranceExpense = ({ expense }: Props) => {
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
 
-            <Field name="total" as={TextInput} type="number" label="Total" />
+            <div>
+              <label className="font-bold text-base" htmlFor="total">
+                Total
+              </label>
 
-            <Field
-              name="type_insurance"
-              as={TextInput}
-              type="text"
-              label="Type of insurance (optional)"
-            />
+              <div className="flex items-start">
+                <span className="h-10 w-10 mt-2 mr-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                  <MdEuroSymbol className="text-2xl text-skin-blue" />
+                </span>
 
-            <Field
-              name="insurance_company"
-              as={TextInput}
-              type="text"
-              label="Insurance company (optional)"
-            />
+                <Field
+                  name="total"
+                  as={TextInput}
+                  type="number"
+                  placeholder="Total"
+                />
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="mb-4 bg-skin-gray p-2 rounded-sm text-skin-white text-center">
+                Insurance
+              </h3>
+
+              <Field
+                name="type_insurance"
+                as={TextInput}
+                type="text"
+                label="Type of insurance (optional)"
+                placeholder="Type of insurance"
+              />
+
+              <Field
+                name="insurance_company"
+                as={TextInput}
+                type="text"
+                label="Insurance company (optional)"
+                placeholder="Insurance company"
+              />
+            </div>
           </div>
 
           <PrimaryButton

@@ -8,6 +8,7 @@ import ErrorBanner from "./ErrorBanner";
 import { PrimaryButton } from "../Buttons";
 
 import TextInput from "./TextInput";
+import { MdEuroSymbol } from "react-icons/md";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -77,7 +78,24 @@ const UpdateParkingExpense = ({ expense }: Props) => {
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />
 
-            <Field name="total" as={TextInput} type="number" label="Total" />
+            <div>
+              <label className="font-bold text-base" htmlFor="total">
+                Total
+              </label>
+
+              <div className="flex items-start">
+                <span className="h-10 w-10 mt-2 mr-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                  <MdEuroSymbol className="text-2xl text-skin-blue" />
+                </span>
+
+                <Field
+                  name="total"
+                  as={TextInput}
+                  type="number"
+                  placeholder="Total"
+                />
+              </div>
+            </div>
 
             <div className="mt-8">
               <h3 className="mb-4 bg-skin-gray p-2 rounded-sm text-skin-white text-center">
@@ -89,6 +107,7 @@ const UpdateParkingExpense = ({ expense }: Props) => {
                 as={TextInput}
                 type="text"
                 label="Name (optional)"
+                placeholder="Name parking"
               />
 
               <Field
@@ -96,6 +115,7 @@ const UpdateParkingExpense = ({ expense }: Props) => {
                 as={TextInput}
                 type="text"
                 label="Location (optional)"
+                placeholder="Location parking"
               />
             </div>
           </div>

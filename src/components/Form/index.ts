@@ -11,6 +11,7 @@ import UpdateParkingExpense from "./UpdateParkingExpense";
 import UpdateMaintenanceExpense from "./UpdateMaintenanceExpense";
 import UpdateInsuranceExpense from "./UpdateInsuranceExpense";
 import UpdateOtherExpense from "./UpdateOtherExpense";
+import SelectInputAddCar from "./SelectInputAddCar";
 
 export {
   TextInput,
@@ -26,4 +27,5 @@ export {
   UpdateMaintenanceExpense,
   UpdateInsuranceExpense,
   UpdateOtherExpense,
+  SelectInputAddCar,
 };
