@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import * as paths from "../../routes";
 
 import { MdDashboard, MdOutlineKeyboardBackspace } from "react-icons/md";
@@ -7,13 +7,28 @@ import { CgMenuLeft } from "react-icons/cg";
 import { FaCar, FaHistory, FaSearchLocation } from "react-icons/fa";
 import { useAuth } from "../../context/AuthProvider";
 import { BsChevronRight } from "react-icons/bs";
+import { supabase } from "../../config/supabaseClient";
+import { HiOutlinePhotograph } from "react-icons/hi";
 
-const NavBar = () => {
+interface Props {
+  loggedIn?: boolean;
+}
+
+const NavBar = ({ loggedIn }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = useAuth();
   const [active, setActive] = useState<number | undefined>();
-
+  const [currentCar, setCurrentCar] = useState<any>({});
   let location = useLocation();
+  const [username, setUsername] = useState(null);
+  const [avatar_url, setAvatarUrl] = useState(null);
+
+  useEffect(() => {
+    const carId = localStorage.getItem("car");
+    if (carId) {
+      setCurrentCar(JSON.parse(carId));
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -38,6 +53,31 @@ const NavBar = () => {
     }
   }, [location]);
 
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+        let { data, error, status } = await supabase
+          .from("profiles")
+          .select(`username, website, avatar_url`)
+          .eq("id", auth.user!.id)
+          .single();
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (data) {
+          setUsername(data.username);
+          setAvatarUrl(data.avatar_url);
+        }
+      } catch (error: any) {
+        alert(error.message);
+      }
+    };
+
+    getProfile();
+  }, [auth]);
+
   const navData = [
     {
       name: "Dashboard",
@@ -60,6 +100,32 @@ const NavBar = () => {
       path: paths.GARAGE,
     },
   ];
+
+  const ImageComponent = () => {
+    if (avatar_url) {
+      return (
+        <img
+          src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${avatar_url}`}
+          alt="avatar"
+          className="mr-4 w-14 h-14 object-cover min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] rounded-full bg-skin-blue"
+        />
+      );
+    } else if (auth?.user?.user_metadata.avatar_url) {
+      return (
+        <img
+          className="bg-skin-blue w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem]"
+          src={auth?.user?.user_metadata.avatar_url}
+          alt="profile"
+        />
+      );
+    } else {
+      return (
+        <div className="flex items-center justify-center w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] bg-skin-dark_blue">
+          <HiOutlinePhotograph className="text-2xl" />
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -88,7 +154,7 @@ const NavBar = () => {
             <h1 className="text-3xl font-extrabold">Car expense</h1>
           </div>
 
-          <ul className="mt-6 border-t-2 border-skin-dark_gray pt-4">
+          <ul className="mt-6 border-b-2 pb-4 border-t-2 border-skin-dark_gray pt-4">
             {navData.map((item, index) => (
               <li key={item.name}>
                 <Link
@@ -107,38 +173,58 @@ const NavBar = () => {
             ))}
           </ul>
 
+          {currentCar.id ? (
+            <div className="p-2">
+              <h3 className="font-bold text-base text-skin-light_gray">
+                Selected car
+              </h3>
+              <div className="flex items-center mt-4">
+                <img
+                  className="rounded-lg h-12 mr-4"
+                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
+                  alt="car"
+                />
+
+                <ul>
+                  <li className="">{currentCar.brand}</li>
+                  <li className="">{currentCar.model}</li>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div className="p-2 mt-2">
+              <Link to={paths.ADD_CAR}>
+                <div className="bg-skin-blue text-skin-light_white text-base text-center py-2 px-4 border-2 border-transparent hover:border-skin-blue rounded-sm hover:bg-slate-900 hover:shadow-[0_0px_0px_5px_#3504fb90] transition-all duration-200 ease-in-out">
+                  Add your first car
+                </div>
+              </Link>
+            </div>
+          )}
+
           <Link
             to={paths.ACCOUNT}
             className="absolute bottom-4 left-0 w-full p-2 "
           >
-            <div className="flex items-center  bg-slate-800 p-4 rounded-md border-2 border-slate-500/50 hover:border-skin-blue transition-all ease-in-out duration-200 shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900">
-              {auth?.user?.user_metadata.avatar_url && (
-                <img
-                  className="w-12 h-12 mr-4 border-skin-blue border-2 rounded-full p-2"
-                  src={auth?.user?.user_metadata.avatar_url}
-                  alt="profile"
-                />
-              )}
+            <div className="flex   bg-slate-800 p-4 rounded-md border-2 border-slate-500/50 hover:border-skin-blue transition-all ease-in-out duration-200 shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900">
+              <ImageComponent />
 
               <div className="flex justify-between w-full">
-                <div
-                  className={`${
-                    auth?.user?.user_metadata.email
-                      ? "block"
-                      : "flex items-center"
-                  }`}
-                >
+                <div className="block">
                   <span
-                    className={`${
-                      auth?.user?.user_metadata.avatar_url ? "w-36" : "w-full"
-                    } text-skin-white font-semibold block truncate`}
+                    className={`w-36 text-skin-white font-semibold block truncate`}
                   >
-                    {auth?.user?.user_metadata.full_name || auth?.user?.email}
+                    {username ||
+                      auth?.user?.user_metadata.full_name ||
+                      auth?.user?.email}
                   </span>
 
-                  {auth?.user?.user_metadata.email && (
+                  {auth?.user?.user_metadata.email ? (
                     <span className="block text-xs text-skin-light_gray truncate w-36">
                       {auth?.user?.user_metadata.email}
+                    </span>
+                  ) : (
+                    <span className="block text-xs text-skin-light_gray truncate w-36">
+                      {auth?.user?.email}
                     </span>
                   )}
                 </div>

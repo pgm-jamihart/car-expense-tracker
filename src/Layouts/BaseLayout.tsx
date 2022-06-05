@@ -3,12 +3,13 @@ import { NavBar } from "../components/NavBar";
 
 interface Props {
   children: React.ReactNode;
+  loggedIn?: boolean;
 }
 
-const BaseLayout = ({ children }: Props) => {
+const BaseLayout = ({ children, loggedIn }: Props) => {
   return (
     <div className="flex">
-      <NavBar />
+      <NavBar loggedIn={loggedIn} />
       <div className="px-6 w-full h-screen relative overflow-y-auto">
         {children}
       </div>

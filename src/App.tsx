@@ -12,18 +12,15 @@ import {
   CarDetailPage,
   Dashboard,
   Garage,
-  HomePage,
   Landing,
   Places,
   Profile,
-  Settings,
   SignIn,
   SignUp,
   TimelinePage,
   UpdateExpense,
 } from "./Pages";
 
-import { useAuth } from "./context/AuthProvider";
 import { LoadScript } from "@react-google-maps/api";
 
 export default function App() {
