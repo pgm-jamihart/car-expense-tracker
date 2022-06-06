@@ -44,7 +44,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
   return (
     <div className="">
       <div className="flex items-baseline">
-        <h1>{currentCar.brand}</h1>
+        <h1 className="text-skin-gray">{currentCar.brand}</h1>
         <span className="ml-2 text-xl font-light md:italic block md:inline ">
           {currentCar.model}
         </span>
