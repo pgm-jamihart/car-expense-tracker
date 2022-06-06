@@ -11,6 +11,7 @@ import {
   MaintenanceExpenseForm,
   OtherExpenseForm,
   ParkingExpenseForm,
+  ReminderFrom,
 } from "../components/Form";
 
 const AddExpense = () => {
@@ -28,12 +29,16 @@ const AddExpense = () => {
         return <ParkingExpenseForm />;
       case "Other":
         return <OtherExpenseForm />;
+      case "Reminder":
+        return <ReminderFrom />;
     }
   };
 
   return (
     <BaseLayout>
-      <PageTitle>{`Add ${location.state.action} expense`}</PageTitle>
+      <PageTitle>{`Add ${location.state.action} ${
+        location.state.action === "Reminder" ? "" : "expense"
+      }`}</PageTitle>
 
       <div className="z-[101] bg-skin-dark_gray relative pl-2 rounded-sm">
         <BigTranscript

@@ -167,7 +167,7 @@ const TimelinePage = () => {
       <div className="pb-10 lg:py-0 lg:pb-10">
         <div className="mb-8 flex items-center justify-end">
           <select
-            className="bg-slate-400 rounded-md ml-4 mt-2 py-1 px-2 text-skin-white"
+            className="bg-skin-black rounded-md ml-4 mt-2 py-1 px-2 text-skin-white cursor-pointer hover:bg-skin-dark_gray transition-all duration-200 ease-in-out"
             name="category"
             id="category"
             onChange={(e: any) => {
@@ -183,7 +183,7 @@ const TimelinePage = () => {
           </select>
 
           {currentCar.id && expenses.length > 0 && (
-            <button className="bg-slate-400 ml-4 mt-2 p-1  rounded-md">
+            <button className="bg-slate-400 ml-4 mt-2 p-1 hover:bg-skin-gray rounded-md transition-all duration-200 ease-in-out">
               {!open && (
                 <FiMoreVertical
                   className="text-2xl text-skin-white cursor-pointer"

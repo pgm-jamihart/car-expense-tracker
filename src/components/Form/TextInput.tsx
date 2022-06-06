@@ -10,6 +10,7 @@ interface TextInputProps {
   type?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  min?: string;
 }
 
 const TextInput = ({
@@ -20,6 +21,7 @@ const TextInput = ({
   type,
   onChange,
   onBlur,
+  min,
 }: TextInputProps) => {
   const [currentValue, setCurrentValue] = useState(value);
   const [field, meta] = useField({
@@ -60,6 +62,7 @@ const TextInput = ({
           }}
           onBlur={onBlur}
           autoComplete="off"
+          min={min}
         />
 
         {errorText && <ErrorMessage errorText={errorText} />}

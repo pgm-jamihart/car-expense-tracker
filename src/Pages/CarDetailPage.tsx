@@ -61,7 +61,7 @@ const CarDetailPage = () => {
     brand: string,
     model: string,
     year: string,
-    mileage: string
+    mileage: number
   ) => {
     localStorage.setItem(
       "car",
@@ -124,6 +124,25 @@ const CarDetailPage = () => {
                 if (error) {
                   setError(error.message);
                 } else {
+                  const d = new Date();
+                  const mm =
+                    d.getMonth() + 1 < 10
+                      ? "0" + (d.getMonth() + 1)
+                      : d.getMonth() + 1;
+                  const dd = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+                  const yyyy = d.getFullYear();
+                  const today = `${yyyy}-${mm}-${dd}`;
+
+                  const { data: mileageData, error: mileageError } =
+                    await supabase.from("mileage").insert({
+                      car_id: carId,
+                      mileage: values.mileage,
+                      date: today,
+                    });
+                  if (mileageError) {
+                    console.log(mileageError);
+                  }
+
                   localStorage.setItem(
                     "car",
                     JSON.stringify({
@@ -169,7 +188,7 @@ const CarDetailPage = () => {
 
                       <div className="flex items-start">
                         <Field
-                          type="input"
+                          type="number"
                           as={TextInput}
                           name="year"
                           placeholder="Year"
@@ -187,7 +206,7 @@ const CarDetailPage = () => {
 
                       <div className="flex items-start">
                         <Field
-                          type="input"
+                          type="number"
                           as={TextInput}
                           name="mileage"
                           placeholder="Mileage"

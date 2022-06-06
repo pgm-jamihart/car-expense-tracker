@@ -39,7 +39,7 @@ const DonutChart = ({ labels, chartData, active }: DonutChartProps) => {
     >
       <h3 className="my-4 ml-4">Expenses in Total</h3>
       <div
-        className="h-96 pt-8 md:pt-0 bg-skin-light_blue w-full md:flex md:items-center md:justify-center"
+        className="h-96 pt-8 md:pt-0 bg-skin-light_blue rounded-md w-full md:flex md:items-center md:justify-center"
         //md:max-w-screen-sm md:mr-4 mb-4 md:mb-0
       >
         <Chart
