@@ -4,7 +4,12 @@ import { PageTitle } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
 import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
-import { BarChart, DonutChart, SparkLineChart } from "../components/Dashboard";
+import {
+  BarChart,
+  CarDetails,
+  DonutChart,
+  SparkLineChart,
+} from "../components/Dashboard";
 
 interface Props {
   loggedIn: boolean;
@@ -84,12 +89,18 @@ const Dashboard = ({ loggedIn }: Props) => {
 
         {currentCar.id && chartData.length > 0 && (
           <div>
-            <div className="mb-10 shadow-lg py-2 border border-slate-200">
-              <SparkLineChart
-                totalExpenses={totalExpenses}
-                carIdNumber={currentCar.id}
-              />
+            <div className="flex flex-col md:flex-row mb-10">
+              <div className="mb-5 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
+                <CarDetails currentCar={currentCar} />
+              </div>
+              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3">
+                <SparkLineChart
+                  totalExpenses={totalExpenses}
+                  carIdNumber={currentCar.id}
+                />
+              </div>
             </div>
+
             <div className="min-h-[24rem] flex item-start md:justify-start justify-center w-full flex-wrap">
               <div className="lg:hidden">
                 <button className="mr-8" onClick={() => setActive(true)}>

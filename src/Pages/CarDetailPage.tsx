@@ -61,7 +61,7 @@ const CarDetailPage = () => {
     brand: string,
     model: string,
     year: string,
-    mileage: string
+    mileage: number
   ) => {
     localStorage.setItem(
       "car",
@@ -169,7 +169,7 @@ const CarDetailPage = () => {
 
                       <div className="flex items-start">
                         <Field
-                          type="input"
+                          type="number"
                           as={TextInput}
                           name="year"
                           placeholder="Year"
@@ -187,7 +187,7 @@ const CarDetailPage = () => {
 
                       <div className="flex items-start">
                         <Field
-                          type="input"
+                          type="number"
                           as={TextInput}
                           name="mileage"
                           placeholder="Mileage"

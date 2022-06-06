@@ -54,7 +54,7 @@ const SparkLineChart = ({
       style: {
         fontSize: "24px",
         fontWeight: "bold",
-        fontFamily: "Helvetica, Arial, sans-serif",
+        fontFamily: "Open sans, Arial, sans-serif",
       },
     },
     subtitle: {
