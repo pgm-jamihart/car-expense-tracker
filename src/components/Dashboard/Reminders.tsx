@@ -76,7 +76,7 @@ const Reminders = ({ currentCarId }: Props) => {
       {reminders.length > 0 && (
         <div>
           <div className="flex justify-between items-center">
-            <h1>Reminders</h1>
+            <h1 className="mb-2 lg:mb-0">Reminders</h1>
             <button
               className="bg-skin-light_gray rounded-full p-1 hover:bg-skin-gray transition-all duration-200 ease-in-out text-skin-white"
               onClick={() => setMore(!more)}
@@ -86,7 +86,10 @@ const Reminders = ({ currentCarId }: Props) => {
           </div>
           <div className="bg-slate-200/50 border-2 border-skin-blue rounded-md px-2 py-4 max-h-[17rem] overflow-y-auto">
             {reminders?.map((reminder) => (
-              <div className="flex justify-between border-b-2 border-slate-300 pb-1 my-1">
+              <div
+                key={reminder.date}
+                className="flex justify-between border-b-2 border-slate-300 pb-1 my-1"
+              >
                 <div>
                   <span className="font-bold text-skin-black block">
                     {reminder.name}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
 
 import { PageTitle } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
@@ -11,6 +12,7 @@ import {
   Reminders,
   SparkLineChart,
 } from "../components/Dashboard";
+import { Alert } from "@mui/material";
 
 interface Props {
   loggedIn: boolean;
@@ -20,6 +22,7 @@ const Dashboard = ({ loggedIn }: Props) => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [labels, setLabels] = useState<any[]>([]);
   const [active, setActive] = useState(true);
+  const [success, setSuccess] = useState("");
   // calculate the total expenses
   const totalExpenses = chartData.reduce((acc, curr) => acc + curr, 0);
 
@@ -77,9 +80,38 @@ const Dashboard = ({ loggedIn }: Props) => {
     })();
   }, [currentCar.id]);
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSuccess("");
+  };
+
   return (
     <BaseLayout loggedIn={loggedIn}>
       <PageTitle>Dashboard</PageTitle>
+
+      {success && (
+        <Snackbar
+          open={true}
+          autoHideDuration={6000}
+          message="Note archived"
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+            variant="filled"
+          >
+            {success}
+          </Alert>
+        </Snackbar>
+      )}
 
       <div className="py-10 lg:py-0 lg:pb-10">
         {!currentCar.id && (
@@ -92,7 +124,11 @@ const Dashboard = ({ loggedIn }: Props) => {
           <div>
             <div className="flex flex-col md:flex-row mb-10">
               <div className="mb-5 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
-                <CarDetails currentCar={currentCar} />
+                <CarDetails
+                  currentCar={currentCar}
+                  setSuccess={setSuccess}
+                  success={success}
+                />
               </div>
               <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3 rounded-md">
                 <SparkLineChart
@@ -119,7 +155,7 @@ const Dashboard = ({ loggedIn }: Props) => {
               <BarChart active={active} />
             </div>
 
-            <div className="mt-10 w-1/2">
+            <div className="mt-10 w-full lg:w-1/2">
               <Reminders currentCarId={currentCar.id} />
             </div>
           </div>
