@@ -5,11 +5,12 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { MdLocalGasStation } from "react-icons/md";
 import { FaParking } from "react-icons/fa";
 import { FiTool, FiMoreVertical } from "react-icons/fi";
-import { BsShieldFillPlus } from "react-icons/bs";
+import { BsFillBellFill, BsShieldFillPlus } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
 
 const actions = [
+  { icon: <BsFillBellFill />, name: "Reminder" },
   { icon: <FiMoreVertical />, name: "Other" },
   { icon: <BsShieldFillPlus />, name: "Insurance" },
   { icon: <FiTool />, name: "Maintenance" },

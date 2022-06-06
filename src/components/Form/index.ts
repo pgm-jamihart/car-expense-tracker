@@ -12,6 +12,7 @@ import UpdateMaintenanceExpense from "./UpdateMaintenanceExpense";
 import UpdateInsuranceExpense from "./UpdateInsuranceExpense";
 import UpdateOtherExpense from "./UpdateOtherExpense";
 import SelectInputAddCar from "./SelectInputAddCar";
+import ReminderFrom from "./ReminderFrom";
 
 export {
   TextInput,
@@ -28,4 +29,5 @@ export {
   UpdateInsuranceExpense,
   UpdateOtherExpense,
   SelectInputAddCar,
+  ReminderFrom,
 };
