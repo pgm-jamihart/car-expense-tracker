@@ -170,17 +170,17 @@ const BarChart = ({ active }: BarProps) => {
   return (
     <div
       className={`${
-        !active ? "w-full lg:w-3/5 lg:px-6" : "hidden lg:block lg:w-3/5 lg:pl-6"
+        !active ? "w-full lg:w-3/5 lg:pl-6" : "hidden lg:block lg:w-3/5 lg:pl-6"
       }`}
     >
       <h3 className="my-4 ml-4">Expenses per day</h3>
       <Chart
-        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full md:h-96 rounded-md"
+        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full h-96 md:h-96 rounded-md"
         //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={optionsBar}
         series={chartDataBar}
         type="bar"
-        height={"90%"}
+        height={"80%"}
       />
     </div>
   );

@@ -9,6 +9,7 @@ import {
   BarChart,
   CarDetails,
   DonutChart,
+  MilleageChart,
   Reminders,
   SparkLineChart,
 } from "../components/Dashboard";
@@ -123,7 +124,7 @@ const Dashboard = ({ loggedIn }: Props) => {
         {currentCar.id && chartData.length > 0 && (
           <div>
             <div className="flex flex-col md:flex-row mb-10">
-              <div className="mb-5 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
+              <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
                 <CarDetails
                   currentCar={currentCar}
                   setSuccess={setSuccess}
@@ -155,8 +156,13 @@ const Dashboard = ({ loggedIn }: Props) => {
               <BarChart active={active} />
             </div>
 
-            <div className="mt-10 w-full lg:w-1/2">
-              <Reminders currentCarId={currentCar.id} />
+            <div className=" lg:flex items-start mt-10">
+              <div className="mb-10 lg:mb-0 lg:mr-4 w-full lg:w-1/2">
+                <MilleageChart currentCarId={currentCar.id} />
+              </div>
+              <div className="lg:ml-4 w-full lg:w-1/2">
+                <Reminders currentCarId={currentCar.id} />
+              </div>
             </div>
           </div>
         )}

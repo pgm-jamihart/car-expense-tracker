@@ -75,8 +75,8 @@ const Reminders = ({ currentCarId }: Props) => {
     <div>
       {reminders.length > 0 && (
         <div>
-          <div className="flex justify-between items-center">
-            <h1 className="mb-2 lg:mb-0">Reminders</h1>
+          <div className="p-4 flex justify-between items-center">
+            <h3 className=" lg:mb-0">Reminders</h3>
             <button
               className="bg-skin-light_gray rounded-full p-1 hover:bg-skin-gray transition-all duration-200 ease-in-out text-skin-white"
               onClick={() => setMore(!more)}

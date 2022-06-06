@@ -29,15 +29,14 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
         .eq("car_id", currentCar.id)
         .order("date", {
           ascending: false,
-        })
-        .single();
+        });
 
       if (error) {
         console.log(error);
       }
 
       if (data) {
-        setLastUpdated(data.date);
+        setLastUpdated(data[0].date);
       }
     })();
   }, [currentCar.id]);
@@ -90,16 +89,32 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
               const yyyy = d.getFullYear();
               const today = `${yyyy}-${mm}-${dd}`;
 
-              const { data: mileageData, error: mileageError } = await supabase
-                .from("mileage")
-                .insert({
-                  car_id: currentCar.id,
-                  mileage: values.mileage,
-                  date: today,
-                });
+              if (lastUpdated === today) {
+                const { data: updateMileage, error: updateMileageError } =
+                  await supabase
+                    .from("mileage")
+                    .update({
+                      mileage: values.mileage,
+                    })
+                    .match({
+                      car_id: currentCar.id,
+                      date: today,
+                    });
 
-              if (mileageError) {
-                setError(mileageError.message);
+                if (updateMileageError) {
+                  console.log(updateMileageError);
+                }
+              } else {
+                const { data: mileageData, error: mileageError } =
+                  await supabase.from("mileage").insert({
+                    car_id: currentCar.id,
+                    mileage: values.mileage,
+                    date: today,
+                  });
+
+                if (mileageError) {
+                  setError(mileageError.message);
+                }
               }
 
               localStorage.setItem(
