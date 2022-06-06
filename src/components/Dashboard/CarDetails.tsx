@@ -20,7 +20,7 @@ const CarDetails = ({ currentCar }: Props) => {
         </span>
       </div>
 
-      <div className="flex items-center justify-center  bg-slate-500/50 rounded-md py-2">
+      <div className="flex items-center justify-center   bg-skin-light_gray rounded-md py-2">
         <img className="w-1/2" src="./car_illustration.png" alt="car" />
       </div>
 
@@ -30,7 +30,7 @@ const CarDetails = ({ currentCar }: Props) => {
           <span className="text-4xl font-bold number">
             {currentCar.mileage}
           </span>
-          <span className="text-xs ml-2 text-skin-blue">km</span>
+          <span className="text-xs ml-1 text-skin-blue">km</span>
         </div>
       </div>
     </div>

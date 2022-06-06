@@ -8,6 +8,7 @@ import {
   BarChart,
   CarDetails,
   DonutChart,
+  Reminders,
   SparkLineChart,
 } from "../components/Dashboard";
 
@@ -93,7 +94,7 @@ const Dashboard = ({ loggedIn }: Props) => {
               <div className="mb-5 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
                 <CarDetails currentCar={currentCar} />
               </div>
-              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3">
+              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3 rounded-md">
                 <SparkLineChart
                   totalExpenses={totalExpenses}
                   carIdNumber={currentCar.id}
@@ -116,6 +117,10 @@ const Dashboard = ({ loggedIn }: Props) => {
               />
 
               <BarChart active={active} />
+            </div>
+
+            <div className="mt-10 w-1/2">
+              <Reminders currentCarId={currentCar.id} />
             </div>
           </div>
         )}
