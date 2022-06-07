@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import * as paths from "../routes";
 import { PrimaryButton } from "../components/Buttons";
-import { Devider, SignUpWithSocials } from "../components";
+import { Devider, LandingImage, SignUpWithSocials } from "../components";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -14,11 +14,7 @@ export default function Landing() {
 
   return (
     <div className="md:flex h-screen bg-skin-light_gray">
-      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 md:block">
-        <h1 className="text-3xl font-medium text-center text-skin-white">
-          Welcome to the expense car tracker app.
-        </h1>
-      </div>
+      <LandingImage />
 
       <div className="bg-skin-white rounded-t-3xl p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
         <div className="max-w-lg my-0 mx-auto">

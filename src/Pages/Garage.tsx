@@ -21,7 +21,7 @@ const Garage = () => {
     (async () => {
       let { data, error, status } = await supabase
         .from("cars")
-        .select(`id, brand, model, year, mileage`)
+        .select(`id, brand, model, year, mileage, photo_url`)
         .eq("user_id", auth.user!.id);
       if (error && status !== 406) {
         throw error;
@@ -60,11 +60,19 @@ const Garage = () => {
               to={paths.CAR_DETAIL_PAGE.replace(":id", car.id.toString())}
             >
               <div>
-                <img
-                  className="rounded-lg h-20 mr-4"
-                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
-                  alt="car"
-                />
+                {car.photo_url ? (
+                  <img
+                    className="rounded-lg h-20 mr-4"
+                    src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${car.photo_url}`}
+                    alt="car"
+                  />
+                ) : (
+                  <img
+                    className="rounded-lg h-20 mr-4 bg-skin-light_blue"
+                    src="./car_illustration.png"
+                    alt="car"
+                  />
+                )}
               </div>
               <div>
                 <h2 className="text-xl">{car.brand}</h2>

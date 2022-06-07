@@ -8,6 +8,7 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";
+import { LandingImage } from "../components";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -25,11 +26,7 @@ const SignUp = () => {
 
   return (
     <div className="md:flex h-screen bg-skin-light_gray">
-      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 hidden md:block">
-        <h1 className="text-3xl font-medium text-center text-skin-white">
-          Welcome to the expense car tracker app.
-        </h1>
-      </div>
+      <LandingImage />
 
       <div className="bg-skin-white h-full p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
         <div className="h-full flex flex-col items-center justify-center">

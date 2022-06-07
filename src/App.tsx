@@ -27,6 +27,7 @@ export default function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [carChanged, setCarChanged] = useState(false);
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -62,6 +63,7 @@ export default function App() {
                     model: data.model,
                     year: data.year,
                     mileage: data.mileage,
+                    photo_url: data.photo_url,
                   })
                 );
 
@@ -85,7 +87,7 @@ export default function App() {
       </Routes>
 
       {session && (
-        <BaseLayout loggedIn={loggedIn}>
+        <BaseLayout loggedIn={loggedIn} carChanged={carChanged}>
           <Routes>
             <Route path={paths.ACCOUNT} element={<Account />} />
             <Route
@@ -95,7 +97,15 @@ export default function App() {
             <Route path={paths.TIMELINE} element={<TimelinePage />} />
             <Route path={paths.PLACES} element={<Places />} />
             <Route path={paths.GARAGE} element={<Garage />} />
-            <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
+            <Route
+              path={paths.CAR_DETAIL_PAGE}
+              element={
+                <CarDetailPage
+                  carChanged={carChanged}
+                  setCarChanged={setCarChanged}
+                />
+              }
+            />
             <Route path={paths.ADD_CAR} element={<AddCar />} />
             <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
             <Route path={paths.UPDATE_EXPENSE} element={<UpdateExpense />} />

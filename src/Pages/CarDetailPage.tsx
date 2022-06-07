@@ -9,17 +9,28 @@ import BaseLayout from "../Layouts/BaseLayout";
 import * as paths from "../routes";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { AiOutlineEdit } from "react-icons/ai";
+import { useAuth } from "../context/AuthProvider";
+import { IoMdClose } from "react-icons/io";
+
+interface Props {
+  setCarChanged: (value: boolean) => void;
+  carChanged: boolean;
+}
 
 const validationSchema = Yup.object().shape({
   year: Yup.number().required().label("Year"),
   mileage: Yup.number().required().label("Mileage"),
 });
 
-const CarDetailPage = () => {
+const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
   const navigate = useNavigate();
   let { id } = useParams<{ id: string }>();
   const [data, setData] = useState<any[]>([]);
   const [error, setError] = useState("");
+  const [photo_url, setPhoto_url] = useState("");
+  const [imageURI, setImageURI] = useState(null);
+  const [editImage, setEditImage] = useState(false);
+  const auth = useAuth();
 
   const carId = Number(id);
 
@@ -27,7 +38,7 @@ const CarDetailPage = () => {
     (async () => {
       const { data, error } = await supabase
         .from("cars")
-        .select("id, brand, model, year, mileage")
+        .select("id, brand, model, year, mileage, photo_url")
         .eq("id", carId);
       if (error) {
         throw error;
@@ -35,6 +46,7 @@ const CarDetailPage = () => {
 
       if (data) {
         setData(data);
+        setPhoto_url(data[0].photo_url);
       }
     })();
   }, [carId]);
@@ -71,10 +83,48 @@ const CarDetailPage = () => {
         model: model,
         year: year,
         mileage: mileage,
+        photo_url: photo_url,
       })
     );
+
+    setCarChanged(!carChanged);
+
     navigate(paths.DASHBOARD);
   };
+
+  const handleImageUpload = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    let car_image = "";
+
+    if (imageURI) {
+      const { data, error } = await supabase.storage
+        .from("cars")
+        .upload(
+          `${auth.user?.id}/${Date.now() + "_" + carId}.png`,
+          imageURI || ""
+        );
+
+      if (error) {
+        console.log(error);
+      }
+
+      if (data) {
+        setPhoto_url(data.Key);
+        car_image = data.Key;
+      }
+
+      const { data: carData, error: carError } = await supabase
+        .from("cars")
+        .update({
+          photo_url: car_image,
+        })
+        .match({
+          id: carId,
+        });
+    }
+  };
+
+  console.log("data", photo_url);
 
   return (
     <>
@@ -102,136 +152,203 @@ const CarDetailPage = () => {
             Select
           </button>
 
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              year: data[0].year || "",
-              mileage: data[0].mileage || "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-              try {
-                setSubmitting(true);
+          <div className="lg:flex lg:items-center mt-8">
+            <div className="lg:w-1/2 relative mt-8 lg:mt-0 lg:mr-8 mb-4">
+              <div className="flex justify-center">
+                <button
+                  className="absolute -top-4 right-1/2 translate-x-24 lg:translate-x-0 lg:-right-3 bg-skin-blue rounded-full p-2 hover:bg-slate-800 transition-all duration-200 ease-in-out"
+                  onClick={() => {
+                    setEditImage(!editImage);
+                  }}
+                >
+                  {editImage ? (
+                    <IoMdClose className="text-skin-white text-2xl" />
+                  ) : (
+                    <AiOutlineEdit className="text-skin-white text-2xl" />
+                  )}
+                </button>
 
-                const { data, error } = await supabase
-                  .from("cars")
-                  .update({
-                    year: values.year,
-                    mileage: values.mileage,
-                  })
-                  .match({ id: carId });
+                {photo_url ? (
+                  <img
+                    src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${photo_url}`}
+                    alt="car"
+                    className="lg:w-full lg:max-h-[17rem] w-44 h-full max-h-[10rem] object-cover rounded-md bg-skin-black"
+                  />
+                ) : (
+                  <img
+                    src="../car_illustration.png"
+                    alt="car fallback"
+                    className="bg-skin-light_blue lg:w-full lg:max-h-[17rem] w-44 h-full max-h-[10rem] object-cover rounded-md"
+                  />
+                )}
+              </div>
+            </div>
 
-                if (error) {
-                  setError(error.message);
-                } else {
-                  const d = new Date();
-                  const mm =
-                    d.getMonth() + 1 < 10
-                      ? "0" + (d.getMonth() + 1)
-                      : d.getMonth() + 1;
-                  const dd = d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
-                  const yyyy = d.getFullYear();
-                  const today = `${yyyy}-${mm}-${dd}`;
+            {editImage && (
+              <form
+                onSubmit={handleImageUpload}
+                className={`mb-5 flex justify-center lg:justify-start lg:flex-col-reverse flex-wrap lg:absolute ${
+                  imageURI ? "bottom-[22%]" : "bottom-[32%]"
+                } left-6 lg:w-[30%]`}
+              >
+                {imageURI && (
+                  <PrimaryButton
+                    type="submit"
+                    className="bg-skin-dark_blue w-32 lg:w-full !py-2 lg:mt-4 mb-4"
+                  >
+                    Upload Image
+                  </PrimaryButton>
+                )}
 
-                  const { data: mileageData, error: mileageError } =
-                    await supabase.from("mileage").insert({
-                      car_id: carId,
-                      mileage: values.mileage,
-                      date: today,
-                    });
-                  if (mileageError) {
-                    console.log(mileageError);
-                  }
+                <div className="flex items-center justify-center w-full lg:block">
+                  <input
+                    className=" bg-skin-light_gray rounded-md p-2 w-full border-none text-skin-white"
+                    type="file"
+                    id="photo"
+                    name="photo"
+                    onChange={(e: any) => setImageURI(e.target.files[0])}
+                    accept="image/*"
+                  />
+                </div>
+              </form>
+            )}
 
-                  localStorage.setItem(
-                    "car",
-                    JSON.stringify({
-                      id: data[0].id,
-                      brand: data[0].brand,
-                      model: data[0].model,
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                year: data[0].year || "",
+                mileage: data[0].mileage || "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={async (values, { setSubmitting }) => {
+                try {
+                  setSubmitting(true);
+
+                  const { data, error } = await supabase
+                    .from("cars")
+                    .update({
                       year: values.year,
                       mileage: values.mileage,
                     })
-                  );
+                    .match({ id: carId });
 
-                  navigate(paths.GARAGE);
+                  if (error) {
+                    setError(error.message);
+                  } else {
+                    const d = new Date();
+                    const mm =
+                      d.getMonth() + 1 < 10
+                        ? "0" + (d.getMonth() + 1)
+                        : d.getMonth() + 1;
+                    const dd =
+                      d.getDate() < 10 ? "0" + d.getDate() : d.getDate();
+                    const yyyy = d.getFullYear();
+                    const today = `${yyyy}-${mm}-${dd}`;
+
+                    const { data: mileageData, error: mileageError } =
+                      await supabase.from("mileage").insert({
+                        car_id: carId,
+                        mileage: values.mileage,
+                        date: today,
+                      });
+                    if (mileageError) {
+                      console.log(mileageError);
+                    }
+
+                    localStorage.setItem(
+                      "car",
+                      JSON.stringify({
+                        id: data[0].id,
+                        brand: data[0].brand,
+                        model: data[0].model,
+                        year: values.year,
+                        mileage: values.mileage,
+                        photo_url: data[0].photo_url,
+                      })
+                    );
+
+                    navigate(paths.GARAGE);
+                  }
+                } catch (error: any) {
+                  setError(error.message);
+                  setSubmitting(false);
+                } finally {
+                  setSubmitting(false);
                 }
-              } catch (error: any) {
-                setError(error.message);
-                setSubmitting(false);
-              } finally {
-                setSubmitting(false);
-              }
-            }}
-          >
-            {({ handleSubmit, isSubmitting, values }) => (
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col my-0 mx-auto "
-              >
-                {error && <ErrorBanner error={error} />}
-                {isSubmitting ? (
-                  <div className="text-center my-6">
-                    <div
-                      className="spinner-border text-skin-yellow"
-                      role="status"
+              }}
+            >
+              {({ handleSubmit, isSubmitting, values }) => (
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col my-0 mx-auto lg:w-full"
+                >
+                  {error && <ErrorBanner error={error} />}
+                  {isSubmitting ? (
+                    <div className="text-center my-6">
+                      <div
+                        className="spinner-border text-skin-yellow"
+                        role="status"
+                      >
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mb-4">
+                      <div>
+                        <label htmlFor="year" className="font-bold text-base">
+                          Year
+                        </label>
+
+                        <div className="flex items-start">
+                          <Field
+                            type="number"
+                            as={TextInput}
+                            name="year"
+                            placeholder="Year"
+                          />
+                          <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                            <AiOutlineEdit className="text-2xl text-skin-blue" />
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="mileage"
+                          className="font-bold text-base"
+                        >
+                          Mileage
+                        </label>
+
+                        <div className="flex items-start">
+                          <Field
+                            type="number"
+                            as={TextInput}
+                            name="mileage"
+                            placeholder="Mileage"
+                          />
+                          <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                            <AiOutlineEdit className="text-2xl text-skin-blue" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {values.year !== data[0].year ||
+                  values.mileage !== data[0].mileage ? (
+                    <PrimaryButton
+                      type="submit"
+                      className="bg-skin-dark_blue md:max-w-sm"
+                      disabled={isSubmitting}
                     >
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mb-4">
-                    <div>
-                      <label htmlFor="year" className="font-bold text-base">
-                        Year
-                      </label>
-
-                      <div className="flex items-start">
-                        <Field
-                          type="number"
-                          as={TextInput}
-                          name="year"
-                          placeholder="Year"
-                        />
-                        <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
-                          <AiOutlineEdit className="text-2xl text-skin-blue" />
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="mileage" className="font-bold text-base">
-                        Mileage
-                      </label>
-
-                      <div className="flex items-start">
-                        <Field
-                          type="number"
-                          as={TextInput}
-                          name="mileage"
-                          placeholder="Mileage"
-                        />
-                        <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
-                          <AiOutlineEdit className="text-2xl text-skin-blue" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {values.year !== data[0].year ||
-                values.mileage !== data[0].mileage ? (
-                  <PrimaryButton
-                    type="submit"
-                    className="bg-skin-dark_blue md:max-w-sm"
-                    disabled={isSubmitting}
-                  >
-                    Update car
-                  </PrimaryButton>
-                ) : null}
-              </form>
-            )}
-          </Formik>
+                      Update car
+                    </PrimaryButton>
+                  ) : null}
+                </form>
+              )}
+            </Formik>
+          </div>
 
           <PrimaryButton
             className="bg-skin-red rounded-none absolute bottom-0 right-0 md:rounded-md md:bottom-6 md:left-6 md:max-w-sm"

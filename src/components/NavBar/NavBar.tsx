@@ -12,9 +12,10 @@ import { HiOutlinePhotograph } from "react-icons/hi";
 
 interface Props {
   loggedIn?: boolean;
+  carChanged?: boolean;
 }
 
-const NavBar = ({ loggedIn }: Props) => {
+const NavBar = ({ loggedIn, carChanged }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = useAuth();
   const [active, setActive] = useState<number | undefined>();
@@ -28,7 +29,7 @@ const NavBar = ({ loggedIn }: Props) => {
     if (carId) {
       setCurrentCar(JSON.parse(carId));
     }
-  }, [loggedIn]);
+  }, [loggedIn, carChanged]);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -110,17 +111,9 @@ const NavBar = ({ loggedIn }: Props) => {
           className="mr-4 w-14 h-14 object-cover min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] rounded-full bg-skin-blue"
         />
       );
-    } else if (auth?.user?.user_metadata.avatar_url) {
-      return (
-        <img
-          className="bg-skin-blue w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem]"
-          src={auth?.user?.user_metadata.avatar_url}
-          alt="profile"
-        />
-      );
     } else {
       return (
-        <div className="flex items-center justify-center w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] bg-skin-dark_blue">
+        <div className="flex items-center justify-center w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] bg-slate-800">
           <HiOutlinePhotograph className="text-2xl" />
         </div>
       );
@@ -179,11 +172,19 @@ const NavBar = ({ loggedIn }: Props) => {
                 Selected car
               </h3>
               <div className="flex items-center mt-4">
-                <img
-                  className="rounded-lg h-12 mr-4"
-                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
-                  alt="car"
-                />
+                {currentCar.photo_url ? (
+                  <img
+                    className="rounded-lg h-12 mr-4"
+                    src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${currentCar.photo_url}`}
+                    alt="car"
+                  />
+                ) : (
+                  <img
+                    className="rounded-lg h-12 mr-4 bg-skin-light_blue"
+                    src="./car_illustration.png"
+                    alt="car"
+                  />
+                )}
 
                 <ul>
                   <li className="">{currentCar.brand}</li>
