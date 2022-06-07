@@ -11,7 +11,7 @@ import { PrimaryButton } from "../Buttons";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import { MdEuroSymbol } from "react-icons/md";
-import { BiMicrophone } from "react-icons/bi";
+import SpeechlyExampleText from "./SpeechlyExampleText";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -126,15 +126,10 @@ const FuelExpenseForm = () => {
         <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
 
-          <div className=" flex items-center bg-skin-light_blue pl-4 text-skin-dark_blue py-1 rounded-sm mb-4">
-            <span className="flex items-center justify-center mr-2">
-              <BiMicrophone />
-            </span>
-            <span>
-              Example: Add expense for 50 euro's, type of fuel benzine for
-              tomorrow.
-            </span>
-          </div>
+          <SpeechlyExampleText>
+            Example: Add expense for 50 euro's, type of fuel benzine for
+            tomorrow.
+          </SpeechlyExampleText>
 
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />

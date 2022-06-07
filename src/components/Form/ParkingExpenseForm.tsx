@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
 import { useSpeechContext } from "@speechly/react-client";
 import { MdEuroSymbol } from "react-icons/md";
+import SpeechlyExampleText from "./SpeechlyExampleText";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -73,8 +74,6 @@ const ParkingExpenseForm = () => {
     }
   }, [segment]);
 
-  console.log(speechlyFormdata);
-
   return (
     <Formik
       enableReinitialize={true}
@@ -115,6 +114,10 @@ const ParkingExpenseForm = () => {
       {({ handleSubmit, isSubmitting, values }) => (
         <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
+
+          <SpeechlyExampleText>
+            Example: Add expense of 50 euro's for tomorrow.
+          </SpeechlyExampleText>
 
           <div>
             <Field name="date" as={TextInput} type="date" label="Date" />

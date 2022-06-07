@@ -9,6 +9,8 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../../routes";
 import SelectInput from "./SelectInput";
+import { useSpeechContext } from "@speechly/react-client";
+import SpeechlyExampleText from "./SpeechlyExampleText";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date()
@@ -24,6 +26,12 @@ const ReminderFrom = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [currentCar, setCurrentCar] = useState<any>({});
+  const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
+    date: "",
+    time: "",
+    type: "",
+  });
+  const { segment } = useSpeechContext();
 
   useEffect(() => {
     const carId = localStorage.getItem("car");
@@ -43,12 +51,40 @@ const ReminderFrom = () => {
     return today;
   };
 
+  useEffect(() => {
+    if (segment) {
+      if (segment.intent.intent === "add_reminder") {
+        segment.entities.map((entity: any) => {
+          if (entity.type === "date") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              date: entity.value,
+            });
+          } else if (entity.type === "time") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              time: entity.value,
+            });
+          } else if (entity.type === "reminder") {
+            setSpeechlyFormdata({
+              ...speechlyFormdata,
+              type: entity.value,
+            });
+          }
+        });
+      }
+    }
+  }, [segment]);
+
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
-        date: "",
-        time: "",
-        type: "",
+        date: speechlyFormdata.date || "",
+        time: speechlyFormdata.time || "",
+        type:
+          speechlyFormdata.type.charAt(0).toUpperCase() +
+            speechlyFormdata.type.slice(1).toLowerCase() || "",
         name: "",
       }}
       validationSchema={validationSchema}
@@ -80,6 +116,10 @@ const ReminderFrom = () => {
       {({ handleSubmit, isSubmitting, values }) => (
         <form onSubmit={handleSubmit} className="flex flex-col  mx-auto my-8">
           {error && <ErrorBanner error={error} />}
+
+          <SpeechlyExampleText>
+            Example: Add reminder for tomorrow at 10 o'clock for type insurance.
+          </SpeechlyExampleText>
 
           <div>
             <Field

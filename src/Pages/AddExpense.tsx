@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { PushToTalkButton } from "@speechly/react-ui";
 import { BigTranscript } from "@speechly/react-ui";
 
-import BaseLayout from "../Layouts/BaseLayout";
 import { PageTitle } from "../components";
 import {
   FuelExpenseForm,

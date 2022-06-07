@@ -9,6 +9,7 @@ import {
   Account,
   AddCar,
   AddExpense,
+  AddReminder,
   CarDetailPage,
   Dashboard,
   Garage,
@@ -107,6 +108,7 @@ export default function App() {
             />
             <Route path={paths.ADD_CAR} element={<AddCar />} />
             <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
+            <Route path={paths.ADD_REMINDER} element={<AddReminder />} />
             <Route path={paths.UPDATE_EXPENSE} element={<UpdateExpense />} />
           </Routes>
         </BaseLayout>
