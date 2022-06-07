@@ -13,7 +13,7 @@ import {
   Reminders,
   SparkLineChart,
 } from "../components/Dashboard";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 
 interface Props {
   loggedIn: boolean;
@@ -24,6 +24,7 @@ const Dashboard = ({ loggedIn }: Props) => {
   const [labels, setLabels] = useState<any[]>([]);
   const [active, setActive] = useState(true);
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   // calculate the total expenses
   const totalExpenses = chartData.reduce((acc, curr) => acc + curr, 0);
 
@@ -40,6 +41,7 @@ const Dashboard = ({ loggedIn }: Props) => {
     if (!currentCar.id) return;
 
     (async () => {
+      setLoading(true);
       const { data: categories, error: categoriesError } = await supabase
         .from("categories")
         .select("id, type");
@@ -55,7 +57,7 @@ const Dashboard = ({ loggedIn }: Props) => {
         const promises = categoryIds.map(async (categoryId, index) => {
           const { data, error } = await supabase
             .from("expenses")
-            .select("total")
+            .select("*")
             .eq("category_id", categoryId)
             .eq("car_id", currentCar.id);
 
@@ -77,6 +79,7 @@ const Dashboard = ({ loggedIn }: Props) => {
 
         setLabels(data.map((item) => item?.type));
         setChartData(data.map((item) => item?.total));
+        setLoading(false);
       }
     })();
   }, [currentCar.id]);
@@ -93,7 +96,7 @@ const Dashboard = ({ loggedIn }: Props) => {
   };
 
   return (
-    <BaseLayout loggedIn={loggedIn}>
+    <>
       <PageTitle>Dashboard</PageTitle>
 
       {success && (
@@ -115,10 +118,10 @@ const Dashboard = ({ loggedIn }: Props) => {
       )}
 
       <div className="py-10 lg:py-0 lg:pb-10">
-        {!currentCar.id && (
-          <p className="text-center text-gray-500">
-            You have no car selected. Please select one from the list.
-          </p>
+        {loading && (
+          <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+            <CircularProgress />
+          </div>
         )}
 
         {currentCar.id && chartData.length > 0 && (
@@ -166,16 +169,10 @@ const Dashboard = ({ loggedIn }: Props) => {
             </div>
           </div>
         )}
-
-        {currentCar.id && chartData.length === 0 && (
-          <p className="text-center text-gray-500">
-            You have no expenses for this car.
-          </p>
-        )}
       </div>
 
       <SpeedDialTooltipOpen />
-    </BaseLayout>
+    </>
   );
 };
 export default Dashboard;

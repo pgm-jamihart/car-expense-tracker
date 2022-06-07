@@ -12,6 +12,7 @@ interface Props {
     model: string;
     year: number;
     mileage: number;
+    photo_url: string;
   };
   setSuccess: (success: string) => void;
   success: string;
@@ -50,8 +51,20 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
         </span>
       </div>
 
-      <div className="flex items-center justify-center   bg-skin-light_gray rounded-md py-2">
-        <img className="w-1/2" src="./car_illustration.png" alt="car" />
+      <div className="flex rounded-md py-2">
+        {currentCar.photo_url ? (
+          <img
+            className="w-full h-full rounded-md max-h-[10rem] object-cover"
+            src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${currentCar.photo_url}`}
+            alt="car"
+          />
+        ) : (
+          <img
+            className="w-full h-full rounded-md max-h-[10rem] object-cover bg-slate-200/50"
+            src="./car_illustration.png"
+            alt="car"
+          />
+        )}
       </div>
 
       <Formik
@@ -125,6 +138,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
                   model: currentCar.model,
                   year: currentCar.year,
                   mileage: values.mileage,
+                  photo_url: currentCar.photo_url,
                 })
               );
 
@@ -153,7 +167,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="mt-1 flex justify-between items-end"
+            className="mt-1 flex justify-between items-start"
           >
             <div>
               <span className="text-xs block text-skin-blue">Mileage</span>
@@ -182,7 +196,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-skin-blue rounded-md text-skin-white p-1 hover:bg-skin-dark_blue transition-all duration-200 ease-in-out"
+              className="mt-4 bg-skin-blue rounded-md text-skin-white p-1 hover:bg-skin-dark_blue transition-all duration-200 ease-in-out"
             >
               <AiOutlinePlus className="text-2xl" />
             </button>

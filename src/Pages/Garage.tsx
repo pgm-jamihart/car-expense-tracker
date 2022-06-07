@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,35 +6,45 @@ import * as paths from "../routes";
 import { PageTitle } from "../components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronRight } from "react-icons/bs";
+import { CircularProgress } from "@mui/material";
 
 const Garage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleAddCar = async () => {
     navigate(paths.ADD_CAR);
   };
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       let { data, error, status } = await supabase
         .from("cars")
-        .select(`id, brand, model, year, mileage`)
+        .select(`id, brand, model, year, mileage, photo_url`)
         .eq("user_id", auth.user!.id);
       if (error && status !== 406) {
         throw error;
       }
       if (data) {
         setData(data);
+        setLoading(false);
       }
     })();
   }, [auth.user]);
 
   return (
-    <BaseLayout>
+    <>
       <div className="">
         <PageTitle>My Garage</PageTitle>
+
+        {loading && (
+          <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+            <CircularProgress />
+          </div>
+        )}
 
         <button
           onClick={handleAddCar}
@@ -60,11 +69,19 @@ const Garage = () => {
               to={paths.CAR_DETAIL_PAGE.replace(":id", car.id.toString())}
             >
               <div>
-                <img
-                  className="rounded-lg h-20 mr-4"
-                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
-                  alt="car"
-                />
+                {car.photo_url ? (
+                  <img
+                    className="rounded-lg h-20 mr-4"
+                    src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${car.photo_url}`}
+                    alt="car"
+                  />
+                ) : (
+                  <img
+                    className="rounded-lg h-20 mr-4 bg-skin-light_blue"
+                    src="./car_illustration.png"
+                    alt="car"
+                  />
+                )}
               </div>
               <div>
                 <h2 className="text-xl">{car.brand}</h2>
@@ -76,7 +93,7 @@ const Garage = () => {
             </Link>
           ))}
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

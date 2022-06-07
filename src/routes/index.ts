@@ -11,6 +11,7 @@ export const PROFILE = "/profile";
 export const GARAGE = "/garage";
 
 export const CAR_DETAIL_PAGE = "/car/:id";
-export const ADD_CAR = "/addcar";
-export const ADD_EXPENSE = "/addexpense";
-export const UPDATE_EXPENSE = "/updateexpense/:id";
+export const ADD_CAR = "/add-car";
+export const ADD_EXPENSE = "/add-expense";
+export const ADD_REMINDER = "/add-reminder";
+export const UPDATE_EXPENSE = "/update-expense/:id";

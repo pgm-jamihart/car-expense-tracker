@@ -9,12 +9,12 @@ import {
   Account,
   AddCar,
   AddExpense,
+  AddReminder,
   CarDetailPage,
   Dashboard,
   Garage,
   Landing,
   Places,
-  Profile,
   SignIn,
   SignUp,
   TimelinePage,
@@ -22,11 +22,13 @@ import {
 } from "./Pages";
 
 import { LoadScript } from "@react-google-maps/api";
+import BaseLayout from "./Layouts/BaseLayout";
 
 export default function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [carChanged, setCarChanged] = useState(false);
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -41,7 +43,6 @@ export default function App() {
 
           (async () => {
             if (session.user) {
-              console.log(session.user);
               const { data, error } = await supabase
                 .from("cars")
                 .select("*")
@@ -62,6 +63,7 @@ export default function App() {
                     model: data.model,
                     year: data.year,
                     mileage: data.mileage,
+                    photo_url: data.photo_url,
                   })
                 );
 
@@ -75,16 +77,16 @@ export default function App() {
   }, [navigate]);
 
   return (
-    <LoadScript
-      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-    >
+    <>
       <Routes>
         <Route path={paths.LANDING} element={<Landing />} />
         <Route path={paths.SIGN_UP} element={<SignUp />} />
         <Route path={paths.SIGN_IN} element={<SignIn />} />
+      </Routes>
 
-        {session && (
-          <>
+      {session && (
+        <BaseLayout loggedIn={loggedIn} carChanged={carChanged}>
+          <Routes>
             <Route path={paths.ACCOUNT} element={<Account />} />
             <Route
               path={paths.DASHBOARD}
@@ -92,15 +94,23 @@ export default function App() {
             />
             <Route path={paths.TIMELINE} element={<TimelinePage />} />
             <Route path={paths.PLACES} element={<Places />} />
-            <Route path={paths.PROFILE} element={<Profile />} />
             <Route path={paths.GARAGE} element={<Garage />} />
-            <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
+            <Route
+              path={paths.CAR_DETAIL_PAGE}
+              element={
+                <CarDetailPage
+                  carChanged={carChanged}
+                  setCarChanged={setCarChanged}
+                />
+              }
+            />
             <Route path={paths.ADD_CAR} element={<AddCar />} />
             <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
+            <Route path={paths.ADD_REMINDER} element={<AddReminder />} />
             <Route path={paths.UPDATE_EXPENSE} element={<UpdateExpense />} />
-          </>
-        )}
-      </Routes>
-    </LoadScript>
+          </Routes>
+        </BaseLayout>
+      )}
+    </>
   );
 }

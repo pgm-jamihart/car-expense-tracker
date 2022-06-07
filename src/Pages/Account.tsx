@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { supabase } from "../config/supabaseClient";
-import BaseLayout from "../Layouts/BaseLayout";
 import { PageTitle } from "../components";
 import { AiOutlineEdit, AiOutlineUser } from "react-icons/ai";
 import { IoMdClose } from "react-icons/io";
@@ -12,6 +11,8 @@ import { ErrorBanner, TextInput } from "../components/Form";
 import { FiMail } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../routes";
+import { SnackBarContext } from "../context/SnackBarContext";
+import { CircularProgress } from "@mui/material";
 
 const validationSchemaEmail = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -23,12 +24,13 @@ const validationSchemaUsername = Yup.object().shape({
 const Account = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [avatar_url, setAvatarUrl] = useState("");
   const [imageURI, setImageURI] = useState(null);
   const [editImage, setEditImage] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { setSnackBar } = useContext(SnackBarContext);
 
   useEffect(() => {
     getProfile();
@@ -89,11 +91,29 @@ const Account = () => {
       .match({
         id: auth.user!.id,
       });
+
+    if (error) {
+      console.error(error);
+    }
+
+    if (data) {
+      setSnackBar("Profile image updated");
+
+      setTimeout(() => {
+        setSnackBar("");
+      }, 6000);
+    }
   };
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Account</PageTitle>
+
+      {loading && (
+        <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      )}
 
       <div className="lg:flex lg:items-center mt-8">
         <div className="lg:w-1/2 relative mt-8 lg:mt-0 lg:mr-8 mb-4">
@@ -167,8 +187,13 @@ const Account = () => {
                 if (error) {
                   setError(error.message);
                 }
+                navigate(0);
 
-                navigate(paths.ACCOUNT);
+                setSnackBar("Email updated");
+
+                setTimeout(() => {
+                  setSnackBar("");
+                }, 6000);
               } catch (error: any) {
                 setError(error.message);
                 setSubmitting(false);
@@ -242,6 +267,13 @@ const Account = () => {
                 if (error) {
                   setError(error.message);
                 }
+                navigate(0);
+
+                setSnackBar("Username updated");
+
+                setTimeout(() => {
+                  setSnackBar("");
+                }, 6000);
               } catch (error: any) {
                 setError(error.message);
                 setSubmitting(false);
@@ -308,7 +340,7 @@ const Account = () => {
       >
         Sign Out
       </PrimaryButton>
-    </BaseLayout>
+    </>
   );
 };
 

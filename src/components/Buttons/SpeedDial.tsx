@@ -26,7 +26,12 @@ export default function SpeedDialTooltipOpen() {
 
   const handleSpeedDialAction = (action: string) => {
     handleClose();
-    navigate(paths.ADD_EXPENSE, { state: { action } });
+
+    if (action === "Reminder") {
+      navigate(paths.ADD_REMINDER);
+    } else {
+      navigate(paths.ADD_EXPENSE, { state: { action } });
+    }
   };
 
   return (

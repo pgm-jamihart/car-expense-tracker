@@ -7,7 +7,7 @@ import { PrimaryButton } from "../components/Buttons";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
 
-import { Devider, SignUpWithSocials } from "../components";
+import { Devider, LandingImage, SignUpWithSocials } from "../components";
 import { useAuth } from "../context/AuthProvider";
 
 const validationSchema = Yup.object().shape({
@@ -22,11 +22,7 @@ const SignIn = () => {
 
   return (
     <div className="md:flex h-screen bg-skin-light-gray">
-      <div className="bg-skin-light_gray px-8 py-20 lg:w-1/2 hidden md:block">
-        <h1 className="text-3xl font-medium text-center text-skin-white">
-          Welcome to the expense car tracker app.
-        </h1>
-      </div>
+      <LandingImage />
 
       <div className="bg-skin-white h-full p-4 md:rounded-none md:flex md:items-center justify-center w-full md:w-full lg:w-1/2 ">
         <div className="h-full flex flex-col items-center justify-center">
@@ -62,26 +58,23 @@ const SignIn = () => {
                   {auth.errorMessage && (
                     <ErrorBanner error={auth.errorMessage} />
                   )}
-                  {isSubmitting ? (
-                    "Loading"
-                  ) : (
-                    <div className="mb-4">
-                      <Field
-                        type="input"
-                        as={TextInput}
-                        name="email"
-                        placeholder="E-mail"
-                        label="E-mail"
-                      />
-                      <Field
-                        type="password"
-                        as={TextInput}
-                        name="password"
-                        placeholder="Password"
-                        label="Password"
-                      />
-                    </div>
-                  )}
+
+                  <div className="mb-4">
+                    <Field
+                      type="input"
+                      as={TextInput}
+                      name="email"
+                      placeholder="E-mail"
+                      label="E-mail"
+                    />
+                    <Field
+                      type="password"
+                      as={TextInput}
+                      name="password"
+                      placeholder="Password"
+                      label="Password"
+                    />
+                  </div>
 
                   <PrimaryButton
                     type="submit"

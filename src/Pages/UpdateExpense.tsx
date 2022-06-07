@@ -64,11 +64,11 @@ const UpdateExpense = () => {
   };
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>{`Update ${expenseData?.category?.type} expense`}</PageTitle>
 
       {switchForm()}
-    </BaseLayout>
+    </>
   );
 };
 

@@ -12,9 +12,10 @@ import { HiOutlinePhotograph } from "react-icons/hi";
 
 interface Props {
   loggedIn?: boolean;
+  carChanged?: boolean;
 }
 
-const NavBar = ({ loggedIn }: Props) => {
+const NavBar = ({ loggedIn, carChanged }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = useAuth();
   const [active, setActive] = useState<number | undefined>();
@@ -28,7 +29,7 @@ const NavBar = ({ loggedIn }: Props) => {
     if (carId) {
       setCurrentCar(JSON.parse(carId));
     }
-  }, [loggedIn]);
+  }, [loggedIn, carChanged]);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -101,32 +102,6 @@ const NavBar = ({ loggedIn }: Props) => {
     },
   ];
 
-  const ImageComponent = () => {
-    if (avatar_url) {
-      return (
-        <img
-          src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${avatar_url}`}
-          alt="avatar"
-          className="mr-4 w-14 h-14 object-cover min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] rounded-full bg-skin-blue"
-        />
-      );
-    } else if (auth?.user?.user_metadata.avatar_url) {
-      return (
-        <img
-          className="bg-skin-blue w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem]"
-          src={auth?.user?.user_metadata.avatar_url}
-          alt="profile"
-        />
-      );
-    } else {
-      return (
-        <div className="flex items-center justify-center w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] bg-skin-dark_blue">
-          <HiOutlinePhotograph className="text-2xl" />
-        </div>
-      );
-    }
-  };
-
   return (
     <>
       <button
@@ -150,7 +125,7 @@ const NavBar = ({ loggedIn }: Props) => {
           className={`h-screen bg-skin-black  w-72  min-w-18 text-skin-white p-2  `}
         >
           <div className="flex items-center mt-16 md:mt-6">
-            <img src="./logo.png" alt="logo" className="h-16" />
+            <img src="../logo.png" alt="logo" className="h-16" />
             <h1 className="text-3xl font-extrabold">Car expense</h1>
           </div>
 
@@ -174,23 +149,37 @@ const NavBar = ({ loggedIn }: Props) => {
           </ul>
 
           {currentCar.id ? (
-            <div className="p-2">
+            <Link
+              to={paths.CAR_DETAIL_PAGE.replace(
+                ":id",
+                currentCar.id.toString()
+              )}
+              className="p-2 "
+            >
               <h3 className="font-bold text-base text-skin-light_gray">
                 Selected car
               </h3>
-              <div className="flex items-center mt-4">
-                <img
-                  className="rounded-lg h-12 mr-4"
-                  src="https://cdn.dribbble.com/users/627451/screenshots/15867068/media/175783d726a3db789733c9eef9d17697.png?compress=1&resize=1200x900&vertical=top"
-                  alt="car"
-                />
+              <div className="flex items-center mt-4 p-2 hover:bg-slate-700/50 transition-all duration-200 ease-in-out rounded-md">
+                {currentCar.photo_url ? (
+                  <img
+                    className="rounded-sm h-12 mr-4"
+                    src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${currentCar.photo_url}`}
+                    alt="car"
+                  />
+                ) : (
+                  <img
+                    className="rounded-lg h-12 mr-4 bg-skin-light_blue"
+                    src="./car_illustration.png"
+                    alt="car"
+                  />
+                )}
 
                 <ul>
                   <li className="">{currentCar.brand}</li>
                   <li className="">{currentCar.model}</li>
                 </ul>
               </div>
-            </div>
+            </Link>
           ) : (
             <div className="p-2 mt-2">
               <Link to={paths.ADD_CAR}>
@@ -206,7 +195,17 @@ const NavBar = ({ loggedIn }: Props) => {
             className="absolute bottom-4 left-0 w-full p-2 "
           >
             <div className="flex   bg-slate-800 p-4 rounded-md border-2 border-slate-500/50 hover:border-skin-blue transition-all ease-in-out duration-200 shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900">
-              <ImageComponent />
+              {avatar_url ? (
+                <img
+                  src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${avatar_url}`}
+                  alt="avatar"
+                  className="mr-4 w-14 h-14 object-cover min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] rounded-full bg-skin-blue"
+                />
+              ) : (
+                <div className="flex items-center justify-center w-12 h-12 mr-4 rounded-full min-w-[3rem] min-h-[3rem] max-h-[3rem] max-w-[3rem] bg-slate-800">
+                  <HiOutlinePhotograph className="text-2xl" />
+                </div>
+              )}
 
               <div className="flex justify-between w-full">
                 <div className="block">

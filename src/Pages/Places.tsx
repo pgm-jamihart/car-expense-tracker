@@ -1,3 +1,5 @@
+import { CircularProgress } from "@mui/material";
+import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useRef, useState } from "react";
 import { PageTitle } from "../components";
 import { Map, PlacesList } from "../components/Map";
@@ -10,11 +12,12 @@ const Places = () => {
   const [type, setType] = useState("gas_station");
   const [places, setPlaces] = useState([]);
   const center = useRef<any>();
-
+  const [loading, setLoading] = useState(false);
   const [clicked, setClicked] = useState<string | number | null>(null);
 
   // get current location
   useEffect(() => {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -37,6 +40,7 @@ const Places = () => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           "https://still-bastion-49630.herokuapp.com/" + query,
@@ -50,6 +54,7 @@ const Places = () => {
 
         const data = await response.json();
         setPlaces(data.results);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -57,15 +62,21 @@ const Places = () => {
   }, [query]);
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Places</PageTitle>
       <PlaceSelect type={type} setType={setType} />
+
+      {loading && (
+        <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      )}
 
       <div className="flex flex-col-reverse lg:flex-row-reverse">
         <PlacesList places={places} clicked={clicked} />
         <Map center={center.current} places={places} setClicked={setClicked} />
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

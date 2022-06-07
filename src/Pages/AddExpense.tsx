@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { PushToTalkButton } from "@speechly/react-ui";
 import { BigTranscript } from "@speechly/react-ui";
 
-import BaseLayout from "../Layouts/BaseLayout";
 import { PageTitle } from "../components";
 import {
   FuelExpenseForm,
@@ -35,7 +34,7 @@ const AddExpense = () => {
   };
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>{`Add ${location.state.action} ${
         location.state.action === "Reminder" ? "" : "expense"
       }`}</PageTitle>
@@ -59,7 +58,7 @@ const AddExpense = () => {
       <div className="z-[101] fixed right-10 bottom-[1.85rem]">
         <PushToTalkButton size="60px"></PushToTalkButton>
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

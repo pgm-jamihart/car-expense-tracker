@@ -5,8 +5,9 @@ import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { Timeline } from "../components/Timeline";
 
-import { FiMoreVertical } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiMoreVertical } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
+import { CircularProgress } from "@mui/material";
 
 const TimelinePage = () => {
   const [expenses, setExpenses] = useState<any[]>([]);
@@ -17,6 +18,7 @@ const TimelinePage = () => {
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
     setFrom(from + limit);
@@ -39,6 +41,7 @@ const TimelinePage = () => {
     if (!currentCar.id) return;
 
     if (!selectedCategory) {
+      setLoading(true);
       (async () => {
         const { data: expensesCount, error: expensesErrorCount } =
           await supabase
@@ -94,6 +97,8 @@ const TimelinePage = () => {
               category: categories[index],
             }))
           );
+
+          setLoading(false);
         }
       })();
     } else {
@@ -154,14 +159,22 @@ const TimelinePage = () => {
               category: categories[index],
             }))
           );
+
+          setLoading(false);
         }
       })();
     }
   }, [currentCar.id, from, selectedCategory, to]);
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Timeline</PageTitle>
+
+      {loading && (
+        <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      )}
 
       {/* create timeline with expenses  */}
       <div className="pb-10 lg:py-0 lg:pb-10">
@@ -205,34 +218,33 @@ const TimelinePage = () => {
           <div>
             <Timeline expenses={expenses} open={open} />
 
-            <div className="mt-8">
-              {from > 0 && (
-                <button
-                  className="mr-4 hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
-                  onClick={handlePrev}
-                >
-                  prev
-                </button>
-              )}
+            <div className="mt-8 flex items-center justify-center">
+              <button
+                className={`${
+                  from > 0
+                    ? "bg-skin-blue"
+                    : "bg-slate-400/50 cursor-not-allowed"
+                } mr-4 hover:opacity-80 transition-opacity duration-200 ease-in-out  py-1 px-4 rounded-md text-white font-semibold`}
+                onClick={handlePrev}
+              >
+                <FiChevronLeft className="text-2xl" />
+              </button>
 
-              {to < count && (
-                <button
-                  className="hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
-                  onClick={handleNext}
-                >
-                  next
-                </button>
-              )}
+              <button
+                className={`${
+                  to < count
+                    ? "bg-skin-blue"
+                    : "bg-slate-400/50 cursor-not-allowed"
+                } hover:opacity-80 transition-opacity duration-200 ease-in-out  py-1 px-4 rounded-md text-white font-semibold`}
+                onClick={handleNext}
+                disabled={to >= count}
+              >
+                <FiChevronRight className="text-2xl" />
+              </button>
             </div>
           </div>
         )}
       </div>
-
-      {!currentCar.id && (
-        <p className="text-center text-gray-500">
-          You have no car selected. Please select one from the list.
-        </p>
-      )}
 
       {currentCar.id && expenses.length === 0 && (
         <p className="text-center text-gray-500 ">
@@ -241,7 +253,7 @@ const TimelinePage = () => {
       )}
 
       <SpeedDialTooltipOpen />
-    </BaseLayout>
+    </>
   );
 };
 
