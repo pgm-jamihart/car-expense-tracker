@@ -88,7 +88,6 @@ const BarChart = ({ active }: BarProps) => {
           }
         );
 
-        console.log(sortedDataPerDay);
         setChartData(sortedDataPerDay);
       }
     })();

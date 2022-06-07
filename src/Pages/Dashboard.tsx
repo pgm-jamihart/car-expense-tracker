@@ -55,7 +55,7 @@ const Dashboard = ({ loggedIn }: Props) => {
         const promises = categoryIds.map(async (categoryId, index) => {
           const { data, error } = await supabase
             .from("expenses")
-            .select("total")
+            .select("*")
             .eq("category_id", categoryId)
             .eq("car_id", currentCar.id);
 

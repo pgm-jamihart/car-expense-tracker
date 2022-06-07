@@ -12,8 +12,6 @@ const Reminders = ({ currentCarId }: Props) => {
   const [reminders, setReminders] = useState<any[]>([]);
   const [more, setMore] = useState(false);
 
-  console.log(reminders);
-
   useEffect(() => {
     (async () => {
       const { data, error } = await supabase
@@ -36,7 +34,7 @@ const Reminders = ({ currentCarId }: Props) => {
 
   const readableDate = (date: string) => {
     const newDate = new Date(date);
-    console.log(newDate);
+
     const options: any = {
       day: "numeric",
       weekday: "long",

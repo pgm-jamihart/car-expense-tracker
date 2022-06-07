@@ -42,7 +42,6 @@ export default function App() {
 
           (async () => {
             if (session.user) {
-              console.log(session.user);
               const { data, error } = await supabase
                 .from("cars")
                 .select("*")
