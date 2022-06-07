@@ -153,7 +153,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="mt-1 flex justify-between items-end"
+            className="mt-1 flex justify-between items-start"
           >
             <div>
               <span className="text-xs block text-skin-blue">Mileage</span>
@@ -182,7 +182,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-skin-blue rounded-md text-skin-white p-1 hover:bg-skin-dark_blue transition-all duration-200 ease-in-out"
+              className="mt-4 bg-skin-blue rounded-md text-skin-white p-1 hover:bg-skin-dark_blue transition-all duration-200 ease-in-out"
             >
               <AiOutlinePlus className="text-2xl" />
             </button>

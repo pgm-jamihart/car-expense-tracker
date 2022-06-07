@@ -5,7 +5,7 @@ import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { Timeline } from "../components/Timeline";
 
-import { FiMoreVertical } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiMoreVertical } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 
 const TimelinePage = () => {
@@ -205,24 +205,29 @@ const TimelinePage = () => {
           <div>
             <Timeline expenses={expenses} open={open} />
 
-            <div className="mt-8">
-              {from > 0 && (
-                <button
-                  className="mr-4 hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
-                  onClick={handlePrev}
-                >
-                  prev
-                </button>
-              )}
+            <div className="mt-8 flex items-center justify-center">
+              <button
+                className={`${
+                  from > 0
+                    ? "bg-skin-blue"
+                    : "bg-slate-400/50 cursor-not-allowed"
+                } mr-4 hover:opacity-80 transition-opacity duration-200 ease-in-out  py-1 px-4 rounded-md text-white font-semibold`}
+                onClick={handlePrev}
+              >
+                <FiChevronLeft className="text-2xl" />
+              </button>
 
-              {to < count && (
-                <button
-                  className="hover:opacity-80 transition-opacity duration-200 ease-in-out bg-skin-blue py-1 px-4 rounded-md text-white font-semibold"
-                  onClick={handleNext}
-                >
-                  next
-                </button>
-              )}
+              <button
+                className={`${
+                  to < count
+                    ? "bg-skin-blue"
+                    : "bg-slate-400/50 cursor-not-allowed"
+                } hover:opacity-80 transition-opacity duration-200 ease-in-out  py-1 px-4 rounded-md text-white font-semibold`}
+                onClick={handleNext}
+                disabled={to >= count}
+              >
+                <FiChevronRight className="text-2xl" />
+              </button>
             </div>
           </div>
         )}
