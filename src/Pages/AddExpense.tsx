@@ -35,7 +35,7 @@ const AddExpense = () => {
   };
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>{`Add ${location.state.action} ${
         location.state.action === "Reminder" ? "" : "expense"
       }`}</PageTitle>
@@ -59,7 +59,7 @@ const AddExpense = () => {
       <div className="z-[101] fixed right-10 bottom-[1.85rem]">
         <PushToTalkButton size="60px"></PushToTalkButton>
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

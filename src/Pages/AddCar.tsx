@@ -93,7 +93,7 @@ const AddCar = () => {
   }, [apikey, currentCarValue]);
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Add car</PageTitle>
 
       <Formik
@@ -198,7 +198,7 @@ const AddCar = () => {
           </form>
         )}
       </Formik>
-    </BaseLayout>
+    </>
   );
 };
 

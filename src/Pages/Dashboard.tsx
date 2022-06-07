@@ -93,7 +93,7 @@ const Dashboard = ({ loggedIn }: Props) => {
   };
 
   return (
-    <BaseLayout loggedIn={loggedIn}>
+    <>
       <PageTitle>Dashboard</PageTitle>
 
       {success && (
@@ -175,7 +175,7 @@ const Dashboard = ({ loggedIn }: Props) => {
       </div>
 
       <SpeedDialTooltipOpen />
-    </BaseLayout>
+    </>
   );
 };
 export default Dashboard;

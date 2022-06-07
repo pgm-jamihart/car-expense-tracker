@@ -160,7 +160,7 @@ const TimelinePage = () => {
   }, [currentCar.id, from, selectedCategory, to]);
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Timeline</PageTitle>
 
       {/* create timeline with expenses  */}
@@ -246,7 +246,7 @@ const TimelinePage = () => {
       )}
 
       <SpeedDialTooltipOpen />
-    </BaseLayout>
+    </>
   );
 };
 

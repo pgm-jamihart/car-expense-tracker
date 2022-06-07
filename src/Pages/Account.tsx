@@ -92,7 +92,7 @@ const Account = () => {
   };
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Account</PageTitle>
 
       <div className="lg:flex lg:items-center mt-8">
@@ -308,7 +308,7 @@ const Account = () => {
       >
         Sign Out
       </PrimaryButton>
-    </BaseLayout>
+    </>
   );
 };
 

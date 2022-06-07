@@ -57,7 +57,7 @@ const Places = () => {
   }, [query]);
 
   return (
-    <BaseLayout>
+    <>
       <PageTitle>Places</PageTitle>
       <PlaceSelect type={type} setType={setType} />
 
@@ -65,7 +65,7 @@ const Places = () => {
         <PlacesList places={places} clicked={clicked} />
         <Map center={center.current} places={places} setClicked={setClicked} />
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

@@ -14,7 +14,6 @@ import {
   Garage,
   Landing,
   Places,
-  Profile,
   SignIn,
   SignUp,
   TimelinePage,
@@ -22,6 +21,7 @@ import {
 } from "./Pages";
 
 import { LoadScript } from "@react-google-maps/api";
+import BaseLayout from "./Layouts/BaseLayout";
 
 export default function App() {
   const navigate = useNavigate();
@@ -82,9 +82,11 @@ export default function App() {
         <Route path={paths.LANDING} element={<Landing />} />
         <Route path={paths.SIGN_UP} element={<SignUp />} />
         <Route path={paths.SIGN_IN} element={<SignIn />} />
+      </Routes>
 
-        {session && (
-          <>
+      {session && (
+        <BaseLayout loggedIn={loggedIn}>
+          <Routes>
             <Route path={paths.ACCOUNT} element={<Account />} />
             <Route
               path={paths.DASHBOARD}
@@ -92,15 +94,14 @@ export default function App() {
             />
             <Route path={paths.TIMELINE} element={<TimelinePage />} />
             <Route path={paths.PLACES} element={<Places />} />
-            <Route path={paths.PROFILE} element={<Profile />} />
             <Route path={paths.GARAGE} element={<Garage />} />
             <Route path={paths.CAR_DETAIL_PAGE} element={<CarDetailPage />} />
             <Route path={paths.ADD_CAR} element={<AddCar />} />
             <Route path={paths.ADD_EXPENSE} element={<AddExpense />} />
             <Route path={paths.UPDATE_EXPENSE} element={<UpdateExpense />} />
-          </>
-        )}
-      </Routes>
+          </Routes>
+        </BaseLayout>
+      )}
     </LoadScript>
   );
 }

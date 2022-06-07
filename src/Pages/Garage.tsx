@@ -33,7 +33,7 @@ const Garage = () => {
   }, [auth.user]);
 
   return (
-    <BaseLayout>
+    <>
       <div className="">
         <PageTitle>My Garage</PageTitle>
 
@@ -76,7 +76,7 @@ const Garage = () => {
             </Link>
           ))}
       </div>
-    </BaseLayout>
+    </>
   );
 };
 

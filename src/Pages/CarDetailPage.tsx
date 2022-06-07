@@ -77,7 +77,7 @@ const CarDetailPage = () => {
   };
 
   return (
-    <BaseLayout>
+    <>
       {data[0] && (
         <div>
           <PageTitle>
@@ -242,7 +242,7 @@ const CarDetailPage = () => {
           </PrimaryButton>
         </div>
       )}
-    </BaseLayout>
+    </>
   );
 };
 
