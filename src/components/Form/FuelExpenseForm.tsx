@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import { MdEuroSymbol } from "react-icons/md";
 import SpeechlyExampleText from "./SpeechlyExampleText";
+import { SnackBarContext } from "../../context/SnackBarContext";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -23,6 +24,7 @@ const validationSchema = Yup.object().shape({
 
 const FuelExpenseForm = () => {
   const [error, setError] = useState("");
+  const { setSnackBar } = useContext(SnackBarContext);
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
   const [currentCar, setCurrentCar] = useState<any>({});
@@ -112,6 +114,12 @@ const FuelExpenseForm = () => {
           if (error) {
             setError(error.message);
           }
+
+          setSnackBar("Expense added");
+
+          setTimeout(() => {
+            setSnackBar("");
+          }, 6000);
 
           navigate(paths.DASHBOARD);
         } catch (error: any) {

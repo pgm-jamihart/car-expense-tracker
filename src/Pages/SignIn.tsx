@@ -58,26 +58,23 @@ const SignIn = () => {
                   {auth.errorMessage && (
                     <ErrorBanner error={auth.errorMessage} />
                   )}
-                  {isSubmitting ? (
-                    "Loading"
-                  ) : (
-                    <div className="mb-4">
-                      <Field
-                        type="input"
-                        as={TextInput}
-                        name="email"
-                        placeholder="E-mail"
-                        label="E-mail"
-                      />
-                      <Field
-                        type="password"
-                        as={TextInput}
-                        name="password"
-                        placeholder="Password"
-                        label="Password"
-                      />
-                    </div>
-                  )}
+
+                  <div className="mb-4">
+                    <Field
+                      type="input"
+                      as={TextInput}
+                      name="email"
+                      placeholder="E-mail"
+                      label="E-mail"
+                    />
+                    <Field
+                      type="password"
+                      as={TextInput}
+                      name="password"
+                      placeholder="Password"
+                      label="Password"
+                    />
+                  </div>
 
                   <PrimaryButton
                     type="submit"

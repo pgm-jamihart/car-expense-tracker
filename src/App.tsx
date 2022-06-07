@@ -77,9 +77,7 @@ export default function App() {
   }, [navigate]);
 
   return (
-    <LoadScript
-      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-    >
+    <>
       <Routes>
         <Route path={paths.LANDING} element={<Landing />} />
         <Route path={paths.SIGN_UP} element={<SignUp />} />
@@ -113,6 +111,6 @@ export default function App() {
           </Routes>
         </BaseLayout>
       )}
-    </LoadScript>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import { Timeline } from "../components/Timeline";
 
 import { FiChevronLeft, FiChevronRight, FiMoreVertical } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
+import { CircularProgress } from "@mui/material";
 
 const TimelinePage = () => {
   const [expenses, setExpenses] = useState<any[]>([]);
@@ -17,6 +18,7 @@ const TimelinePage = () => {
   const [count, setCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
     setFrom(from + limit);
@@ -39,6 +41,7 @@ const TimelinePage = () => {
     if (!currentCar.id) return;
 
     if (!selectedCategory) {
+      setLoading(true);
       (async () => {
         const { data: expensesCount, error: expensesErrorCount } =
           await supabase
@@ -94,6 +97,8 @@ const TimelinePage = () => {
               category: categories[index],
             }))
           );
+
+          setLoading(false);
         }
       })();
     } else {
@@ -154,6 +159,8 @@ const TimelinePage = () => {
               category: categories[index],
             }))
           );
+
+          setLoading(false);
         }
       })();
     }
@@ -162,6 +169,12 @@ const TimelinePage = () => {
   return (
     <>
       <PageTitle>Timeline</PageTitle>
+
+      {loading && (
+        <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      )}
 
       {/* create timeline with expenses  */}
       <div className="pb-10 lg:py-0 lg:pb-10">
@@ -232,12 +245,6 @@ const TimelinePage = () => {
           </div>
         )}
       </div>
-
-      {!currentCar.id && (
-        <p className="text-center text-gray-500">
-          You have no car selected. Please select one from the list.
-        </p>
-      )}
 
       {currentCar.id && expenses.length === 0 && (
         <p className="text-center text-gray-500 ">

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,17 +6,20 @@ import * as paths from "../routes";
 import { PageTitle } from "../components";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChevronRight } from "react-icons/bs";
+import { CircularProgress } from "@mui/material";
 
 const Garage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleAddCar = async () => {
     navigate(paths.ADD_CAR);
   };
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       let { data, error, status } = await supabase
         .from("cars")
@@ -28,6 +30,7 @@ const Garage = () => {
       }
       if (data) {
         setData(data);
+        setLoading(false);
       }
     })();
   }, [auth.user]);
@@ -36,6 +39,12 @@ const Garage = () => {
     <>
       <div className="">
         <PageTitle>My Garage</PageTitle>
+
+        {loading && (
+          <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+            <CircularProgress />
+          </div>
+        )}
 
         <button
           onClick={handleAddCar}

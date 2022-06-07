@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import { PrimaryButton } from "../Buttons";
 import ErrorBanner from "./ErrorBanner";
@@ -11,6 +11,7 @@ import * as paths from "../../routes";
 import SelectInput from "./SelectInput";
 import { useSpeechContext } from "@speechly/react-client";
 import SpeechlyExampleText from "./SpeechlyExampleText";
+import { SnackBarContext } from "../../context/SnackBarContext";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date()
@@ -24,6 +25,7 @@ const validationSchema = Yup.object().shape({
 
 const ReminderFrom = () => {
   const [error, setError] = useState("");
+  const { setSnackBar } = useContext(SnackBarContext);
   const navigate = useNavigate();
   const [currentCar, setCurrentCar] = useState<any>({});
   const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
@@ -103,6 +105,12 @@ const ReminderFrom = () => {
             setError(error.message);
             console.log(error);
           } else {
+            setSnackBar("Reminder added successfully");
+
+            setTimeout(() => {
+              setSnackBar("");
+            }, 6000);
+
             navigate(paths.DASHBOARD);
           }
         } catch (error: any) {

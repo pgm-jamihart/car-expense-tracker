@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import { PrimaryButton } from "../Buttons";
 import ErrorBanner from "./ErrorBanner";
@@ -11,6 +11,7 @@ import * as paths from "../../routes";
 import { MdEuroSymbol } from "react-icons/md";
 import SpeechlyExampleText from "./SpeechlyExampleText";
 import { useSpeechContext } from "@speechly/react-client";
+import { SnackBarContext } from "../../context/SnackBarContext";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -20,6 +21,7 @@ const validationSchema = Yup.object().shape({
 
 const OtherExpenseForm = () => {
   const [error, setError] = useState("");
+  const { setSnackBar } = useContext(SnackBarContext);
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
   const [currentCar, setCurrentCar] = useState<any>({});
@@ -99,6 +101,12 @@ const OtherExpenseForm = () => {
             setError(error.message);
             console.log(error);
           } else {
+            setSnackBar("Expense added");
+
+            setTimeout(() => {
+              setSnackBar("");
+            }, 6000);
+
             navigate(paths.DASHBOARD);
           }
         } catch (error: any) {

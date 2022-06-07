@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Field } from "formik";
@@ -11,6 +11,8 @@ import { ErrorBanner, TextInput } from "../components/Form";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useAuth } from "../context/AuthProvider";
 import { IoMdClose } from "react-icons/io";
+import { SnackBarContext } from "../context/SnackBarContext";
+import { CircularProgress } from "@mui/material";
 
 interface Props {
   setCarChanged: (value: boolean) => void;
@@ -25,16 +27,19 @@ const validationSchema = Yup.object().shape({
 const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
   const navigate = useNavigate();
   let { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<any[]>([]);
+  const [currentCarData, setCurrentCarData] = useState<any[]>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [photo_url, setPhoto_url] = useState("");
   const [imageURI, setImageURI] = useState(null);
   const [editImage, setEditImage] = useState(false);
   const auth = useAuth();
+  const { setSnackBar } = useContext(SnackBarContext);
 
   const carId = Number(id);
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       const { data, error } = await supabase
         .from("cars")
@@ -45,8 +50,9 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
       }
 
       if (data) {
-        setData(data);
+        setCurrentCarData(data);
         setPhoto_url(data[0].photo_url);
+        setLoading(false);
       }
     })();
   }, [carId]);
@@ -97,20 +103,20 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
     let car_image = "";
 
     if (imageURI) {
-      const { data, error } = await supabase.storage
+      const { data: storageData, error: storageError } = await supabase.storage
         .from("cars")
         .upload(
           `${auth.user?.id}/${Date.now() + "_" + carId}.png`,
           imageURI || ""
         );
 
-      if (error) {
-        console.log(error);
+      if (storageError) {
+        console.log(storageError);
       }
 
-      if (data) {
-        setPhoto_url(data.Key);
-        car_image = data.Key;
+      if (storageData) {
+        setPhoto_url(storageData.Key);
+        car_image = storageData.Key;
       }
 
       const { data: carData, error: carError } = await supabase
@@ -121,19 +127,47 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
         .match({
           id: carId,
         });
+
+      if (carError) {
+        console.log(carError);
+      }
+
+      if (carData) {
+        localStorage.setItem(
+          "car",
+          JSON.stringify({
+            id: carId,
+            brand: currentCarData[0].brand,
+            model: currentCarData[0].model,
+            year: currentCarData[0].year,
+            mileage: currentCarData[0].mileage,
+            photo_url: car_image,
+          })
+        );
+
+        setSnackBar("Car image updated");
+
+        setTimeout(() => {
+          setSnackBar("");
+        }, 6000);
+      }
     }
   };
 
-  console.log("data", photo_url);
-
   return (
     <>
-      {data[0] && (
+      {loading && (
+        <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
+          <CircularProgress />
+        </div>
+      )}
+
+      {currentCarData[0] && (
         <div>
           <PageTitle>
-            <span className="">{data[0].brand} </span>
+            <span className="">{currentCarData[0].brand} </span>
             <span className="text-xl font-light md:italic block md:inline ">
-              {data[0].model}
+              {currentCarData[0].model}
             </span>
           </PageTitle>
 
@@ -142,10 +176,10 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
             onClick={() => {
               handleSelectCar(
                 carId,
-                data[0].brand,
-                data[0].model,
-                data[0].year,
-                data[0].mileage
+                currentCarData[0].brand,
+                currentCarData[0].model,
+                currentCarData[0].year,
+                currentCarData[0].mileage
               );
             }}
           >
@@ -216,8 +250,8 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
             <Formik
               enableReinitialize={true}
               initialValues={{
-                year: data[0].year || "",
-                mileage: data[0].mileage || "",
+                year: currentCarData[0].year || "",
+                mileage: currentCarData[0].mileage || "",
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
@@ -258,16 +292,22 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
                     localStorage.setItem(
                       "car",
                       JSON.stringify({
-                        id: data[0].id,
-                        brand: data[0].brand,
-                        model: data[0].model,
+                        id: currentCarData[0].id,
+                        brand: currentCarData[0].brand,
+                        model: currentCarData[0].model,
                         year: values.year,
                         mileage: values.mileage,
-                        photo_url: data[0].photo_url,
+                        photo_url: currentCarData[0].photo_url,
                       })
                     );
 
                     navigate(paths.GARAGE);
+
+                    setSnackBar("Car updated");
+
+                    setTimeout(() => {
+                      setSnackBar("");
+                    }, 6000);
                   }
                 } catch (error: any) {
                   setError(error.message);
@@ -283,60 +323,47 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
                   className="flex flex-col my-0 mx-auto lg:w-full"
                 >
                   {error && <ErrorBanner error={error} />}
-                  {isSubmitting ? (
-                    <div className="text-center my-6">
-                      <div
-                        className="spinner-border text-skin-yellow"
-                        role="status"
-                      >
-                        <span className="sr-only">Loading...</span>
+
+                  <div className="mb-4">
+                    <div>
+                      <label htmlFor="year" className="font-bold text-base">
+                        Year
+                      </label>
+
+                      <div className="flex items-start">
+                        <Field
+                          type="number"
+                          as={TextInput}
+                          name="year"
+                          placeholder="Year"
+                        />
+                        <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                          <AiOutlineEdit className="text-2xl text-skin-blue" />
+                        </span>
                       </div>
                     </div>
-                  ) : (
-                    <div className="mb-4">
-                      <div>
-                        <label htmlFor="year" className="font-bold text-base">
-                          Year
-                        </label>
 
-                        <div className="flex items-start">
-                          <Field
-                            type="number"
-                            as={TextInput}
-                            name="year"
-                            placeholder="Year"
-                          />
-                          <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
-                            <AiOutlineEdit className="text-2xl text-skin-blue" />
-                          </span>
-                        </div>
-                      </div>
+                    <div>
+                      <label htmlFor="mileage" className="font-bold text-base">
+                        Mileage
+                      </label>
 
-                      <div>
-                        <label
-                          htmlFor="mileage"
-                          className="font-bold text-base"
-                        >
-                          Mileage
-                        </label>
-
-                        <div className="flex items-start">
-                          <Field
-                            type="number"
-                            as={TextInput}
-                            name="mileage"
-                            placeholder="Mileage"
-                          />
-                          <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
-                            <AiOutlineEdit className="text-2xl text-skin-blue" />
-                          </span>
-                        </div>
+                      <div className="flex items-start">
+                        <Field
+                          type="number"
+                          as={TextInput}
+                          name="mileage"
+                          placeholder="Mileage"
+                        />
+                        <span className="h-10 w-10 mt-2 ml-2 flex items-center justify-center bg-skin-light_blue rounded-sm">
+                          <AiOutlineEdit className="text-2xl text-skin-blue" />
+                        </span>
                       </div>
                     </div>
-                  )}
+                  </div>
 
-                  {values.year !== data[0].year ||
-                  values.mileage !== data[0].mileage ? (
+                  {values.year !== currentCarData[0].year ||
+                  values.mileage !== currentCarData[0].mileage ? (
                     <PrimaryButton
                       type="submit"
                       className="bg-skin-dark_blue md:max-w-sm"
@@ -353,7 +380,7 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
           <PrimaryButton
             className="bg-skin-red rounded-none absolute bottom-0 right-0 md:rounded-md md:bottom-6 md:left-6 md:max-w-sm"
             type="button"
-            onClick={() => handleDeleteCar(data[0].id)}
+            onClick={() => handleDeleteCar(currentCarData[0].id)}
           >
             Delete
           </PrimaryButton>

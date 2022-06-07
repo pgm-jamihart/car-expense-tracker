@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, Field } from "formik";
 
@@ -15,6 +15,7 @@ import { supabase } from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import * as paths from "../routes";
 import { PageTitle } from "../components";
+import { SnackBarContext } from "../context/SnackBarContext";
 
 const validationSchema = Yup.object().shape({
   brand: Yup.string().required().label("Brand"),
@@ -30,6 +31,7 @@ const AddCar = () => {
   const [carBrands, setCarBrands] = useState([]);
   const [currentCarValue, setCurrentCarValue] = useState("");
   const [carModels, setCarModels] = useState([]);
+  const { setSnackBar } = useContext(SnackBarContext);
 
   const apikey: string | undefined = process.env.REACT_APP_RAPID_API_KEY;
 
@@ -131,6 +133,12 @@ const AddCar = () => {
               );
 
               navigate(paths.GARAGE);
+
+              setSnackBar("Car added successfully");
+
+              setTimeout(() => {
+                setSnackBar("");
+              }, 6000);
             }
           } catch (error: any) {
             setError(error.message);
@@ -143,50 +151,43 @@ const AddCar = () => {
         {({ handleSubmit, isSubmitting, values }) => (
           <form onSubmit={handleSubmit} className="flex flex-col my-0 mx-auto ">
             {error && <ErrorBanner error={error} />}
-            {isSubmitting ? (
-              <div className="text-center my-6">
-                <div className="spinner-border text-skin-yellow" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <div className="mb-4">
-                <Field
-                  as={SelectInputAddCar}
-                  name="brand"
-                  placeholder="Brand"
-                  label="Brand"
-                  options={carBrands ? carBrands : []}
-                  currentCarValue={currentCarValue}
-                  setCurrentCarValue={setCurrentCarValue}
-                />
 
-                <Field
-                  as={SelectInput}
-                  name="model"
-                  placeholder="Model"
-                  label="Model"
-                  options={carModels ? carModels : []}
-                  disabled={!currentCarValue}
-                />
+            <div className="mb-4">
+              <Field
+                as={SelectInputAddCar}
+                name="brand"
+                placeholder="Brand"
+                label="Brand"
+                options={carBrands ? carBrands : []}
+                currentCarValue={currentCarValue}
+                setCurrentCarValue={setCurrentCarValue}
+              />
 
-                <Field
-                  type="input"
-                  as={TextInput}
-                  name="year"
-                  placeholder="Year"
-                  label="Year"
-                />
+              <Field
+                as={SelectInput}
+                name="model"
+                placeholder="Model"
+                label="Model"
+                options={carModels ? carModels : []}
+                disabled={!currentCarValue}
+              />
 
-                <Field
-                  type="input"
-                  as={TextInput}
-                  name="mileage"
-                  placeholder="Mileage"
-                  label="Mileage"
-                />
-              </div>
-            )}
+              <Field
+                type="input"
+                as={TextInput}
+                name="year"
+                placeholder="Year"
+                label="Year"
+              />
+
+              <Field
+                type="input"
+                as={TextInput}
+                name="mileage"
+                placeholder="Mileage"
+                label="Mileage"
+              />
+            </div>
 
             <PrimaryButton
               type="submit"

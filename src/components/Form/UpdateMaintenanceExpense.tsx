@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import * as paths from "../../routes";
 import * as Yup from "yup";
@@ -9,6 +9,7 @@ import { PrimaryButton } from "../Buttons";
 
 import TextInput from "./TextInput";
 import { MdEuroSymbol } from "react-icons/md";
+import { SnackBarContext } from "../../context/SnackBarContext";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required().label("Date"),
@@ -28,6 +29,8 @@ interface Props {
 const UpdateMaintenanceExpense = ({ expense }: Props) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setSnackBar } = useContext(SnackBarContext);
+
   return (
     <Formik
       initialValues={{
@@ -54,6 +57,12 @@ const UpdateMaintenanceExpense = ({ expense }: Props) => {
           if (error) {
             setError(error.message);
           }
+
+          setSnackBar("Expense updated successfully");
+
+          setTimeout(() => {
+            setSnackBar("");
+          }, 6000);
 
           navigate(paths.TIMELINE);
         } catch (error: any) {
