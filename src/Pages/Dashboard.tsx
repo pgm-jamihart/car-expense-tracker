@@ -96,7 +96,7 @@ const Dashboard = ({ loggedIn }: Props) => {
 
               <DonutChart active={active} carId={currentCar.id} />
 
-              <BarChart active={active} />
+              <BarChart active={active} carId={currentCar.id} />
             </div>
 
             <div className=" lg:flex items-start mt-10">
