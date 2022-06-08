@@ -233,10 +233,40 @@ const BarChart = ({ active, carId }: BarProps) => {
       bar: {
         borderRadius: 10,
         columnWidth: "50%",
+
+        dataLabels: {
+          enabled: true,
+          position: "top",
+        },
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      position: "top",
+      style: {
+        colors: ["#ffffff"],
+      },
+      formatter: function (val: any) {
+        return `${val > 0 ? "€ " + val : ""}`;
+      },
+
+      background: {
+        enabled: true,
+        foreColor: "#000000",
+        borderRadius: 2,
+        padding: 4,
+        opacity: 0.9,
+        borderWidth: 1,
+        borderColor: "#fff",
+        dropShadow: {
+          enabled: true,
+          top: 1,
+          left: 1,
+          blur: 1,
+          opacity: 0.5,
+          color: "#000",
+        },
+      },
     },
     stroke: {
       width: 2,

@@ -12,7 +12,7 @@ import {
   Reminders,
   SparkLineChart,
 } from "../components/Dashboard";
-import { Alert, CircularProgress } from "@mui/material";
+import { Alert } from "@mui/material";
 
 interface Props {
   loggedIn: boolean;
@@ -74,14 +74,14 @@ const Dashboard = ({ loggedIn }: Props) => {
         {currentCar.id && (
           <div>
             <div className="flex flex-col md:flex-row mb-10">
-              <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
+              <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:2/3">
                 <CarDetails
                   currentCar={currentCar}
                   setSuccess={setSuccess}
                   success={success}
                 />
               </div>
-              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3 rounded-md">
+              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/4 rounded-md">
                 <SparkLineChart carIdNumber={currentCar.id} />
               </div>
             </div>

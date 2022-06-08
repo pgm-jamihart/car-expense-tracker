@@ -39,7 +39,7 @@ const SparkLineChart = ({ carIdNumber }: SparkLineChartProps) => {
     labels: labelsSparkLine,
     stroke: {
       width: 2,
-      curve: "straight" as "straight",
+      curve: "smooth" as "smooth",
     },
     fill: {
       type: "gradient",
