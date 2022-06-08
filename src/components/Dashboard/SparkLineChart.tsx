@@ -58,7 +58,7 @@ const SparkLineChart = ({
       },
     },
     subtitle: {
-      text: "All expenses",
+      text: "Expenses this month",
       offsetX: 0,
       style: {
         fontSize: "14px",
@@ -83,6 +83,11 @@ const SparkLineChart = ({
   };
 
   useEffect(() => {
+    // start of month
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    const startOfMonthString = startOfMonth.toISOString().slice(0, 10);
+
     (async () => {
       const { data, error } = await supabase
         .from("expenses")
@@ -91,7 +96,7 @@ const SparkLineChart = ({
         .order("date", {
           ascending: false,
         })
-        .limit(20);
+        .gt("date", startOfMonthString);
 
       if (error) {
         console.log(error);

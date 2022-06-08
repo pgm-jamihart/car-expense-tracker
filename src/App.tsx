@@ -21,7 +21,6 @@ import {
   UpdateExpense,
 } from "./Pages";
 
-import { LoadScript } from "@react-google-maps/api";
 import BaseLayout from "./Layouts/BaseLayout";
 
 export default function App() {
@@ -78,11 +77,13 @@ export default function App() {
 
   return (
     <>
-      <Routes>
-        <Route path={paths.LANDING} element={<Landing />} />
-        <Route path={paths.SIGN_UP} element={<SignUp />} />
-        <Route path={paths.SIGN_IN} element={<SignIn />} />
-      </Routes>
+      {!session && (
+        <Routes>
+          <Route path={paths.LANDING} element={<Landing />} />
+          <Route path={paths.SIGN_UP} element={<SignUp />} />
+          <Route path={paths.SIGN_IN} element={<SignIn />} />
+        </Routes>
+      )}
 
       {session && (
         <BaseLayout loggedIn={loggedIn} carChanged={carChanged}>

@@ -66,11 +66,23 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
     if (error) {
       console.log(error);
     } else {
-      const { data, error } = await supabase.from("cars").delete().eq("id", id);
-      if (error) {
-        console.log(error);
+      const { data: mileageData, error: mileageError } = await supabase
+        .from("mileage")
+        .delete()
+        .match({ car_id: id });
+
+      if (mileageError) {
+        console.log(mileageError);
+      } else {
+        const { data, error } = await supabase
+          .from("cars")
+          .delete()
+          .eq("id", id);
+        if (error) {
+          console.log(error);
+        }
+        navigate(paths.GARAGE);
       }
-      navigate(paths.GARAGE);
     }
   };
 
