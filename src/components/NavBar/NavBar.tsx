@@ -55,6 +55,8 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
   }, [location]);
 
   useEffect(() => {
+    if (!auth.user) return;
+
     const getProfile = async () => {
       try {
         let { data, error, status } = await supabase
@@ -72,7 +74,7 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
           setAvatarUrl(data.avatar_url);
         }
       } catch (error: any) {
-        alert(error.message);
+        console.log(error);
       }
     };
 

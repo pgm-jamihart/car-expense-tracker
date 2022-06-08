@@ -56,7 +56,7 @@ const Account = () => {
         setAvatarUrl(data.avatar_url);
       }
     } catch (error: any) {
-      alert(error.message);
+      console.log(error);
     } finally {
       setLoading(false);
     }
