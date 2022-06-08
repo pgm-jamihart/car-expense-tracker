@@ -228,6 +228,13 @@ const BarChart = ({ active, carId }: BarProps) => {
   const optionsBar = {
     chart: {
       type: "bar" as "bar",
+
+      zoom: {
+        enabled: false,
+      },
+      toolbar: {
+        show: false,
+      },
     },
     plotOptions: {
       bar: {
@@ -317,57 +324,59 @@ const BarChart = ({ active, carId }: BarProps) => {
   return (
     <div
       className={`${
-        !active ? "w-full lg:w-3/5 lg:pl-6" : "hidden lg:block lg:w-3/5 lg:pl-6"
-      }`}
+        !active ? "w-full lg:w-3/5" : "hidden lg:block lg:w-3/5"
+      } bg-slate-200/50 rounded-md border-2 p-4 lg:ml-4`}
     >
-      <h3 className="my-4 ml-4">Expenses per day</h3>
+      <h3 className="mb-8">Expenses per day</h3>
 
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          {filterByMonth ? (
-            <DatePicker
-              views={["year", "month"]}
-              label="Year and Month"
-              minDate={new Date("2019-01-01")}
-              maxDate={new Date()}
-              value={datePickerValue}
-              onChange={(newValue: any) => {
-                setDatePickerValue(newValue);
-              }}
-              renderInput={(params: any) => (
-                <TextField size="small" {...params} helperText={null} />
-              )}
-            />
-          ) : (
-            <DatePicker
-              views={["year"]}
-              label="Year only"
-              minDate={new Date("2019-01-01")}
-              maxDate={new Date()}
-              value={datePickerValue}
-              onChange={(newValue: any) => {
-                setDatePickerValue(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField size="small" {...params} helperText={null} />
-              )}
-            />
-          )}
-        </LocalizationProvider>
+      <div className="flex mb-4 items-center justify-between">
+        <div className="w-40">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {filterByMonth ? (
+              <DatePicker
+                views={["year", "month"]}
+                label="Year and Month"
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date()}
+                value={datePickerValue}
+                onChange={(newValue: any) => {
+                  setDatePickerValue(newValue);
+                }}
+                renderInput={(params: any) => (
+                  <TextField size="small" {...params} helperText={null} />
+                )}
+              />
+            ) : (
+              <DatePicker
+                views={["year"]}
+                label="Year only"
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date()}
+                value={datePickerValue}
+                onChange={(newValue: any) => {
+                  setDatePickerValue(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField size="small" {...params} helperText={null} />
+                )}
+              />
+            )}
+          </LocalizationProvider>
+        </div>
+
+        <button
+          className="flex items-center border border-skin-light_gray rounded-[4px] px-4 py-2 text-skin-dark_gray  hover:border-skin-black transition-all duration-200 ease-in-out"
+          onClick={() => setFilterByMonth(!filterByMonth)}
+        >
+          <span className="mr-2 text-2xl">
+            <BsFilter />
+          </span>
+          <span>{filterByMonth ? "Yearly" : "Monthly"}</span>
+        </button>
       </div>
 
-      <button
-        className="flex items-center"
-        onClick={() => setFilterByMonth(!filterByMonth)}
-      >
-        <span className="mr-2 text-2xl">
-          <BsFilter />
-        </span>
-        <span>{filterByMonth ? "Yearly" : "Monthly"}</span>
-      </button>
-
       <Chart
-        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full h-96 md:h-96 rounded-md"
+        className=" md:flex md:items-center md:justify-center  w-full h-96 md:h-96 rounded-md"
         //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={optionsBar}
         series={chartDataBar}

@@ -73,25 +73,41 @@ const Dashboard = ({ loggedIn }: Props) => {
 
         {currentCar.id && (
           <div>
-            <div className="flex flex-col md:flex-row mb-10">
-              <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:2/3">
+            <div className="flex flex-col md:flex-row mb-20">
+              <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:w-2/5">
                 <CarDetails
                   currentCar={currentCar}
                   setSuccess={setSuccess}
                   success={success}
                 />
               </div>
-              <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/4 rounded-md">
-                <SparkLineChart carIdNumber={currentCar.id} />
+              <div className=" w-full md:w-1/2 lg:w-3/5">
+                <Reminders currentCarId={currentCar.id} />
               </div>
             </div>
 
-            <div className="min-h-[24rem] flex item-start md:justify-start justify-center w-full flex-wrap">
-              <div className="lg:hidden">
-                <button className="mr-8" onClick={() => setActive(true)}>
-                  Donut
+            <div className="min-h-[24rem] flex item-start md:justify-start justify-center w-full flex-wrap lg:flex-nowrap">
+              <div className="mb-5 lg:hidden border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+                <button
+                  className={`${
+                    active
+                      ? "text-skin-blue bg-slate-200"
+                      : "hover:bg-slate-300 text-skin-dark_gray"
+                  } inline-block p-4  rounded-t-lg transition-all duration-200 ease-in-out`}
+                  onClick={() => setActive(true)}
+                >
+                  Donut chart
                 </button>
-                <button onClick={() => setActive(false)}>Bar</button>
+                <button
+                  className={`${
+                    !active
+                      ? "text-skin-blue bg-slate-200  "
+                      : "hover:bg-slate-300 text-skin-dark_gray"
+                  } inline-block p-4 rounded-t-lg transition-all duration-200 ease-in-out `}
+                  onClick={() => setActive(false)}
+                >
+                  Bar chart
+                </button>
               </div>
 
               <DonutChart active={active} carId={currentCar.id} />
@@ -99,13 +115,8 @@ const Dashboard = ({ loggedIn }: Props) => {
               <BarChart active={active} carId={currentCar.id} />
             </div>
 
-            <div className=" lg:flex items-start mt-10">
-              <div className="mb-10 lg:mb-0 lg:mr-4 w-full lg:w-1/2">
-                <MilleageChart currentCarId={currentCar.id} />
-              </div>
-              <div className="lg:ml-4 w-full lg:w-1/2">
-                <Reminders currentCarId={currentCar.id} />
-              </div>
+            <div className="mt-10 lg:mt-20 mb-10 w-full h-96 bg-slate-100/50 rounded-md border-2 p-4">
+              <MilleageChart currentCarId={currentCar.id} />
             </div>
           </div>
         )}

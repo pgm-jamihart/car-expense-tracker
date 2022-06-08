@@ -21,9 +21,6 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
   const [loading, setLoading] = useState(false);
   const [filterByMonth, setFilterByMonth] = useState(false);
 
-  // calculate the total expenses
-  const totalExpenses = chartData.reduce((acc, curr) => acc + curr, 0);
-
   // value begin of the month
   const valueBeginOfMonth = format(
     new Date(datePickerValue.getFullYear(), datePickerValue.getMonth(), 1),
@@ -118,10 +115,11 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
         donut: {
           labels: {
             show: true,
+
             total: {
+              label: "Total",
               show: true,
               showAlways: true,
-              label: "Total",
             },
           },
         },
@@ -145,63 +143,66 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
   };
   return (
     <div
-      className={`${active ? "w-full lg:w-2/5 " : "hidden lg:block lg:w-2/5 "}`}
+      className={`${
+        active ? "w-full lg:w-2/5 " : "hidden lg:block lg:w-2/5 "
+      } bg-slate-200/50 rounded-md border-2 p-4 lg:mr-4 `}
     >
       <div>
-        <h3 className="my-4 ml-4">
+        <h3 className="mb-8">
           Expenses per {filterByMonth ? "Month" : "Year"}
         </h3>
       </div>
-      <div
-        className="relative h-96 pt-8 md:pt-0 bg-skin-light_blue rounded-md w-full md:flex md:items-center md:justify-center"
-        //md:max-w-screen-sm md:mr-4 mb-4 md:mb-0
-      >
-        <div className="absolute top-2 flex items-center w-full justify-between px-2">
-          <div className="w-40">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              {filterByMonth ? (
-                <DatePicker
-                  views={["year", "month"]}
-                  label="Year and Month"
-                  minDate={new Date("2019-01-01")}
-                  maxDate={new Date()}
-                  value={datePickerValue}
-                  onChange={(newValue: any) => {
-                    setDatePickerValue(newValue);
-                  }}
-                  renderInput={(params: any) => (
-                    <TextField size="small" {...params} helperText={null} />
-                  )}
-                />
-              ) : (
-                <DatePicker
-                  views={["year"]}
-                  label="Year only"
-                  minDate={new Date("2019-01-01")}
-                  maxDate={new Date()}
-                  value={datePickerValue}
-                  onChange={(newValue: any) => {
-                    setDatePickerValue(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField size="small" {...params} helperText={null} />
-                  )}
-                />
-              )}
-            </LocalizationProvider>
-          </div>
 
-          <button
-            className="flex items-center"
-            onClick={() => setFilterByMonth(!filterByMonth)}
-          >
-            <span className="mr-2 text-2xl">
-              <BsFilter />
-            </span>
-            <span>{filterByMonth ? "Yearly" : "Monthly"}</span>
-          </button>
+      <div className="flex items-center w-full justify-between mb-4">
+        <div className="w-40">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {filterByMonth ? (
+              <DatePicker
+                views={["year", "month"]}
+                label="Year and Month"
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date()}
+                value={datePickerValue}
+                onChange={(newValue: any) => {
+                  setDatePickerValue(newValue);
+                }}
+                renderInput={(params: any) => (
+                  <TextField size="small" {...params} helperText={null} />
+                )}
+              />
+            ) : (
+              <DatePicker
+                views={["year"]}
+                label="Year only"
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date()}
+                value={datePickerValue}
+                onChange={(newValue: any) => {
+                  setDatePickerValue(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField size="small" {...params} helperText={null} />
+                )}
+              />
+            )}
+          </LocalizationProvider>
         </div>
 
+        <button
+          className="flex items-center border border-skin-light_gray rounded-[4px] px-4 py-2 text-skin-dark_gray  hover:border-skin-black transition-all duration-200 ease-in-out"
+          onClick={() => setFilterByMonth(!filterByMonth)}
+        >
+          <span className="mr-2 text-2xl">
+            <BsFilter />
+          </span>
+          <span>{filterByMonth ? "Yearly" : "Monthly"}</span>
+        </button>
+      </div>
+
+      <div
+        className="relative h-96 pt-8 md:pt-0  w-full md:flex md:items-center md:justify-center"
+        //md:max-w-screen-sm md:mr-4 mb-4 md:mb-0
+      >
         <Chart
           className="h-full w-full md:h-2/3 md:w-2/3 lg:w-full lg:h-full md:flex md:items-center md:justify-center"
           options={options}

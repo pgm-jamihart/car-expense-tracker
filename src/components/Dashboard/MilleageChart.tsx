@@ -98,9 +98,7 @@ const MilleageChart = ({ currentCarId }: Props) => {
   };
 
   const options = {
-    chart: {
-      height: 160,
-    },
+    chart: {},
     dataLabels: {
       enabled: true,
     },
@@ -109,6 +107,7 @@ const MilleageChart = ({ currentCarId }: Props) => {
       width: 2,
       curve: "smooth" as "smooth",
     },
+
     fill: {
       type: "gradient",
       gradient: {
@@ -142,15 +141,14 @@ const MilleageChart = ({ currentCarId }: Props) => {
     },
   };
   return (
-    <div>
-      <h3 className="my-4 ml-4">Mileage</h3>
+    <div className=" w-full h-72 ">
+      <h3 className="mb-8">Mileage</h3>
       <Chart
-        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full rounded-md h-[17rem] max-h-[17rem]"
-        //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={options}
         series={chartDataBar}
         type="area"
-        height={"80%"}
+        height={"100%"}
+        width={"100%"}
       />
     </div>
   );
