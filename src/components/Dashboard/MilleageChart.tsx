@@ -80,19 +80,50 @@ const MilleageChart = ({ currentCarId }: Props) => {
       tickPlacement: "on",
     },
     yaxis: {},
+    tooltip: {
+      fixed: {
+        enabled: false,
+      },
+      x: {
+        show: true,
+      },
+      y: {
+        title: {
+          formatter: function (seriesName: any) {
+            return "Mileage";
+          },
+        },
+      },
+    },
+  };
+
+  const options = {
+    chart: {},
+    dataLabels: {
+      enabled: true,
+    },
+    labels: labels,
+    stroke: {
+      width: 2,
+      curve: "smooth" as "smooth",
+    },
+
     fill: {
       type: "gradient",
       gradient: {
-        shade: "light",
-        type: "horizontal",
-        shadeIntensity: 0.25,
-        gradientToColors: undefined,
-        inverseColors: true,
-        opacityFrom: 0.85,
-        opacityTo: 0.85,
-        stops: [50, 0, 100],
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
+        stops: [0, 90, 100],
       },
     },
+    xaxis: {
+      crosshairs: {
+        width: 1,
+      },
+    },
+    yaxis: {},
+
     tooltip: {
       fixed: {
         enabled: false,
@@ -110,15 +141,14 @@ const MilleageChart = ({ currentCarId }: Props) => {
     },
   };
   return (
-    <div>
-      <h3 className="my-4 ml-4">Mileage</h3>
+    <div className=" w-full h-72 ">
+      <h3 className="mb-8">Mileage</h3>
       <Chart
-        className=" md:flex md:items-center md:justify-center shadow-lg border border-slate-200 w-full rounded-md h-[17rem] max-h-[17rem]"
-        //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
-        options={optionsBar}
+        options={options}
         series={chartDataBar}
-        type="bar"
-        height={"80%"}
+        type="area"
+        height={"100%"}
+        width={"100%"}
       />
     </div>
   );

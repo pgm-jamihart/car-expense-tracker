@@ -43,7 +43,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
   }, [currentCar.id]);
 
   return (
-    <div className="">
+    <div className=" ">
       <div className="flex items-baseline">
         <h1 className="text-skin-gray">{currentCar.brand}</h1>
         <span className="ml-2 text-xl font-light md:italic block md:inline ">
@@ -54,13 +54,13 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
       <div className="flex rounded-md py-2">
         {currentCar.photo_url ? (
           <img
-            className="w-full h-full rounded-md max-h-[10rem] object-cover"
+            className="w-full h-full rounded-md max-h-[20rem] md:max-h-[10rem] object-cover"
             src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${currentCar.photo_url}`}
             alt="car"
           />
         ) : (
           <img
-            className="w-full h-full rounded-md max-h-[10rem] object-cover bg-slate-200/50"
+            className="w-full h-full rounded-md max-h-[10rem] object-cover bg-slate-200"
             src="./car_illustration.png"
             alt="car"
           />

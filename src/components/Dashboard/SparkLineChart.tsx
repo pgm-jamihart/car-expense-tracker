@@ -3,16 +3,26 @@ import Chart from "react-apexcharts";
 import { supabase } from "../../config/supabaseClient";
 
 interface SparkLineChartProps {
-  totalExpenses: number;
   carIdNumber: number;
 }
 
-const SparkLineChart = ({
-  totalExpenses,
-  carIdNumber,
-}: SparkLineChartProps) => {
+const SparkLineChart = ({ carIdNumber }: SparkLineChartProps) => {
   const [chartDataSparkLine, setChartDataSparkLine] = useState<any[]>([]);
   const [labelsSparkLine, setLabelsSparkLine] = useState<any[]>([]);
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
+  // start of month
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  const startOfMonthString = startOfMonth.toISOString().slice(0, 10);
+
+  // startOfMonth get month name
+  const startOfMonthName = startOfMonth.toLocaleString("en-US", {
+    month: "long",
+  });
+
+  const startOfMonthYear = startOfMonth.getFullYear();
+  const startOfMonthDateString = `(${startOfMonthName} ${startOfMonthYear})`;
 
   const series1 = [
     {
@@ -29,7 +39,7 @@ const SparkLineChart = ({
     labels: labelsSparkLine,
     stroke: {
       width: 2,
-      curve: "straight" as "straight",
+      curve: "smooth" as "smooth",
     },
     fill: {
       type: "gradient",
@@ -58,7 +68,7 @@ const SparkLineChart = ({
       },
     },
     subtitle: {
-      text: "All expenses",
+      text: "Expenses this month " + startOfMonthDateString,
       offsetX: 0,
       style: {
         fontSize: "14px",
@@ -91,13 +101,16 @@ const SparkLineChart = ({
         .order("date", {
           ascending: false,
         })
-        .limit(20);
+        .gt("date", startOfMonthString);
 
       if (error) {
         console.log(error);
       }
 
       if (data) {
+        const total = data.reduce((acc, curr) => acc + curr.total, 0);
+        setTotalExpenses(total);
+
         const categoryIds = data.map((expense) => expense.category_id);
 
         const promises = categoryIds.map(async (categoryId) => {
@@ -133,7 +146,7 @@ const SparkLineChart = ({
         );
       }
     })();
-  }, [carIdNumber]);
+  }, [carIdNumber, startOfMonthString]);
 
   return (
     <Chart
