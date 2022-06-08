@@ -30,7 +30,9 @@ const BarChart = ({ active }: BarProps) => {
         .limit(limit)
         .order("date", {
           ascending: true,
-        });
+        })
+        .lt("date", "2022-05-31")
+        .gt("date", "2022-05-1");
 
       if (error) {
         console.log(error);
@@ -61,34 +63,56 @@ const BarChart = ({ active }: BarProps) => {
           category: categories[index],
         }));
 
-        const dataPerDay = expensesPerCategory.reduce((acc, curr) => {
-          const date = new Date(curr.date);
-          const day = date.getDate();
-          let month = new Intl.DateTimeFormat("en", {
-            month: "short",
-          }).format(date);
+        const weeks = [
+          {
+            name: "Week 1",
+            from: 1,
+            to: 7,
+          },
+          {
+            name: "Week 2",
+            from: 8,
+            to: 14,
+          },
+          {
+            name: "Week 3",
+            from: 15,
+            to: 21,
+          },
+          {
+            name: "Week 4",
+            from: 22,
+            to: 28,
+          },
+          {
+            name: "Week 5",
+            from: 29,
+            to: 31,
+          },
+        ];
 
-          const year = date.getFullYear();
-          const dateString = `${day} ${month} ${year}`;
-          if (!acc[dateString]) {
-            acc[dateString] = {
-              x: dateString,
-              y: curr.total,
-            };
-          } else {
-            acc[dateString].y += curr.total;
-          }
-          return acc;
-        }, {});
+        console.log(expensesPerCategory);
 
-        // sort the data per day
-        const sortedDataPerDay = Object.values(dataPerDay).sort(
-          (a: any, b: any) => {
-            return new Date(a.x).getTime() - new Date(b.x).getTime();
-          }
-        );
+        const expensesPerWeek = weeks.map((week) => {
+          const expenses = expensesPerCategory.filter(
+            (expense) =>
+              expense.date.split("-")[2] >= week.from &&
+              expense.date.split("-")[2] <= week.to
+          );
 
-        setChartData(sortedDataPerDay);
+          const total = expenses.reduce(
+            (total, expense) => total + expense.total,
+            0
+          );
+
+          return {
+            x: week.name,
+            y: total,
+          };
+        });
+
+        console.log(expensesPerWeek);
+        setChartData(expensesPerWeek);
       }
     })();
   }, [currentCar.id, limit]);

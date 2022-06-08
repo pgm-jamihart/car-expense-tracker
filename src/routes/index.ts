@@ -4,7 +4,7 @@ export const ACCOUNT = "/account";
 export const SIGN_IN = "/signin";
 export const SIGN_UP = "/signup";
 
-export const DASHBOARD = "/dashboard";
+export const DASHBOARD = "/";
 export const TIMELINE = "/timeline";
 export const PLACES = "/places";
 export const PROFILE = "/profile";

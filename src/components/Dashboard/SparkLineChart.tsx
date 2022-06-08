@@ -3,16 +3,26 @@ import Chart from "react-apexcharts";
 import { supabase } from "../../config/supabaseClient";
 
 interface SparkLineChartProps {
-  totalExpenses: number;
   carIdNumber: number;
 }
 
-const SparkLineChart = ({
-  totalExpenses,
-  carIdNumber,
-}: SparkLineChartProps) => {
+const SparkLineChart = ({ carIdNumber }: SparkLineChartProps) => {
   const [chartDataSparkLine, setChartDataSparkLine] = useState<any[]>([]);
   const [labelsSparkLine, setLabelsSparkLine] = useState<any[]>([]);
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
+  // start of month
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  const startOfMonthString = startOfMonth.toISOString().slice(0, 10);
+
+  // startOfMonth get month name
+  const startOfMonthName = startOfMonth.toLocaleString("en-US", {
+    month: "long",
+  });
+
+  const startOfMonthYear = startOfMonth.getFullYear();
+  const startOfMonthDateString = `(${startOfMonthName} ${startOfMonthYear})`;
 
   const series1 = [
     {
@@ -58,7 +68,7 @@ const SparkLineChart = ({
       },
     },
     subtitle: {
-      text: "Expenses this month",
+      text: "Expenses this month " + startOfMonthDateString,
       offsetX: 0,
       style: {
         fontSize: "14px",
@@ -83,11 +93,6 @@ const SparkLineChart = ({
   };
 
   useEffect(() => {
-    // start of month
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    const startOfMonthString = startOfMonth.toISOString().slice(0, 10);
-
     (async () => {
       const { data, error } = await supabase
         .from("expenses")
@@ -103,6 +108,9 @@ const SparkLineChart = ({
       }
 
       if (data) {
+        const total = data.reduce((acc, curr) => acc + curr.total, 0);
+        setTotalExpenses(total);
+
         const categoryIds = data.map((expense) => expense.category_id);
 
         const promises = categoryIds.map(async (categoryId) => {
@@ -138,7 +146,7 @@ const SparkLineChart = ({
         );
       }
     })();
-  }, [carIdNumber]);
+  }, [carIdNumber, startOfMonthString]);
 
   return (
     <Chart

@@ -3,8 +3,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 import { PageTitle } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
-import BaseLayout from "../Layouts/BaseLayout";
-import { supabase } from "../config/supabaseClient";
+
 import {
   BarChart,
   CarDetails,
@@ -20,13 +19,8 @@ interface Props {
 }
 
 const Dashboard = ({ loggedIn }: Props) => {
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [labels, setLabels] = useState<any[]>([]);
   const [active, setActive] = useState(true);
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
-  // calculate the total expenses
-  const totalExpenses = chartData.reduce((acc, curr) => acc + curr, 0);
 
   const [currentCar, setCurrentCar] = useState<any>({});
 
@@ -36,53 +30,6 @@ const Dashboard = ({ loggedIn }: Props) => {
       setCurrentCar(JSON.parse(carId));
     }
   }, [loggedIn]);
-
-  useEffect(() => {
-    if (!currentCar.id) return;
-
-    (async () => {
-      setLoading(true);
-      const { data: categories, error: categoriesError } = await supabase
-        .from("categories")
-        .select("id, type");
-
-      if (categoriesError) {
-        console.log(categoriesError);
-      }
-
-      if (categories) {
-        const categoryIds = categories.map((category) => category.id);
-        const categoryTypes = categories.map((category) => category.type);
-
-        const promises = categoryIds.map(async (categoryId, index) => {
-          const { data, error } = await supabase
-            .from("expenses")
-            .select("*")
-            .eq("category_id", categoryId)
-            .eq("car_id", currentCar.id);
-
-          if (error) {
-            console.log(error);
-          }
-
-          if (data) {
-            const total = data.reduce((acc, curr) => acc + curr.total, 0);
-            return {
-              id: categoryId,
-              type: categoryTypes[index],
-              total,
-            };
-          }
-        });
-
-        const data = await Promise.all(promises);
-
-        setLabels(data.map((item) => item?.type));
-        setChartData(data.map((item) => item?.total));
-        setLoading(false);
-      }
-    })();
-  }, [currentCar.id]);
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -118,13 +65,13 @@ const Dashboard = ({ loggedIn }: Props) => {
       )}
 
       <div className="py-10 lg:py-0 lg:pb-10">
-        {loading && (
+        {/* {loading && (
           <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
             <CircularProgress />
           </div>
-        )}
+        )} */}
 
-        {currentCar.id && chartData.length > 0 && (
+        {currentCar.id && (
           <div>
             <div className="flex flex-col md:flex-row mb-10">
               <div className="mb-10 md:mb-0 mr-8 w-full md:w-1/2 lg:w-1/3">
@@ -135,10 +82,7 @@ const Dashboard = ({ loggedIn }: Props) => {
                 />
               </div>
               <div className=" shadow-lg py-2 border border-slate-200 w-full md:w-1/2 lg:w-1/3 rounded-md">
-                <SparkLineChart
-                  totalExpenses={totalExpenses}
-                  carIdNumber={currentCar.id}
-                />
+                <SparkLineChart carIdNumber={currentCar.id} />
               </div>
             </div>
 
@@ -150,11 +94,7 @@ const Dashboard = ({ loggedIn }: Props) => {
                 <button onClick={() => setActive(false)}>Bar</button>
               </div>
 
-              <DonutChart
-                active={active}
-                labels={labels}
-                chartData={chartData}
-              />
+              <DonutChart active={active} carId={currentCar.id} />
 
               <BarChart active={active} />
             </div>
