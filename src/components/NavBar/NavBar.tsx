@@ -48,6 +48,9 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
       case paths.ACCOUNT:
         setActive(4);
         break;
+      case paths.CAR_DETAIL_PAGE.replace(":id", currentCar.id.toString()):
+        setActive(5);
+        break;
       default:
         setActive(undefined);
         break;
@@ -161,7 +164,13 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
               <h3 className="font-bold text-base text-skin-light_gray">
                 Selected car
               </h3>
-              <div className="flex items-center mt-4 p-2 hover:bg-slate-700/50 transition-all duration-200 ease-in-out rounded-md">
+              <div
+                className={`${
+                  active === 5
+                    ? "bg-slate-700/50  border-slate-500/30 border"
+                    : "border border-transparent "
+                } flex items-center mt-4 p-2 hover:bg-slate-700/50 transition-all duration-200 ease-in-out rounded-md`}
+              >
                 {currentCar.photo_url ? (
                   <img
                     className="rounded-sm h-12 mr-4"
@@ -196,7 +205,13 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
             to={paths.ACCOUNT}
             className="absolute bottom-4 left-0 w-full p-2 "
           >
-            <div className="flex   bg-slate-800 p-4 rounded-md border-2 border-slate-500/50 hover:border-skin-blue transition-all ease-in-out duration-200 shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900">
+            <div
+              className={`${
+                active === 4
+                  ? "border-skin-blue"
+                  : "shadow-lg hover:shadow-[0_0px_0px_5px_#3504fb90] hover:bg-slate-900 hover:border-skin-blue border-slate-500/50"
+              } flex bg-slate-800 p-4 rounded-md border-2   transition-all ease-in-out duration-200 `}
+            >
               {avatar_url ? (
                 <img
                   src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${avatar_url}`}

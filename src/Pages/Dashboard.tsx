@@ -86,7 +86,7 @@ const Dashboard = ({ loggedIn }: Props) => {
               </div>
             </div>
 
-            <div className="min-h-[24rem] flex item-start md:justify-start justify-center w-full flex-wrap lg:flex-nowrap">
+            <div className="min-h-[24rem] flex item-start  justify-center w-full flex-wrap lg:flex-nowrap">
               <div className="mb-5 lg:hidden border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 <button
                   className={`${
