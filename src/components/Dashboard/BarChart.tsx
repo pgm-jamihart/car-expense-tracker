@@ -187,8 +187,6 @@ const BarChart = ({ active, carId }: BarProps) => {
             },
           ];
 
-          console.log(expensesPerCategory);
-
           const expensesPerMonth = months.map((month) => {
             const expenses = expensesPerCategory.filter((expense) => {
               const expenseMonth = new Date(expense.date).getMonth() + 1;

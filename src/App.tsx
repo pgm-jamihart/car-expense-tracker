@@ -28,8 +28,10 @@ export default function App() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [carChanged, setCarChanged] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     setSession(supabase.auth.session());
 
     supabase.auth.onAuthStateChange(
@@ -73,16 +75,24 @@ export default function App() {
         }
       }
     );
+
+    setLoading(false);
   }, [navigate]);
 
   return (
     <>
       {!session && (
-        <Routes>
-          <Route path={paths.LANDING} element={<Landing />} />
-          <Route path={paths.SIGN_UP} element={<SignUp />} />
-          <Route path={paths.SIGN_IN} element={<SignIn />} />
-        </Routes>
+        <>
+          {loading ? (
+            <div className="flex items-center justify-center absolute left-0 right-0 top-0 bottom-0 w-full h-full z-[999] bg-skin-white"></div>
+          ) : (
+            <Routes>
+              <Route path={paths.LANDING} element={<Landing />} />
+              <Route path={paths.SIGN_UP} element={<SignUp />} />
+              <Route path={paths.SIGN_IN} element={<SignIn />} />
+            </Routes>
+          )}
+        </>
       )}
 
       {session && (
