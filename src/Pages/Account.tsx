@@ -43,7 +43,7 @@ const Account = () => {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username, avatar_url`)
         .eq("id", user!.id)
         .single();
 
