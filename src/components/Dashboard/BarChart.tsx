@@ -325,7 +325,7 @@ const BarChart = ({ active, carId }: BarProps) => {
         !active ? "w-full lg:w-3/5" : "hidden lg:block lg:w-3/5"
       } bg-slate-200/50 rounded-md border-2 p-4 lg:ml-4`}
     >
-      <h3 className="mb-8">Expenses per day</h3>
+      <h3 className="mb-8">Expenses per {filterByMonth ? "Month" : "Year"}</h3>
 
       <div className="flex mb-4 items-center justify-between">
         <div className="w-40">
