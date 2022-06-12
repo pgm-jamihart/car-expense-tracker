@@ -16,9 +16,11 @@ interface BarProps {
 
 const BarChart = ({ active, carId }: BarProps) => {
   // get the data from the database and set it to the state
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [datePickerValue, setDatePickerValue] = useState(new Date());
-  const [filterByMonth, setFilterByMonth] = useState(false);
+  const [chartData, setChartData] = useState<{ x: string; y: number }[]>([
+    { x: "", y: 0 },
+  ]);
+  const [datePickerValue, setDatePickerValue] = useState<Date>(new Date());
+  const [filterByMonth, setFilterByMonth] = useState<Boolean>(false);
 
   // value begin of the month
   const valueBeginOfMonth = format(
@@ -251,7 +253,7 @@ const BarChart = ({ active, carId }: BarProps) => {
       style: {
         colors: ["#ffffff"],
       },
-      formatter: function (val: any) {
+      formatter: function (val: number) {
         return `${val > 0 ? "€ " + val : ""}`;
       },
 
@@ -311,7 +313,7 @@ const BarChart = ({ active, carId }: BarProps) => {
       },
       y: {
         title: {
-          formatter: function (seriesName: any) {
+          formatter: function () {
             return "€  ";
           },
         },
@@ -375,7 +377,6 @@ const BarChart = ({ active, carId }: BarProps) => {
 
       <Chart
         className=" md:flex md:items-center md:justify-center  w-full h-96 md:h-96 rounded-md"
-        //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={optionsBar}
         series={chartDataBar}
         type="bar"

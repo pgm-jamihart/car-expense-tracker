@@ -7,8 +7,8 @@ interface Props {
 }
 
 const MilleageChart = ({ currentCarId }: Props) => {
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [labels, setLabels] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<number[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
 
   useEffect(() => {
     if (!currentCarId) return;
@@ -89,7 +89,7 @@ const MilleageChart = ({ currentCarId }: Props) => {
       },
       y: {
         title: {
-          formatter: function (seriesName: any) {
+          formatter: function () {
             return "Mileage";
           },
         },
@@ -133,7 +133,7 @@ const MilleageChart = ({ currentCarId }: Props) => {
       },
       y: {
         title: {
-          formatter: function (seriesName: any) {
+          formatter: function () {
             return "Mileage";
           },
         },

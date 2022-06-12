@@ -54,7 +54,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
       <div className="flex rounded-md py-2">
         {currentCar.photo_url ? (
           <img
-            className="w-full h-full rounded-md max-h-[20rem] md:max-h-[10rem] object-cover"
+            className="w-full h-full rounded-md max-h-[20rem] md:max-h-[13.5rem] object-cover"
             src={`https://togpdpbjnxnodlpvzjco.supabase.co/storage/v1/object/public/${currentCar.photo_url}`}
             alt="car"
           />

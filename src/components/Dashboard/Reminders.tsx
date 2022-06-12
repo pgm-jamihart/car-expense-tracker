@@ -9,8 +9,17 @@ interface Props {
 }
 
 const Reminders = ({ currentCarId }: Props) => {
-  const [reminders, setReminders] = useState<any[]>([]);
-  const [more, setMore] = useState(false);
+  const [reminders, setReminders] = useState<
+    {
+      car_id: number;
+      created_at: string;
+      date: string;
+      id: number;
+      name: string;
+      type: string;
+    }[]
+  >([]);
+  const [more, setMore] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {

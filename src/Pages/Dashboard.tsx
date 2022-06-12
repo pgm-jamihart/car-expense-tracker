@@ -10,7 +10,6 @@ import {
   DonutChart,
   MilleageChart,
   Reminders,
-  SparkLineChart,
 } from "../components/Dashboard";
 import { Alert } from "@mui/material";
 
