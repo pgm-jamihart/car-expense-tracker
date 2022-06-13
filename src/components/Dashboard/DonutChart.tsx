@@ -18,7 +18,6 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
   const [datePickerValue, setDatePickerValue] = useState<Date>(new Date());
   const [chartData, setChartData] = useState<number[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [filterByMonth, setFilterByMonth] = useState<boolean>(false);
 
   // value begin of the month
@@ -49,7 +48,6 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
     if (!carId) return;
 
     (async () => {
-      setLoading(true);
       const { data: categories, error: categoriesError } = await supabase
         .from("categories")
         .select("id, type");
@@ -89,7 +87,6 @@ const DonutChart = ({ carId, active }: DonutChartProps) => {
 
         setLabels(data.map((item) => item?.type));
         setChartData(data.map((item) => item?.total));
-        setLoading(false);
       }
     })();
   }, [

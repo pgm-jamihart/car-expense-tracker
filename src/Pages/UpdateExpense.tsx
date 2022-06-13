@@ -27,7 +27,6 @@ const UpdateExpense = () => {
 
       if (expense) {
         const categoryId = expense[0].category_id;
-        console.log(categoryId);
 
         const { data, error } = await supabase
           .from("categories")

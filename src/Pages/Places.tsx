@@ -1,14 +1,12 @@
 import { CircularProgress } from "@mui/material";
-import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useRef, useState } from "react";
 import { PageTitle } from "../components";
 import { Map, PlacesList } from "../components/Map";
 import PlaceSelect from "../components/Map/PlaceSelect";
-import BaseLayout from "../Layouts/BaseLayout";
+
 
 const Places = () => {
   const [location, setLocation] = useState("");
-  //   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [type, setType] = useState("gas_station");
   const [places, setPlaces] = useState([]);
   const center = useRef<any>();
@@ -22,7 +20,6 @@ const Places = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          //   setCenter({ lat: latitude, lng: longitude });
 
           if (latitude && longitude) {
             center.current = { lat: latitude, lng: longitude };
