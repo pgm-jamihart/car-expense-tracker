@@ -53,8 +53,6 @@ const FuelExpenseForm = () => {
     total: "",
   });
 
-  console.log(speechlyFormdata);
-
   useEffect(() => {
     const carId = localStorage.getItem("car");
     if (carId) {

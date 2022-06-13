@@ -50,53 +50,6 @@ const MilleageChart = ({ currentCarId }: Props) => {
     },
   ];
 
-  const optionsBar = {
-    chart: {
-      type: "bar" as "bar",
-    },
-    plotOptions: {
-      bar: {
-        borderRadius: 10,
-        columnWidth: "50%",
-      },
-    },
-    labels: labels,
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      width: 2,
-    },
-
-    grid: {
-      row: {
-        colors: ["#fff", "#f2f2f2"],
-      },
-    },
-    xaxis: {
-      labels: {
-        rotate: -45,
-      },
-      tickPlacement: "on",
-    },
-    yaxis: {},
-    tooltip: {
-      fixed: {
-        enabled: false,
-      },
-      x: {
-        show: true,
-      },
-      y: {
-        title: {
-          formatter: function () {
-            return "Mileage";
-          },
-        },
-      },
-    },
-  };
-
   const options = {
     chart: {},
     dataLabels: {

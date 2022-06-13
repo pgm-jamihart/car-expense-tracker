@@ -42,9 +42,7 @@ const UpdateOtherExpense = ({ expense }: Props) => {
         try {
           setSubmitting(true);
 
-          console.log("values", values);
-
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from("expenses")
             .update({
               date: values.date,
@@ -55,6 +53,7 @@ const UpdateOtherExpense = ({ expense }: Props) => {
 
           if (error) {
             setError(error.message);
+            console.error(error);
           }
 
           setSnackBar("Expense updated successfully");
@@ -66,6 +65,7 @@ const UpdateOtherExpense = ({ expense }: Props) => {
           navigate(paths.TIMELINE);
         } catch (error: any) {
           setError(error.message);
+          console.error(error);
           setSubmitting(false);
         } finally {
           setSubmitting(false);

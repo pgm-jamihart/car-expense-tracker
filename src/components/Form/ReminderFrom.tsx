@@ -94,7 +94,7 @@ const ReminderFrom = () => {
         try {
           setSubmitting(true);
 
-          const { data, error } = await supabase.from("reminders").insert({
+          const { error } = await supabase.from("reminders").insert({
             car_id: currentCar.id,
             date: values.date + " " + values.time,
             type: values.type,
@@ -103,7 +103,7 @@ const ReminderFrom = () => {
 
           if (error) {
             setError(error.message);
-            console.log(error);
+            console.error(error);
           } else {
             setSnackBar("Reminder added successfully");
 
@@ -115,6 +115,7 @@ const ReminderFrom = () => {
           }
         } catch (error: any) {
           setError(error.message);
+          console.error(error);
           setSubmitting(false);
         } finally {
           setSubmitting(false);

@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import * as paths from "../../routes";
 import * as Yup from "yup";
@@ -57,6 +57,7 @@ const UpdateInsuranceExpense = ({ expense }: Props) => {
 
           if (error) {
             setError(error.message);
+            console.error(error);
           }
 
           setSnackBar("Expense updated successfully");
@@ -68,6 +69,7 @@ const UpdateInsuranceExpense = ({ expense }: Props) => {
           navigate(paths.TIMELINE);
         } catch (error: any) {
           setError(error.message);
+          console.error(error);
           setSubmitting(false);
         } finally {
           setSubmitting(false);

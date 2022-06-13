@@ -64,12 +64,6 @@ const Dashboard = ({ loggedIn }: Props) => {
       )}
 
       <div className="py-10 lg:py-0 lg:pb-10">
-        {/* {loading && (
-          <div className="absolute left-0 top-0 right-0 bottom-0 bg-skin-white z-20 flex justify-center items-center">
-            <CircularProgress />
-          </div>
-        )} */}
-
         {currentCar.id && (
           <div>
             <div className="flex flex-col md:flex-row mb-20">

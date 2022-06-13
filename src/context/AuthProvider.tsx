@@ -38,7 +38,7 @@ const useProviderAuth = () => {
   const [errorMessage, setErrorMessage] = useState<string | null | undefined>();
 
   const signIn = async (email: string, password: string) => {
-    const { user, session, error } = await supabase.auth.signIn({
+    const { error } = await supabase.auth.signIn({
       email,
       password,
     });
@@ -55,7 +55,7 @@ const useProviderAuth = () => {
   };
 
   const signUp = async (email: string, password: string) => {
-    const { user, session, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
@@ -67,7 +67,7 @@ const useProviderAuth = () => {
   };
 
   const signInWithSocial = async (provider: Provider | undefined) => {
-    const { user, session, error } = await supabase.auth.signIn({
+    const { error } = await supabase.auth.signIn({
       provider: provider,
     });
     if (error) {

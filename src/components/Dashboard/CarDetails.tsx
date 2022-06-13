@@ -19,7 +19,6 @@ interface Props {
 }
 
 const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
-  const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState("");
 
   useEffect(() => {
@@ -80,7 +79,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
 
           (async () => {
             try {
-              const { data, error } = await supabase
+              const { error } = await supabase
                 .from("cars")
                 .update({
                   mileage: values.mileage,
@@ -90,7 +89,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
                 });
 
               if (error) {
-                setError(error.message);
+                console.log(error.message);
               }
 
               const d = new Date();
@@ -103,30 +102,30 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
               const today = `${yyyy}-${mm}-${dd}`;
 
               if (lastUpdated === today) {
-                const { data: updateMileage, error: updateMileageError } =
-                  await supabase
-                    .from("mileage")
-                    .update({
-                      mileage: values.mileage,
-                    })
-                    .match({
-                      car_id: currentCar.id,
-                      date: today,
-                    });
+                const { error: updateMileageError } = await supabase
+                  .from("mileage")
+                  .update({
+                    mileage: values.mileage,
+                  })
+                  .match({
+                    car_id: currentCar.id,
+                    date: today,
+                  });
 
                 if (updateMileageError) {
                   console.log(updateMileageError);
                 }
               } else {
-                const { data: mileageData, error: mileageError } =
-                  await supabase.from("mileage").insert({
+                const { error: mileageError } = await supabase
+                  .from("mileage")
+                  .insert({
                     car_id: currentCar.id,
                     mileage: values.mileage,
                     date: today,
                   });
 
                 if (mileageError) {
-                  setError(mileageError.message);
+                  console.log(mileageError.message);
                 }
               }
 
@@ -150,7 +149,7 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
 
               setSubmitting(false);
             } catch (error: any) {
-              setError(error.message);
+              console.log(error.message);
               setSubmitting(false);
             }
           })();
