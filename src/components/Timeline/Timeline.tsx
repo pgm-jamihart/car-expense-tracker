@@ -18,10 +18,7 @@ const Timeline = ({ expenses, open }: Props) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id: string) => {
-    const { data, error } = await supabase
-      .from("expenses")
-      .delete()
-      .match({ id });
+    const { error } = await supabase.from("expenses").delete().match({ id });
 
     if (error) {
       console.log(error);

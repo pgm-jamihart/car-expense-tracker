@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PageTitle } from "../components";
 import { SpeedDialTooltipOpen } from "../components/Buttons";
-import BaseLayout from "../Layouts/BaseLayout";
 import { supabase } from "../config/supabaseClient";
 import { Timeline } from "../components/Timeline";
 

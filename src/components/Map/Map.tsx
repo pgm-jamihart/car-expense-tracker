@@ -1,5 +1,5 @@
 import React from "react";
-import { Circle, GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 interface Props {
   center: any;

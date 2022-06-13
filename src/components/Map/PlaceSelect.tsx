@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import React from "react";
 
 interface Props {
   type: string;

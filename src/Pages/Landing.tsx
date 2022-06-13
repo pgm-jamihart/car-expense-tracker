@@ -47,14 +47,8 @@ export default function Landing() {
           <div className="mb-6">
             <p className="text-center text-skin-gray text-xs">
               By signing up, you agree to our{" "}
-              <a className="text-skin-blue" href="#">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a className="text-skin-blue" href="#">
-                Privacy Policy
-              </a>
-              .
+              <button className="text-skin-blue">Terms of Service</button> and{" "}
+              <button className="text-skin-blue">Privacy Policy</button>.
             </p>
           </div>
         </div>
