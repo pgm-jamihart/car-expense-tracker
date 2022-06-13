@@ -188,7 +188,9 @@ const CarDetails = ({ currentCar, setSuccess, success }: Props) => {
               {errors.mileage ? (
                 <ErrorMessage errorText={errors.mileage} />
               ) : (
-                <span className="text-xs">last updated on {lastUpdated}</span>
+                <span className="text-xs">
+                  {lastUpdated ? "last updated on " + lastUpdated : ""}
+                </span>
               )}
             </div>
 

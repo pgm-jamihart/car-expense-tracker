@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
 import { Formik, Field } from "formik";
 import { useNavigate, Link } from "react-router-dom";
@@ -6,7 +6,6 @@ import * as paths from "../routes";
 import { PrimaryButton } from "../components/Buttons";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ErrorBanner, TextInput } from "../components/Form";
-import { supabase } from "../config/supabaseClient";
 import { useAuth } from "../context/AuthProvider";
 import { LandingImage } from "../components";
 

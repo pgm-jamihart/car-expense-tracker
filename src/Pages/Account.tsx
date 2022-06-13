@@ -66,7 +66,6 @@ const Account = () => {
     let avatar = "";
 
     if (imageURI) {
-      console.log("avatar_url", avatar_url);
       const { data, error } = await supabase.storage
         .from("avatars")
         .upload(`${auth.user?.id}/${Date.now()}_avatar.png`, imageURI || "");

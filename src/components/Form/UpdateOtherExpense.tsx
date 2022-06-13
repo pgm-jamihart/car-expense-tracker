@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import * as paths from "../../routes";
 import * as Yup from "yup";

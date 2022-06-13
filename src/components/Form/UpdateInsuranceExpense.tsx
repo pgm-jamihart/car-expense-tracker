@@ -45,7 +45,7 @@ const UpdateInsuranceExpense = ({ expense }: Props) => {
         try {
           setSubmitting(true);
 
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from("expenses")
             .update({
               date: values.date,

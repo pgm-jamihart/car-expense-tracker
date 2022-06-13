@@ -58,14 +58,14 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
 
   const handleDeleteCar = async (id: number) => {
     // delete all expenses associated with this car
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("expenses")
       .delete()
       .match({ car_id: id });
     if (error) {
       console.log(error);
     } else {
-      const { data: mileageData, error: mileageError } = await supabase
+      const { error: mileageError } = await supabase
         .from("mileage")
         .delete()
         .match({ car_id: id });
@@ -73,10 +73,7 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
       if (mileageError) {
         console.log(mileageError);
       } else {
-        const { data, error } = await supabase
-          .from("cars")
-          .delete()
-          .eq("id", id);
+        const { error } = await supabase.from("cars").delete().eq("id", id);
         if (error) {
           console.log(error);
         }
@@ -269,7 +266,7 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
                 try {
                   setSubmitting(true);
 
-                  const { data, error } = await supabase
+                  const { error } = await supabase
                     .from("cars")
                     .update({
                       year: values.year,
@@ -290,8 +287,9 @@ const CarDetailPage = ({ setCarChanged, carChanged }: Props) => {
                     const yyyy = d.getFullYear();
                     const today = `${yyyy}-${mm}-${dd}`;
 
-                    const { data: mileageData, error: mileageError } =
-                      await supabase.from("mileage").insert({
+                    const { error: mileageError } = await supabase
+                      .from("mileage")
+                      .insert({
                         car_id: carId,
                         mileage: values.mileage,
                         date: today,
