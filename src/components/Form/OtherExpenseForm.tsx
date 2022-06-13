@@ -89,7 +89,7 @@ const OtherExpenseForm = () => {
         try {
           setSubmitting(true);
 
-          const { data, error } = await supabase.from("expenses").insert({
+          const { error } = await supabase.from("expenses").insert({
             category_id: categoryId,
             date: values.date,
             total: values.total,

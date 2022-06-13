@@ -9,7 +9,6 @@ import {
   UpdateParkingExpense,
 } from "../components/Form";
 import { supabase } from "../config/supabaseClient";
-import BaseLayout from "../Layouts/BaseLayout";
 
 const UpdateExpense = () => {
   let { id } = useParams<{ id: string }>();
