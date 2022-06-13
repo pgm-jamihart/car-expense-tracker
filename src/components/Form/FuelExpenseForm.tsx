@@ -27,9 +27,27 @@ const FuelExpenseForm = () => {
   const { setSnackBar } = useContext(SnackBarContext);
   const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState(null);
-  const [currentCar, setCurrentCar] = useState<any>({});
+  const [currentCar, setCurrentCar] = useState<{
+    brand: string;
+    id: number;
+    mileage: number;
+    model: string;
+    photo_url: string;
+    year: number;
+  }>({
+    brand: "",
+    id: 0,
+    mileage: 0,
+    model: "",
+    photo_url: "",
+    year: 0,
+  });
   const { segment } = useSpeechContext();
-  const [speechlyFormdata, setSpeechlyFormdata] = useState<any>({
+  const [speechlyFormdata, setSpeechlyFormdata] = useState<{
+    date: string;
+    typeOfFuel: string;
+    total: string;
+  }>({
     date: "",
     typeOfFuel: "",
     total: "",
@@ -101,7 +119,7 @@ const FuelExpenseForm = () => {
         try {
           setSubmitting(true);
 
-          const { data, error } = await supabase.from("expenses").insert({
+          const { error } = await supabase.from("expenses").insert({
             category_id: categoryId,
             date: values.date,
             total: values.total,

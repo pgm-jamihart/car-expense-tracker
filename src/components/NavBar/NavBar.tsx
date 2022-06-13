@@ -48,9 +48,6 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
       case paths.ACCOUNT:
         setActive(4);
         break;
-      case paths.CAR_DETAIL_PAGE.replace(":id", currentCar.id.toString()):
-        setActive(5);
-        break;
       default:
         setActive(undefined);
         break;
@@ -64,7 +61,7 @@ const NavBar = ({ loggedIn, carChanged }: Props) => {
       try {
         let { data, error, status } = await supabase
           .from("profiles")
-          .select(`username, website, avatar_url`)
+          .select(`username, avatar_url`)
           .eq("id", auth.user!.id)
           .single();
 

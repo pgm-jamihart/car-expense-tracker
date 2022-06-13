@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { format, compareAsc } from "date-fns";
+import { format } from "date-fns";
 import { BsFilter } from "react-icons/bs";
 
 interface BarProps {
@@ -16,9 +16,11 @@ interface BarProps {
 
 const BarChart = ({ active, carId }: BarProps) => {
   // get the data from the database and set it to the state
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [datePickerValue, setDatePickerValue] = useState(new Date());
-  const [filterByMonth, setFilterByMonth] = useState(false);
+  const [chartData, setChartData] = useState<{ x: string; y: number }[]>([
+    { x: "", y: 0 },
+  ]);
+  const [datePickerValue, setDatePickerValue] = useState<Date>(new Date());
+  const [filterByMonth, setFilterByMonth] = useState<Boolean>(false);
 
   // value begin of the month
   const valueBeginOfMonth = format(
@@ -251,7 +253,7 @@ const BarChart = ({ active, carId }: BarProps) => {
       style: {
         colors: ["#ffffff"],
       },
-      formatter: function (val: any) {
+      formatter: function (val: number) {
         return `${val > 0 ? "€ " + val : ""}`;
       },
 
@@ -311,7 +313,7 @@ const BarChart = ({ active, carId }: BarProps) => {
       },
       y: {
         title: {
-          formatter: function (seriesName: any) {
+          formatter: function () {
             return "€  ";
           },
         },
@@ -325,7 +327,7 @@ const BarChart = ({ active, carId }: BarProps) => {
         !active ? "w-full lg:w-3/5" : "hidden lg:block lg:w-3/5"
       } bg-slate-200/50 rounded-md border-2 p-4 lg:ml-4`}
     >
-      <h3 className="mb-8">Expenses per day</h3>
+      <h3 className="mb-8">Expenses per {filterByMonth ? "Month" : "Year"}</h3>
 
       <div className="flex mb-4 items-center justify-between">
         <div className="w-40">
@@ -375,7 +377,6 @@ const BarChart = ({ active, carId }: BarProps) => {
 
       <Chart
         className=" md:flex md:items-center md:justify-center  w-full h-96 md:h-96 rounded-md"
-        //md:max-w-screen-sm md:ml-4 mt-4 md:mt-0
         options={optionsBar}
         series={chartDataBar}
         type="bar"

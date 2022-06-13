@@ -22,7 +22,6 @@ const validationSchema = Yup.object().shape({
 const SignUp = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
 
   return (
     <div className="md:flex h-screen bg-skin-light_gray">

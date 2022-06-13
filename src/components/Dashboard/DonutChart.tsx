@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { format, compareAsc } from "date-fns";
+import { format } from "date-fns";
 import { BsFilter } from "react-icons/bs";
 
 interface DonutChartProps {
@@ -15,11 +15,11 @@ interface DonutChartProps {
 }
 
 const DonutChart = ({ carId, active }: DonutChartProps) => {
-  const [datePickerValue, setDatePickerValue] = useState(new Date());
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [labels, setLabels] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [filterByMonth, setFilterByMonth] = useState(false);
+  const [datePickerValue, setDatePickerValue] = useState<Date>(new Date());
+  const [chartData, setChartData] = useState<number[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [filterByMonth, setFilterByMonth] = useState<boolean>(false);
 
   // value begin of the month
   const valueBeginOfMonth = format(

@@ -10,7 +10,6 @@ import { Field, Formik } from "formik";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { FiMail } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import * as paths from "../routes";
 import { SnackBarContext } from "../context/SnackBarContext";
 import { CircularProgress } from "@mui/material";
 
@@ -43,7 +42,7 @@ const Account = () => {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username, avatar_url`)
         .eq("id", user!.id)
         .single();
 
@@ -180,7 +179,7 @@ const Account = () => {
             onSubmit={async (values, { setSubmitting }) => {
               try {
                 setSubmitting(true);
-                const { user, error } = await supabase.auth.update({
+                const { error } = await supabase.auth.update({
                   email: values.email,
                 });
 
@@ -257,7 +256,7 @@ const Account = () => {
               try {
                 setSubmitting(true);
 
-                const { data, error } = await supabase
+                const { error } = await supabase
                   .from("profiles")
                   .update({
                     username: values.username,

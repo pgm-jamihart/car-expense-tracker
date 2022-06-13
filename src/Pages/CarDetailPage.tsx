@@ -5,7 +5,6 @@ import { Formik, Field } from "formik";
 import { PageTitle } from "../components";
 import { PrimaryButton } from "../components/Buttons";
 import { supabase } from "../config/supabaseClient";
-import BaseLayout from "../Layouts/BaseLayout";
 import * as paths from "../routes";
 import { ErrorBanner, TextInput } from "../components/Form";
 import { AiOutlineEdit } from "react-icons/ai";

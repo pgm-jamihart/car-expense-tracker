@@ -75,8 +75,6 @@ const MaintenanceExpenseForm = () => {
     }
   }, [segment]);
 
-  console.log(speechlyFormdata);
-
   return (
     <Formik
       enableReinitialize={true}
@@ -100,7 +98,7 @@ const MaintenanceExpenseForm = () => {
 
           if (error) {
             setError(error.message);
-            console.log(error);
+            console.error(error);
           } else {
             setSnackBar("Expense added");
 

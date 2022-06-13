@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { supabase } from "../../config/supabaseClient";
 import * as paths from "../../routes";
 import * as Yup from "yup";
@@ -47,9 +47,7 @@ const UpdateParkingExpense = ({ expense }: Props) => {
         try {
           setSubmitting(true);
 
-          console.log("values", values);
-
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from("expenses")
             .update({
               category_id: expense.category_id,
@@ -62,6 +60,7 @@ const UpdateParkingExpense = ({ expense }: Props) => {
 
           if (error) {
             setError(error.message);
+            console.error(error);
           }
 
           setSnackBar("Expense updated successfully");
@@ -73,6 +72,7 @@ const UpdateParkingExpense = ({ expense }: Props) => {
           navigate(paths.TIMELINE);
         } catch (error: any) {
           setError(error.message);
+          console.error(error);
           setSubmitting(false);
         } finally {
           setSubmitting(false);

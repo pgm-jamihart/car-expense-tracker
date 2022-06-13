@@ -101,7 +101,7 @@ const ParkingExpenseForm = () => {
 
           if (error) {
             setError(error.message);
-            console.log(error);
+            console.error(error);
           } else {
             setSnackBar("Expense added");
 
@@ -113,6 +113,7 @@ const ParkingExpenseForm = () => {
           }
         } catch (error: any) {
           setError(error.message);
+          console.error(error);
           setSubmitting(false);
         } finally {
           setSubmitting(false);
