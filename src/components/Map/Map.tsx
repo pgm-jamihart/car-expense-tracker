@@ -34,20 +34,23 @@ const Map = ({ center, places, setClicked }: Props) => {
             places?.map((place: any, i: number | string) => (
               <div key={place.place_id}>
                 <Marker
-                  position={center}
-                  options={options}
-                  icon={{
-                    url: `https://cdn1.iconfinder.com/data/icons/travello-map-navigation/64/Nearby-512.png`,
-                    scaledSize: new window.google.maps.Size(50, 50),
-                  }}
-                />
-                <Marker
                   key={place.place_id}
                   position={place.geometry.location}
                   onClick={() => handleMarkerClick(i)}
                 />
               </div>
             ))}
+
+          {center && (
+            <Marker
+              position={center}
+              options={options}
+              icon={{
+                url: `https://cdn1.iconfinder.com/data/icons/travello-map-navigation/64/Nearby-512.png`,
+                scaledSize: new window.google.maps.Size(50, 50),
+              }}
+            />
+          )}
         </>
       </GoogleMap>
     </div>
